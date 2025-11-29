@@ -72,7 +72,7 @@ REST_FRAMEWORK = {
 
 # Email (dev)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@revulnera.local'
+DEFAULT_FROM_EMAIL = 'rojanstha621@gmail.com'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -111,8 +111,12 @@ WSGI_APPLICATION = 'revulnera_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'revulnera_db',
+        'USER': 'revuser',
+        'PASSWORD': 'revpass123',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -158,4 +162,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_FRONTEND_URL = 'http://localhost:3000'
+DEFAULT_FRONTEND_URL = 'http://localhost:5173'

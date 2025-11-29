@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* small glass card */
+@layer components {
+  .card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-lg;
+  }
+}
+
+
+/* glowing button */
+.btn-primary {
+  @apply inline-flex items-center justify-center px-5 py-2 rounded-full font-semibold transition-transform transform hover:-translate-y-0.5;
+  background: linear-gradient(90deg,#6C5CE7,#00b894);
+  color: white;
+  box-shadow: 0 6px 20px rgba(92, 84, 255, 0.12);
+}
