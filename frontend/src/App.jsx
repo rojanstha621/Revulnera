@@ -5,10 +5,12 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/layout';
 
 export default function App(){
   return (
     <AuthProvider>
+      <Layout>
       <BrowserRouter>
         <Routes>
           <Route path="/auth/login" element={<Login />} />
@@ -17,6 +19,7 @@ export default function App(){
           <Route path="*" element={<Login/>} />
         </Routes>
       </BrowserRouter>
+      </Layout>
     </AuthProvider>
   );
 }
