@@ -12,6 +12,6 @@ urlpatterns = [
     path('change-password/', ChangePasswordView.as_view(), name='change-password'),
 
     # email verification + password reset using django_rest_passwordreset
-    path('verify-email/<str:token>/', VerifyEmailView.as_view(), name='verify-email'),
     path('password-reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    path('verify/', VerifyEmailView.as_view(), name='verify'),
 ]

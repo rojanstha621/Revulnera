@@ -20,7 +20,7 @@ class RegisterView(generics.CreateAPIView):
         user = serializer.save()
         # send verification email
         token = token_generator.make_token(user)
-        verify_url = f"{settings.DEFAULT_FRONTEND_URL}/auth/verify?email={user.email}&token={token}"
+        verify_url = f"http://localhost:8000/auth/verify?email={user.email}&token={token}"
         # dev: console backend prints; prod: configure SMTP
         send_mail(
             "Verify your Revulnera account",
@@ -30,19 +30,33 @@ class RegisterView(generics.CreateAPIView):
             fail_silently=False,
         )
 
+from django.core.signing import BadSignature, SignatureExpired, dumps, loads
+
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
-    def get(self, request, token):
-        email = request.query_params.get('email')
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return Response({'detail':'Invalid email'}, status=status.HTTP_400_BAD_REQUEST)
-        if token_generator.check_token(user, token):
-            user.is_active = True
-            user.save()
-            return Response({'detail':'Email verified. You can login now.'})
-        return Response({'detail':'Invalid or expired token.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        email = request.GET.get("email")
+        token = request.GET.get("token")
+
+        if not email or not token:
+            return Response({"detail": "Missing parameters"}, status=400)
+
+        User = get_user_model()
+        user = User.objects.filter(email=email).first()
+        if not user:
+            return Response({"detail": "User not found"}, status=404)
+
+        # check token using PasswordResetTokenGenerator
+        if not token_generator.check_token(user, token):
+            return Response({"detail": "Invalid or expired token"}, status=400)
+
+        # activate user
+        user.is_active = True
+        user.save()
+
+        return Response({"detail": "Email verified successfully. You can now log in."})
+
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
