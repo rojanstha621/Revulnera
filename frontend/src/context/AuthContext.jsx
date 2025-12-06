@@ -1,10 +1,9 @@
-import React, { createContext, useState, useEffect } from "react";
+// src/context/AuthContext.jsx
+import React, { createContext, useState } from "react";
 import jwt_decode from "jwt-decode";
 
-// create context
 const AuthContextInternal = createContext(null);
 
-// provider component
 const AuthProviderInternal = ({ children }) => {
   const [auth, setAuth] = useState(() => {
     const token = localStorage.getItem("access");
@@ -12,8 +11,6 @@ const AuthProviderInternal = ({ children }) => {
       ? { access: token, user: jwt_decode(token) }
       : { access: null, user: null };
   });
-
-  useEffect(() => {}, []);
 
   const login = ({ access, refresh }) => {
     localStorage.setItem("access", access);
@@ -27,8 +24,12 @@ const AuthProviderInternal = ({ children }) => {
     setAuth({ access: null, user: null });
   };
 
+  const isAuthenticated = !!auth.access;
+
   return (
-    <AuthContextInternal.Provider value={{ auth, login, logout }}>
+    <AuthContextInternal.Provider
+      value={{ auth, login, logout, isAuthenticated }}
+    >
       {children}
     </AuthContextInternal.Provider>
   );
