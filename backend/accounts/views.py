@@ -31,7 +31,7 @@ class RegisterView(generics.CreateAPIView):
         )
 
 from django.core.signing import BadSignature, SignatureExpired, dumps, loads
-
+ 
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
 
