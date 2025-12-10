@@ -1,0 +1,1012 @@
+{
+  "scan_id": 1,
+  "target": "hackerone.com",
+  "endpoints": [
+    {
+      "url": "http://mta-sts.managed.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.managed.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.managed.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://gslink.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/api",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/account",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/login",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/api",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/login",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/user",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://gslink.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/user",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/account",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "https://gslink.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": 146
+    },
+    {
+      "url": "http://support.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://support.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://support.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://support.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://support.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://support.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.forwarding.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.forwarding.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/admin",
+      "status_code": 403,
+      "content_length": -1
+    },
+    {
+      "url": "http://support.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/admin",
+      "status_code": 403,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://support.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://www.hackerone.com/user",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "https://www.hackerone.com/user",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://api.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://docs.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://api.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://docs.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://docs.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://docs.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://docs.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://docs.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://docs.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://mta-sts.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://mta-sts.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/login",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/login",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/login",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/",
+      "status_code": 200,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/api",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/settings",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/profile",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/signup",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/api/v1",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/admin",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "http://hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/dashboard",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/user",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/auth",
+      "status_code": 404,
+      "content_length": -1
+    },
+    {
+      "url": "https://docs.hackerone.com/account",
+      "status_code": 404,
+      "content_length": -1
+    }
+  ],
+  "saved_at": "2025-12-10T07:00:53.813467968Z"
+}

@@ -6,12 +6,14 @@ import (
 	"net/http"
 	"os"
 
+	endpointspkg "recon/endpoints"
 	reconpkg "recon/recon"
 )
 
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/jobs", jobHandler)
+	mux.HandleFunc("/endpoints", endpointsHandler)
 
 	addr := ":8080"
 	if v := os.Getenv("RECON_HTTP_ADDR"); v != "" {
@@ -44,11 +46,41 @@ func jobHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(map[string]interface{}{
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
 		"scan_id":    job.ScanID,
 		"target":     job.Target,
 		"subdomains": results,
-	}); err != nil {
-		log.Printf("[recon] write response error: %v", err)
+	})
+}
+
+// endpointsHandler: use saved subdomain data to find endpoints.
+func endpointsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
 	}
+
+	var req struct {
+		ScanID int64  `json:"scan_id"`
+		Target string `json:"target"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid json", http.StatusBadRequest)
+		return
+	}
+
+	endpoints, err := endpointspkg.DiscoverEndpointsFromScan(req.ScanID, req.Target)
+	if err != nil {
+		log.Printf("[endpoints] discovery failed: %v", err)
+		http.Error(w, "endpoint discovery failed", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"scan_id":   req.ScanID,
+		"target":    req.Target,
+		"endpoints": endpoints,
+	})
 }
