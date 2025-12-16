@@ -4,34 +4,45 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"html"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 
+	"recon/fingerprint"
 	"recon/recon"
 )
 
 const (
 	defaultWordlistPath = "wordlists/common.txt"
 	defaultWorkerCount  = 20
+	defaultRPS          = 10
 )
 
 type EndpointResult struct {
-	URL           string `json:"url"`
-	StatusCode    int    `json:"status_code"`
-	ContentLength int64  `json:"content_length"`
+	URL           string            `json:"url"`
+	StatusCode    int               `json:"status_code"`
+	ContentLength int64             `json:"content_length"`
+	Title         string            `json:"title"`
+	Headers       map[string]string `json:"headers"`
+
+	Fingerprints []string          `json:"fingerprints"`
+	Evidence     map[string]string `json:"evidence"`
 }
 
 // DiscoverEndpointsFromScan:
 //  1) loads subdomains (from data/scan_<id>_<target>.json)
 //  2) filters only Alive == true
-//  3) builds URLs from schemes + wordlist
-//  4) probes them with a worker pool
-//  5) saves results to data/endpoints_<id>_<target>.json
+//  3) builds URLs from schemes + wordlist file
+//  4) probes them with a worker pool + global RPS limiter
+//  5) keeps only meaningful statuses (2xx/3xx/401/403/405)
+//  6) fingerprints only kept endpoints
+//  7) saves results to data/endpoints_<id>_<target>.json
 func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, error) {
 	subdomains, scanFile, err := recon.LoadSubdomainsForScan(scanID, target)
 	if err != nil {
@@ -39,15 +50,16 @@ func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, e
 	}
 	log.Printf("[endpoints] loaded %d subdomains from %s", len(subdomains), scanFile)
 
-	paths, err := loadWordlist(defaultWordlistPath)
+	wordlistPath := getEnvOrDefault("ENDPOINT_WORDLIST", defaultWordlistPath)
+	paths, err := loadWordlist(wordlistPath)
 	if err != nil {
 		return nil, fmt.Errorf("load wordlist: %w", err)
 	}
-	log.Printf("[endpoints] loaded %d paths from %s", len(paths), defaultWordlistPath)
+	log.Printf("[endpoints] loaded %d paths from %s", len(paths), wordlistPath)
 
 	schemes := []string{"http", "https"}
 
-	// Build all URLs to probe
+	// Build all URLs to probe (alive subdomains only)
 	urls := make([]string, 0)
 	for _, s := range subdomains {
 		if !s.Alive {
@@ -55,29 +67,34 @@ func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, e
 		}
 		for _, scheme := range schemes {
 			for _, p := range paths {
-				url := fmt.Sprintf("%s://%s%s", scheme, s.Name, p)
-				urls = append(urls, url)
+				urls = append(urls, fmt.Sprintf("%s://%s%s", scheme, s.Name, p))
 			}
 		}
 	}
 	log.Printf("[endpoints] built %d URLs to probe", len(urls))
 
-	results := probeURLsConcurrently(urls, defaultWorkerCount)
+	workerCount := getEnvIntOrDefault("ENDPOINT_WORKERS", defaultWorkerCount)
+	rps := getEnvIntOrDefault("ENDPOINT_RPS", defaultRPS)
+	if rps <= 0 {
+		rps = defaultRPS
+	}
+	log.Printf("[endpoints] using %d workers, global rate limit %d req/s", workerCount, rps)
+
+	results := probeURLsConcurrently(urls, workerCount, rps)
 
 	// Save endpoints to file in data/
 	if _, err := saveEndpointsToFile(scanID, target, results); err != nil {
 		log.Printf("[endpoints] failed to save endpoints for scan_id=%d: %v", scanID, err)
 	}
 
-	log.Printf("[endpoints] discovered %d live endpoints for scan_id=%d target=%s",
+	log.Printf("[endpoints] kept %d endpoints (filtered) for scan_id=%d target=%s",
 		len(results), scanID, target)
 
 	return results, nil
 }
 
-// loadWordlist reads wordlists/common.txt and returns normalized paths.
-// Lines starting with # or empty lines are ignored.
-// Paths are normalized to always start with "/".
+// ---------------- WORDLIST ----------------
+
 func loadWordlist(path string) ([]string, error) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -92,7 +109,6 @@ func loadWordlist(path string) ([]string, error) {
 		if line == "" || strings.HasPrefix(line, "#") {
 			continue
 		}
-		// normalize to start with "/"
 		if !strings.HasPrefix(line, "/") {
 			line = "/" + line
 		}
@@ -104,8 +120,43 @@ func loadWordlist(path string) ([]string, error) {
 	return paths, nil
 }
 
-// probeURLsConcurrently runs HTTP GET on all URLs using a worker pool.
-func probeURLsConcurrently(urls []string, workerCount int) []EndpointResult {
+// ---------------- RATE LIMITER ----------------
+
+type RateLimiter struct {
+	tokens chan struct{}
+}
+
+func NewRateLimiter(rps int) *RateLimiter {
+	if rps <= 0 {
+		rps = defaultRPS
+	}
+	rl := &RateLimiter{tokens: make(chan struct{}, rps)}
+
+	// initial burst
+	for i := 0; i < rps; i++ {
+		rl.tokens <- struct{}{}
+	}
+
+	// refill evenly
+	go func() {
+		ticker := time.NewTicker(time.Second / time.Duration(rps))
+		defer ticker.Stop()
+		for range ticker.C {
+			select {
+			case rl.tokens <- struct{}{}:
+			default:
+			}
+		}
+	}()
+
+	return rl
+}
+
+func (rl *RateLimiter) Acquire() { <-rl.tokens }
+
+// ---------------- CONCURRENT PROBING ----------------
+
+func probeURLsConcurrently(urls []string, workerCount int, rps int) []EndpointResult {
 	if workerCount <= 0 {
 		workerCount = 10
 	}
@@ -113,26 +164,23 @@ func probeURLsConcurrently(urls []string, workerCount int) []EndpointResult {
 	jobs := make(chan string, workerCount*2)
 	resultsCh := make(chan EndpointResult, workerCount*2)
 
-	client := &http.Client{
-		Timeout: 5 * time.Second,
-	}
+	client := &http.Client{Timeout: 7 * time.Second}
+	limiter := NewRateLimiter(rps)
 
 	var wg sync.WaitGroup
-
-	// Workers
 	for i := 0; i < workerCount; i++ {
 		wg.Add(1)
-		go func(id int) {
+		go func() {
 			defer wg.Done()
 			for url := range jobs {
-				if res, err := probeURL(client, url); err == nil {
+				if res, err := probeURL(client, limiter, url); err == nil {
 					resultsCh <- *res
 				}
 			}
-		}(i)
+		}()
 	}
 
-	// Feed jobs
+	// feed jobs
 	go func() {
 		for _, url := range urls {
 			jobs <- url
@@ -140,26 +188,46 @@ func probeURLsConcurrently(urls []string, workerCount int) []EndpointResult {
 		close(jobs)
 	}()
 
-	// Close results channel when all workers are done
+	// close results when done
 	go func() {
 		wg.Wait()
 		close(resultsCh)
 	}()
 
-	// Collect results
 	results := make([]EndpointResult, 0)
 	for res := range resultsCh {
 		results = append(results, res)
 	}
-
 	return results
 }
 
-func probeURL(client *http.Client, url string) (*EndpointResult, error) {
+// ---------------- PROBE + FILTER + FINGERPRINT ----------------
+
+// Only keep endpoints that likely represent real routes/content.
+// We intentionally drop 404/410 and most 4xx noise.
+func shouldKeepStatus(code int) bool {
+	// Keep all 2xx and 3xx
+	if code >= 200 && code < 400 {
+		return true
+	}
+	// Keep common "real but protected" or "real but method-restricted"
+	switch code {
+	case 401, 403, 405:
+		return true
+	default:
+		return false
+	}
+}
+
+func probeURL(client *http.Client, limiter *RateLimiter, url string) (*EndpointResult, error) {
+	limiter.Acquire()
+
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("User-Agent", "RevulneraRecon/1.0")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8")
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -167,15 +235,81 @@ func probeURL(client *http.Client, url string) (*EndpointResult, error) {
 	}
 	defer resp.Body.Close()
 
-	// You can filter here (e.g. ignore 404), but for now we keep all.
+	// Filter early: do NOT fingerprint/store endpoints that are noise (404 etc.)
+	if !shouldKeepStatus(resp.StatusCode) {
+		return nil, fmt.Errorf("ignored status %d", resp.StatusCode)
+	}
+
+	// Read only first 4KB for title + fingerprinting
+	const maxBytes = 4096
+	buf := make([]byte, maxBytes)
+	n, _ := resp.Body.Read(buf)
+	snippet := ""
+	if n > 0 {
+		snippet = string(buf[:n])
+	}
+
+	title := extractTitleFromSnippet(snippet)
+	headers := snapshotHeaders(resp)
+
+	fp := fingerprint.Analyze(
+		resp.StatusCode,
+		title,
+		snippet,
+		headers,
+	)
+
 	return &EndpointResult{
 		URL:           url,
 		StatusCode:    resp.StatusCode,
 		ContentLength: resp.ContentLength,
+		Title:         title,
+		Headers:       headers,
+		Fingerprints:  fp.Tags,
+		Evidence:      fp.Evidence,
 	}, nil
 }
 
-// EndpointsFilePath returns the JSON path for endpoints_<id>_<target>.json
+func extractTitleFromSnippet(snippet string) string {
+	m := fingerprint.TitleRegex.FindStringSubmatch(snippet)
+	if len(m) < 2 {
+		return ""
+	}
+	t := strings.TrimSpace(html.UnescapeString(m[1]))
+	t = strings.Join(strings.Fields(t), " ")
+	if len(t) > 200 {
+		t = t[:200]
+	}
+	return t
+}
+
+func snapshotHeaders(resp *http.Response) map[string]string {
+	keep := []string{
+		"Server",
+		"X-Powered-By",
+		"Content-Type",
+		"Set-Cookie",
+		"Via",
+		"CF-RAY",
+		"X-Frame-Options",
+	}
+
+	out := make(map[string]string)
+	for _, k := range keep {
+		v := resp.Header.Get(k)
+		if v == "" {
+			continue
+		}
+		if len(v) > 180 {
+			v = v[:180]
+		}
+		out[k] = v
+	}
+	return out
+}
+
+// ---------------- FILE STORAGE ----------------
+
 func EndpointsFilePath(scanID int64, target string) string {
 	dataDir := "data"
 	safeTarget := strings.ReplaceAll(target, "/", "_")
@@ -184,7 +318,6 @@ func EndpointsFilePath(scanID int64, target string) string {
 	return filepath.Join(dataDir, filename)
 }
 
-// saveEndpointsToFile writes endpoints results into data/endpoints_<id>_<target>.json
 func saveEndpointsToFile(scanID int64, target string, eps []EndpointResult) (string, error) {
 	dataDir := "data"
 	if err := os.MkdirAll(dataDir, 0o755); err != nil {
@@ -219,4 +352,25 @@ func saveEndpointsToFile(scanID int64, target string, eps []EndpointResult) (str
 
 	log.Printf("[endpoints] saved %d endpoints to %s", len(eps), path)
 	return path, nil
+}
+
+// ---------------- HELPERS ----------------
+
+func getEnvOrDefault(key, def string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return def
+}
+
+func getEnvIntOrDefault(key string, def int) int {
+	v := os.Getenv(key)
+	if v == "" {
+		return def
+	}
+	i, err := strconv.Atoi(v)
+	if err != nil || i <= 0 {
+		return def
+	}
+	return i
 }

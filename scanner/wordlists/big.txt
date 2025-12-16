@@ -4,11 +4,10 @@ admin
 api
 api/v1
 dashboard
-profile
 settings
-signup
+profile
 auth
-user
-account
+wp-login.php
+wp-admin
 api/internal
-admin/login
+api/private
