@@ -3,194 +3,12 @@
   "target": "hackerone.com",
   "endpoints": [
     {
-      "url": "http://hackerone.com/login",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne",
-      "headers": {
-        "CF-RAY": "9aeaeb331c428e51-KTM",
-        "Content-Type": "text/html; charset=utf-8",
-        "Server": "cloudflare",
-        "Set-Cookie": "h1_device_id=d4a85443-ab2b-46dc-a2a6-42e3146674dc; path=/; expires=Wed, 16 Dec 2026 02:58:24 GMT; secure; httponly; samesite=none",
-        "X-Frame-Options": "DENY"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html; charset=utf-8"
-      }
-    },
-    {
-      "url": "https://hackerone.com/login",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne",
-      "headers": {
-        "CF-RAY": "9aeaeb3a69778e51-KTM",
-        "Content-Type": "text/html; charset=utf-8",
-        "Server": "cloudflare",
-        "Set-Cookie": "h1_device_id=9a349873-5cf9-41f4-8e6d-a254cc42fa5b; path=/; expires=Wed, 16 Dec 2026 02:58:25 GMT; secure; httponly; samesite=none",
-        "X-Frame-Options": "DENY"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html; charset=utf-8"
-      }
-    },
-    {
-      "url": "https://hackerone.com/",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
-      "headers": {
-        "CF-RAY": "9aeaeb3ced8b8e56-KTM",
-        "Content-Type": "text/html; charset=UTF-8",
-        "Server": "cloudflare",
-        "Via": "1.1 varnish, 1.1 varnish",
-        "X-Frame-Options": "SAMEORIGIN"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html; charset=UTF-8"
-      }
-    },
-    {
-      "url": "http://hackerone.com/",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
-      "headers": {
-        "CF-RAY": "9aeaeb3ced8a8e56-KTM",
-        "Content-Type": "text/html; charset=UTF-8",
-        "Server": "cloudflare",
-        "Via": "1.1 varnish, 1.1 varnish",
-        "X-Frame-Options": "SAMEORIGIN"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html; charset=UTF-8"
-      }
-    },
-    {
-      "url": "http://docs.hackerone.com/",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne Help Center",
-      "headers": {
-        "CF-RAY": "9aeaeb48e8e48e57-KTM",
-        "Content-Type": "text/html; charset=utf-8",
-        "Server": "cloudflare",
-        "Set-Cookie": "recent_write=740bc5ee-0350-4cf0-9fd6-165ed6e71237; path=/; max-age=1; HttpOnly",
-        "X-Frame-Options": "DENY"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html; charset=utf-8"
-      }
-    },
-    {
-      "url": "https://docs.hackerone.com/",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne Help Center",
-      "headers": {
-        "CF-RAY": "9aeaeb51bf8d8e57-KTM",
-        "Content-Type": "text/html; charset=utf-8",
-        "Server": "cloudflare",
-        "Set-Cookie": "recent_write=8bc22365-f777-4e57-b26f-41aa06953546; path=/; max-age=1; HttpOnly",
-        "X-Frame-Options": "DENY"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html; charset=utf-8"
-      }
-    },
-    {
-      "url": "http://api.hackerone.com/",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne API",
-      "headers": {
-        "CF-RAY": "9aeaebad8c87790d-KTM",
-        "Content-Type": "text/html",
-        "Server": "cloudflare",
-        "X-Frame-Options": "DENY"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html"
-      }
-    },
-    {
-      "url": "https://api.hackerone.com/",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "HackerOne API",
-      "headers": {
-        "CF-RAY": "9aeaebb44a07790d-KTM",
-        "Content-Type": "text/html",
-        "Server": "cloudflare",
-        "X-Frame-Options": "DENY"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html"
-      }
-    },
-    {
       "url": "http://www.hackerone.com/",
       "status_code": 200,
       "content_length": -1,
       "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
       "headers": {
-        "CF-RAY": "9aeaebbdd83c8e56-KTM",
+        "CF-RAY": "9af4244fb84e8e54-KTM",
         "Content-Type": "text/html; charset=UTF-8",
         "Server": "cloudflare",
         "Via": "1.1 varnish, 1.1 varnish",
@@ -213,7 +31,7 @@
       "content_length": -1,
       "title": "403 Not Authorized | HackerOne",
       "headers": {
-        "CF-RAY": "9aeaebbe78ab8e56-KTM",
+        "CF-RAY": "9af4244fb84c8e54-KTM",
         "Content-Type": "text/html; charset=UTF-8",
         "Server": "cloudflare",
         "Via": "1.1 varnish, 1.1 varnish",
@@ -231,35 +49,12 @@
       }
     },
     {
-      "url": "http://www.hackerone.com/user",
-      "status_code": 200,
-      "content_length": -1,
-      "title": "Log in | HackerOne",
-      "headers": {
-        "CF-RAY": "9aeaebc59f088e56-KTM",
-        "Content-Type": "text/html; charset=UTF-8",
-        "Server": "cloudflare",
-        "Via": "1.1 varnish, 1.1 varnish",
-        "X-Frame-Options": "SAMEORIGIN"
-      },
-      "fingerprints": [
-        "cloudflare",
-        "html",
-        "2xx"
-      ],
-      "evidence": {
-        "2xx": "status=200",
-        "cloudflare": "Header=CF-RAY/Server",
-        "html": "Content-Type=text/html; charset=UTF-8"
-      }
-    },
-    {
       "url": "https://www.hackerone.com/",
       "status_code": 200,
       "content_length": -1,
       "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
       "headers": {
-        "CF-RAY": "9aeaebc5cf328e56-KTM",
+        "CF-RAY": "9af424569f2d8e54-KTM",
         "Content-Type": "text/html; charset=UTF-8",
         "Server": "cloudflare",
         "Via": "1.1 varnish, 1.1 varnish",
@@ -282,7 +77,7 @@
       "content_length": -1,
       "title": "403 Not Authorized | HackerOne",
       "headers": {
-        "CF-RAY": "9aeaebc7086a8e56-KTM",
+        "CF-RAY": "9af42457d8708e54-KTM",
         "Content-Type": "text/html; charset=UTF-8",
         "Server": "cloudflare",
         "Via": "1.1 varnish, 1.1 varnish",
@@ -300,12 +95,12 @@
       }
     },
     {
-      "url": "https://www.hackerone.com/user",
+      "url": "http://www.hackerone.com/user",
       "status_code": 200,
       "content_length": -1,
       "title": "Log in | HackerOne",
       "headers": {
-        "CF-RAY": "9aeaebce2f218e56-KTM",
+        "CF-RAY": "9af424566ef58e54-KTM",
         "Content-Type": "text/html; charset=UTF-8",
         "Server": "cloudflare",
         "Via": "1.1 varnish, 1.1 varnish",
@@ -321,7 +116,212 @@
         "cloudflare": "Header=CF-RAY/Server",
         "html": "Content-Type=text/html; charset=UTF-8"
       }
+    },
+    {
+      "url": "https://www.hackerone.com/user",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Log in | HackerOne",
+      "headers": {
+        "CF-RAY": "9af4245f0f448e54-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Via": "1.1 varnish, 1.1 varnish",
+        "X-Frame-Options": "SAMEORIGIN"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://docs.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne Help Center",
+      "headers": {
+        "CF-RAY": "9af424884bce790d-KTM",
+        "Content-Type": "text/html; charset=utf-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "recent_write=bf334d51-9144-4911-8af4-5d50c68f84ce; path=/; max-age=1; HttpOnly",
+        "X-Frame-Options": "DENY"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html; charset=utf-8"
+      }
+    },
+    {
+      "url": "https://docs.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne Help Center",
+      "headers": {
+        "CF-RAY": "9af4248dca4f790d-KTM",
+        "Content-Type": "text/html; charset=utf-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "recent_write=251d5fd7-32d8-4097-8d41-0fb260107c5d; path=/; max-age=1; HttpOnly",
+        "X-Frame-Options": "DENY"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html; charset=utf-8"
+      }
+    },
+    {
+      "url": "http://hackerone.com/",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "CF-RAY": "9af424cc2a9d8e54-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Via": "1.1 varnish, 1.1 varnish",
+        "X-Frame-Options": "SAMEORIGIN"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://hackerone.com/login",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne",
+      "headers": {
+        "CF-RAY": "9af424ca2b97790d-KTM",
+        "Content-Type": "text/html; charset=utf-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "h1_device_id=aa3758dc-5e44-4cfe-9e12-a92cb462eec7; path=/; expires=Thu, 17 Dec 2026 05:50:34 GMT; secure; httponly; samesite=none",
+        "X-Frame-Options": "DENY"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html; charset=utf-8"
+      }
+    },
+    {
+      "url": "https://hackerone.com/",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "CF-RAY": "9af424d35a208e54-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Via": "1.1 varnish, 1.1 varnish",
+        "X-Frame-Options": "SAMEORIGIN"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "https://hackerone.com/login",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne",
+      "headers": {
+        "CF-RAY": "9af424d1bc3a790d-KTM",
+        "Content-Type": "text/html; charset=utf-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "h1_device_id=64c04a4c-ef0d-4f02-aa92-68a4f4e70794; path=/; expires=Thu, 17 Dec 2026 05:50:35 GMT; secure; httponly; samesite=none",
+        "X-Frame-Options": "DENY"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html; charset=utf-8"
+      }
+    },
+    {
+      "url": "http://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne API",
+      "headers": {
+        "CF-RAY": "9af424db9e1b8e57-KTM",
+        "Content-Type": "text/html",
+        "Server": "cloudflare",
+        "X-Frame-Options": "DENY"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html"
+      }
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "HackerOne API",
+      "headers": {
+        "CF-RAY": "9af424e29cf48e57-KTM",
+        "Content-Type": "text/html",
+        "Server": "cloudflare",
+        "X-Frame-Options": "DENY"
+      },
+      "fingerprints": [
+        "cloudflare",
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "cloudflare": "Header=CF-RAY/Server",
+        "html": "Content-Type=text/html"
+      }
     }
   ],
-  "saved_at": "2025-12-16T02:58:48.484079041Z"
+  "saved_at": "2025-12-17T05:50:42.794371475Z"
 }

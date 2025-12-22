@@ -31,19 +31,37 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'corsheaders',
-    'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
-    'django_extensions',
-    'accounts',
-    'django_rest_passwordreset',
+    "daphne",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+
+    "corsheaders",
+    "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
+    "django_extensions",
+
+    "accounts",
+    "django_rest_passwordreset",
+    "channels",
+    "reconscan",
 ]
+
+
+ASGI_APPLICATION = "revulnera_project.asgi.application"
+
+# Dev only (no Redis)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+# Where Go worker is listening
+GO_RECON_URL = "http://localhost:8080"  # your Go server
 
 # Auth user model
 AUTH_USER_MODEL = 'accounts.User'
