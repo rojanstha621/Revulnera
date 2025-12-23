@@ -14,6 +14,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/jobs", jobHandler)
 	mux.HandleFunc("/endpoints", endpointsHandler)
+	    mux.HandleFunc("/scan", scanHandler) 
 
 	addr := ":8080"
 	if v := os.Getenv("RECON_HTTP_ADDR"); v != "" {

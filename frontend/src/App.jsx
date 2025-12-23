@@ -8,8 +8,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ScanCreate from "./pages/ScanCreate";
-import ScanLive from "./pages/ScanLive";
+// import ScanCreate from "./pages/ScanCreate";
+// import ScanLive from "./pages/ScanLive";
 import Dashboard from "./pages/Dashboard";
 import Scanners from "./pages/Scanners";
 import Logs from "./pages/Logs";
@@ -25,8 +25,8 @@ export default function App() {
             {/* Auth */}
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
-            <Route path="/scan" element={<ScanCreate />} />
-            <Route path="/scans/:scanId" element={<ScanLive />} />
+            {/* <Route path="/scan" element={<ScanCreate />} /> */}
+            {/* <Route path="/scans/:scanId" element={<ScanLive />} /> */}
 
             {/* Protected pages */}
             <Route

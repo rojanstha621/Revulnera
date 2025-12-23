@@ -1,9 +1,13 @@
+// src/api/api.js
 const API_ROOT = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+export const WS_ROOT = import.meta.env.VITE_WS_URL || "ws://localhost:8000";
+
+function authHeader(token) {
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 async function parseResponse(res) {
   const text = await res.text();
-
-  // Try JSON first
   try {
     const data = JSON.parse(text);
     if (!res.ok) {
@@ -11,7 +15,6 @@ async function parseResponse(res) {
     }
     return data;
   } catch {
-    // Not JSON (likely HTML error page)
     return {
       detail: `Non-JSON response (${res.status}). First 200 chars: ${text.slice(0, 200)}`,
       _status: res.status,
@@ -20,26 +23,29 @@ async function parseResponse(res) {
   }
 }
 
-export async function postJSON(path, body, token) {
-  const res = await fetch(`${API_ROOT}${path}`, {
-    method: "POST",
+async function requestJSON(method, path, body, token) {
+  // path MUST start with "/"
+  const url = `${API_ROOT}${path}`;
+  const res = await fetch(url, {
+    method,
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...authHeader(token),
     },
-    body: JSON.stringify(body),
+    body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 
   return parseResponse(res);
 }
 
-export async function getJSON(path, token) {
-  const res = await fetch(`${API_ROOT}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-  });
+export function postJSON(path, body, token) {
+  return requestJSON("POST", path, body, token);
+}
 
-  return parseResponse(res);
+export function getJSON(path, token) {
+  return requestJSON("GET", path, undefined, token);
+}
+
+export function putJSON(path, body, token) {
+  return requestJSON("PUT", path, body, token);
 }
