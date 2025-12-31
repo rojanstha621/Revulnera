@@ -24,6 +24,8 @@ const (
 	defaultRPS          = 10
 )
 
+// ---------------- TYPES ----------------
+
 type EndpointResult struct {
 	URL           string            `json:"url"`
 	StatusCode    int               `json:"status_code"`
@@ -35,14 +37,14 @@ type EndpointResult struct {
 	Evidence     map[string]string `json:"evidence"`
 }
 
+// ---------------- MAIN ENTRY ----------------
+
 // DiscoverEndpointsFromScan:
-//  1) loads subdomains (from data/scan_<id>_<target>.json)
-//  2) filters only Alive == true
-//  3) builds URLs from schemes + wordlist file
-//  4) probes them with a worker pool + global RPS limiter
-//  5) keeps only meaningful statuses (2xx/3xx/401/403/405)
-//  6) fingerprints only kept endpoints
-//  7) saves results to data/endpoints_<id>_<target>.json
+// 1) load alive subdomains
+// 2) brute-force paths
+// 3) probe endpoints
+// 4) domain + endpoint fingerprinting
+// 5) save results
 func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, error) {
 	subdomains, scanFile, err := recon.LoadSubdomainsForScan(scanID, target)
 	if err != nil {
@@ -53,13 +55,11 @@ func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, e
 	wordlistPath := getEnvOrDefault("ENDPOINT_WORDLIST", defaultWordlistPath)
 	paths, err := loadWordlist(wordlistPath)
 	if err != nil {
-		return nil, fmt.Errorf("load wordlist: %w", err)
+		return nil, err
 	}
-	log.Printf("[endpoints] loaded %d paths from %s", len(paths), wordlistPath)
 
 	schemes := []string{"http", "https"}
 
-	// Build all URLs to probe (alive subdomains only)
 	urls := make([]string, 0)
 	for _, s := range subdomains {
 		if !s.Alive {
@@ -71,24 +71,15 @@ func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, e
 			}
 		}
 	}
-	log.Printf("[endpoints] built %d URLs to probe", len(urls))
 
-	workerCount := getEnvIntOrDefault("ENDPOINT_WORKERS", defaultWorkerCount)
+	workers := getEnvIntOrDefault("ENDPOINT_WORKERS", defaultWorkerCount)
 	rps := getEnvIntOrDefault("ENDPOINT_RPS", defaultRPS)
-	if rps <= 0 {
-		rps = defaultRPS
-	}
-	log.Printf("[endpoints] using %d workers, global rate limit %d req/s", workerCount, rps)
 
-	results := probeURLsConcurrently(urls, workerCount, rps)
+	results := probeURLsConcurrently(urls, workers, rps)
 
-	// Save endpoints to file in data/
 	if _, err := saveEndpointsToFile(scanID, target, results); err != nil {
-		log.Printf("[endpoints] failed to save endpoints for scan_id=%d: %v", scanID, err)
+		log.Printf("[endpoints] save error: %v", err)
 	}
-
-	log.Printf("[endpoints] kept %d endpoints (filtered) for scan_id=%d target=%s",
-		len(results), scanID, target)
 
 	return results, nil
 }
@@ -98,26 +89,23 @@ func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, e
 func loadWordlist(path string) ([]string, error) {
 	f, err := os.Open(path)
 	if err != nil {
-		return nil, fmt.Errorf("open wordlist: %w", err)
+		return nil, err
 	}
 	defer f.Close()
 
 	var paths []string
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if line == "" || strings.HasPrefix(line, "#") {
+	sc := bufio.NewScanner(f)
+	for sc.Scan() {
+		l := strings.TrimSpace(sc.Text())
+		if l == "" || strings.HasPrefix(l, "#") {
 			continue
 		}
-		if !strings.HasPrefix(line, "/") {
-			line = "/" + line
+		if !strings.HasPrefix(l, "/") {
+			l = "/" + l
 		}
-		paths = append(paths, line)
+		paths = append(paths, l)
 	}
-	if err := scanner.Err(); err != nil {
-		return nil, fmt.Errorf("read wordlist: %w", err)
-	}
-	return paths, nil
+	return paths, sc.Err()
 }
 
 // ---------------- RATE LIMITER ----------------
@@ -132,12 +120,10 @@ func NewRateLimiter(rps int) *RateLimiter {
 	}
 	rl := &RateLimiter{tokens: make(chan struct{}, rps)}
 
-	// initial burst
 	for i := 0; i < rps; i++ {
 		rl.tokens <- struct{}{}
 	}
 
-	// refill evenly
 	go func() {
 		ticker := time.NewTicker(time.Second / time.Duration(rps))
 		defer ticker.Stop()
@@ -152,65 +138,93 @@ func NewRateLimiter(rps int) *RateLimiter {
 	return rl
 }
 
-func (rl *RateLimiter) Acquire() { <-rl.tokens }
+func (r *RateLimiter) Acquire() { <-r.tokens }
 
-// ---------------- CONCURRENT PROBING ----------------
+// ---------------- CONCURRENCY ----------------
 
-func probeURLsConcurrently(urls []string, workerCount int, rps int) []EndpointResult {
-	if workerCount <= 0 {
-		workerCount = 10
-	}
-
-	jobs := make(chan string, workerCount*2)
-	resultsCh := make(chan EndpointResult, workerCount*2)
+func probeURLsConcurrently(urls []string, workers int, rps int) []EndpointResult {
+	jobs := make(chan string, workers*2)
+	results := make(chan EndpointResult, workers*2)
 
 	client := &http.Client{Timeout: 7 * time.Second}
 	limiter := NewRateLimiter(rps)
 
 	var wg sync.WaitGroup
-	for i := 0; i < workerCount; i++ {
+	for i := 0; i < workers; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for url := range jobs {
 				if res, err := probeURL(client, limiter, url); err == nil {
-					resultsCh <- *res
+					results <- *res
 				}
 			}
 		}()
 	}
 
-	// feed jobs
 	go func() {
-		for _, url := range urls {
-			jobs <- url
+		for _, u := range urls {
+			jobs <- u
 		}
 		close(jobs)
 	}()
 
-	// close results when done
 	go func() {
 		wg.Wait()
-		close(resultsCh)
+		close(results)
 	}()
 
-	results := make([]EndpointResult, 0)
-	for res := range resultsCh {
-		results = append(results, res)
+	out := make([]EndpointResult, 0)
+	for r := range results {
+		out = append(out, r)
 	}
-	return results
+	return out
 }
 
-// ---------------- PROBE + FILTER + FINGERPRINT ----------------
+// ---------------- DOMAIN FINGERPRINT CACHE ----------------
 
-// Only keep endpoints that likely represent real routes/content.
-// We intentionally drop 404/410 and most 4xx noise.
+var domainFP sync.Map // map[string]fingerprint.DomainResult
+
+func getDomainFingerprint(client *http.Client, url string) fingerprint.DomainResult {
+	host := extractHost(url)
+
+	if v, ok := domainFP.Load(host); ok {
+		return v.(fingerprint.DomainResult)
+	}
+
+	req, _ := http.NewRequest("GET", "https://"+host, nil)
+	req.Header.Set("User-Agent", "RevulneraRecon/1.0")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return fingerprint.DomainResult{}
+	}
+	defer resp.Body.Close()
+
+	buf := make([]byte, 4096)
+	n, _ := resp.Body.Read(buf)
+
+	headers := snapshotHeaders(resp) // ✅ FIX
+	fp := fingerprint.FingerprintDomain(headers, string(buf[:n]))
+
+	domainFP.Store(host, fp)
+	return fp
+}
+
+func extractHost(url string) string {
+	u := strings.Split(url, "://")
+	if len(u) > 1 {
+		return strings.Split(u[1], "/")[0]
+	}
+	return url
+}
+
+// ---------------- PROBE ----------------
+
 func shouldKeepStatus(code int) bool {
-	// Keep all 2xx and 3xx
 	if code >= 200 && code < 400 {
 		return true
 	}
-	// Keep common "real but protected" or "real but method-restricted"
 	switch code {
 	case 401, 403, 405:
 		return true
@@ -222,12 +236,12 @@ func shouldKeepStatus(code int) bool {
 func probeURL(client *http.Client, limiter *RateLimiter, url string) (*EndpointResult, error) {
 	limiter.Acquire()
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("User-Agent", "RevulneraRecon/1.0")
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8")
+	req.Header.Set("Accept", "text/html,application/json;q=0.9,*/*;q=0.8")
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -235,29 +249,29 @@ func probeURL(client *http.Client, limiter *RateLimiter, url string) (*EndpointR
 	}
 	defer resp.Body.Close()
 
-	// Filter early: do NOT fingerprint/store endpoints that are noise (404 etc.)
 	if !shouldKeepStatus(resp.StatusCode) {
-		return nil, fmt.Errorf("ignored status %d", resp.StatusCode)
+		return nil, fmt.Errorf("ignored %d", resp.StatusCode)
 	}
 
-	// Read only first 4KB for title + fingerprinting
-	const maxBytes = 4096
-	buf := make([]byte, maxBytes)
+	buf := make([]byte, 4096)
 	n, _ := resp.Body.Read(buf)
-	snippet := ""
-	if n > 0 {
-		snippet = string(buf[:n])
-	}
+	snippet := string(buf[:n])
 
-	title := extractTitleFromSnippet(snippet)
+	title := extractTitle(snippet)
 	headers := snapshotHeaders(resp)
 
-	fp := fingerprint.Analyze(
-		resp.StatusCode,
-		title,
-		snippet,
-		headers,
-	)
+	// DOMAIN + ENDPOINT FINGERPRINTING
+	dfp := getDomainFingerprint(client, url)
+	efp := fingerprint.FingerprintEndpoint(resp.StatusCode, title, headers)
+
+	tags := append(dfp.Tags, efp.Tags...)
+	evidence := dfp.Evidence
+	if evidence == nil {
+		evidence = map[string]string{}
+	}
+	for k, v := range efp.Evidence {
+		evidence[k] = v
+	}
 
 	return &EndpointResult{
 		URL:           url,
@@ -265,22 +279,20 @@ func probeURL(client *http.Client, limiter *RateLimiter, url string) (*EndpointR
 		ContentLength: resp.ContentLength,
 		Title:         title,
 		Headers:       headers,
-		Fingerprints:  fp.Tags,
-		Evidence:      fp.Evidence,
+		Fingerprints:  tags,
+		Evidence:      evidence,
 	}, nil
 }
 
-func extractTitleFromSnippet(snippet string) string {
+// ---------------- HELPERS ----------------
+
+func extractTitle(snippet string) string {
 	m := fingerprint.TitleRegex.FindStringSubmatch(snippet)
 	if len(m) < 2 {
 		return ""
 	}
 	t := strings.TrimSpace(html.UnescapeString(m[1]))
-	t = strings.Join(strings.Fields(t), " ")
-	if len(t) > 200 {
-		t = t[:200]
-	}
-	return t
+	return strings.Join(strings.Fields(t), " ")
 }
 
 func snapshotHeaders(resp *http.Response) map[string]string {
@@ -289,39 +301,31 @@ func snapshotHeaders(resp *http.Response) map[string]string {
 		"X-Powered-By",
 		"Content-Type",
 		"Set-Cookie",
-		"Via",
 		"CF-RAY",
-		"X-Frame-Options",
 	}
 
 	out := make(map[string]string)
 	for _, k := range keep {
-		v := resp.Header.Get(k)
-		if v == "" {
-			continue
+		if v := resp.Header.Get(k); v != "" {
+			if len(v) > 180 {
+				v = v[:180]
+			}
+			out[k] = v
 		}
-		if len(v) > 180 {
-			v = v[:180]
-		}
-		out[k] = v
 	}
 	return out
 }
 
-// ---------------- FILE STORAGE ----------------
+// ---------------- STORAGE ----------------
 
 func EndpointsFilePath(scanID int64, target string) string {
-	dataDir := "data"
-	safeTarget := strings.ReplaceAll(target, "/", "_")
-	safeTarget = strings.ReplaceAll(safeTarget, ":", "_")
-	filename := fmt.Sprintf("endpoints_%d_%s.json", scanID, safeTarget)
-	return filepath.Join(dataDir, filename)
+	safe := strings.NewReplacer("/", "_", ":", "_").Replace(target)
+	return filepath.Join("data", fmt.Sprintf("endpoints_%d_%s.json", scanID, safe))
 }
 
 func saveEndpointsToFile(scanID int64, target string, eps []EndpointResult) (string, error) {
-	dataDir := "data"
-	if err := os.MkdirAll(dataDir, 0o755); err != nil {
-		return "", fmt.Errorf("creating data dir: %w", err)
+	if err := os.MkdirAll("data", 0755); err != nil {
+		return "", err
 	}
 
 	path := EndpointsFilePath(scanID, target)
@@ -340,37 +344,29 @@ func saveEndpointsToFile(scanID int64, target string, eps []EndpointResult) (str
 
 	f, err := os.Create(path)
 	if err != nil {
-		return "", fmt.Errorf("create file: %w", err)
+		return "", err
 	}
 	defer f.Close()
 
 	enc := json.NewEncoder(f)
 	enc.SetIndent("", "  ")
-	if err := enc.Encode(&payload); err != nil {
-		return "", fmt.Errorf("encode json: %w", err)
-	}
-
-	log.Printf("[endpoints] saved %d endpoints to %s", len(eps), path)
-	return path, nil
+	return path, enc.Encode(payload)
 }
 
-// ---------------- HELPERS ----------------
+// ---------------- ENV ----------------
 
-func getEnvOrDefault(key, def string) string {
-	if v := os.Getenv(key); v != "" {
+func getEnvOrDefault(k, d string) string {
+	if v := os.Getenv(k); v != "" {
 		return v
 	}
-	return def
+	return d
 }
 
-func getEnvIntOrDefault(key string, def int) int {
-	v := os.Getenv(key)
-	if v == "" {
-		return def
-	}
+func getEnvIntOrDefault(k string, d int) int {
+	v := os.Getenv(k)
 	i, err := strconv.Atoi(v)
 	if err != nil || i <= 0 {
-		return def
+		return d
 	}
 	return i
 }

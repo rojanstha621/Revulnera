@@ -15,6 +15,12 @@ import Scanners from "./pages/Scanners";
 import Logs from "./pages/Logs";
 import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
+import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
+import Profile from "./pages/Profile";
+import ChangePassword from "./pages/ChangePassword";
+
 
 export default function App() {
   return (
@@ -25,6 +31,11 @@ export default function App() {
             {/* Auth */}
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+            <Route path="/auth/verify-email" element={<VerifyEmail />} />
+            <Route path="/auth/reset-password" element={<ResetPasswordConfirm />} />
+
+
             {/* <Route path="/scan" element={<ScanCreate />} /> */}
             {/* <Route path="/scans/:scanId" element={<ScanLive />} /> */}
 
@@ -37,6 +48,9 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route path="/change-password" element={<ChangePassword />} />
+
             <Route
               path="/dashboard"
               element={
@@ -69,6 +83,8 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/profile" element={<Profile />} />
+
 
             {/* Fallback */}
             <Route path="*" element={<NotFound />} />

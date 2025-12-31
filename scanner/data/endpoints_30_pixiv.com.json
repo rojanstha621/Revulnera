@@ -1,0 +1,287 @@
+{
+  "scan_id": 30,
+  "target": "pixiv.com",
+  "endpoints": [
+    {
+      "url": "http://pixiv.com/api",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5ecd8198d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A16; expires=Thu, 23 Dec 2027 12:49:16 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/settings",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5ecd8498d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A16; expires=Thu, 23 Dec 2027 12:49:16 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/dashboard",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5ecd8398d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A16; expires=Thu, 23 Dec 2027 12:49:16 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/signup",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa60183198d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A16; expires=Thu, 23 Dec 2027 12:49:16 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/user",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa612b0998d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/admin/login",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa61bc4198d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/api/internal",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa625d9a98d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5ecd7c98d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/api/v1",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5f1e1b98d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/profile",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa62ff1f98d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/admin",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5f9f1a98d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/login",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5ecd7e98d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/account",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa5f7ee398d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    },
+    {
+      "url": "http://pixiv.com/auth",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "",
+      "headers": {
+        "CF-RAY": "9b27fa60899698d6-KTM",
+        "Content-Type": "text/html; charset=UTF-8",
+        "Server": "cloudflare",
+        "Set-Cookie": "first_visit_datetime_pc=2025-12-23%2021%3A49%3A17; expires=Thu, 23 Dec 2027 12:49:17 GMT; Max-Age=63072000; path=/; secure"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html; charset=UTF-8"
+      }
+    }
+  ],
+  "saved_at": "2025-12-23T12:49:16.860019481Z"
+}

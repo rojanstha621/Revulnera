@@ -1,16 +1,39 @@
 # accounts/views.py
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from django.contrib.auth import get_user_model
-from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.core.mail import send_mail
-from django.urls import reverse
-from django.conf import settings
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.conf import settings
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
+from .utils import make_verify_token, verify_token
 
 User = get_user_model()
-token_generator = PasswordResetTokenGenerator()
+
+def api_error(message, code=status.HTTP_400_BAD_REQUEST, field=None):
+    # Consistent error structure for frontend
+    payload = {"detail": message}
+    if field:
+        payload["field"] = field
+    return Response(payload, status=code)
+
+def send_verification_email(request, user):
+    token = make_verify_token(user.email)
+    frontend = getattr(settings, "DEFAULT_FRONTEND_URL", "http://localhost:5173")
+    backend = getattr(settings, "DEFAULT_BACKEND_URL", "http://localhost:8000")
+    # example frontend route: /verify-email?token=...
+    verify_url = f"{backend}/verify-email?token={token}"
+
+    send_mail(
+        "Verify your Revulnera account",
+        f"Click to verify your account: {verify_url}",
+        settings.DEFAULT_FROM_EMAIL,
+        [user.email],
+        fail_silently=False,
+    )
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
@@ -18,45 +41,84 @@ class RegisterView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         user = serializer.save()
-        # send verification email
-        token = token_generator.make_token(user)
-        verify_url = f"http://localhost:8000/auth/verify?email={user.email}&token={token}"
-        # dev: console backend prints; prod: configure SMTP
-        send_mail(
-            "Verify your Revulnera account",
-            f"Click to verify your account: {verify_url}",
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email],
-            fail_silently=False,
-        )
+        send_verification_email(self.request, user)
 
-from django.core.signing import BadSignature, SignatureExpired, dumps, loads
- 
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        email = request.GET.get("email")
         token = request.GET.get("token")
+        if not token:
+            return api_error("token is required", field="token")
 
-        if not email or not token:
-            return Response({"detail": "Missing parameters"}, status=400)
+        email, err = verify_token(token, max_age_seconds=60 * 60 * 24)  # 24 hours
+        if err:
+            return api_error(err, code=status.HTTP_400_BAD_REQUEST)
 
-        User = get_user_model()
         user = User.objects.filter(email=email).first()
         if not user:
-            return Response({"detail": "User not found"}, status=404)
+            return api_error("User not found", code=status.HTTP_404_NOT_FOUND)
 
-        # check token using PasswordResetTokenGenerator
-        if not token_generator.check_token(user, token):
-            return Response({"detail": "Invalid or expired token"}, status=400)
+        if user.is_active:
+            return Response({"detail": "Account already verified"}, status=status.HTTP_200_OK)
 
-        # activate user
         user.is_active = True
-        user.save()
-
+        user.save(update_fields=["is_active"])
         return Response({"detail": "Email verified successfully. You can now log in."})
 
+class ResendVerificationView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        email = request.data.get("email")
+        if not email:
+            return api_error("email is required", field="email")
+
+        user = User.objects.filter(email=email).first()
+        if not user:
+            return api_error("User not found", code=status.HTTP_404_NOT_FOUND)
+
+        if user.is_active:
+            return api_error("Account already verified", code=status.HTTP_400_BAD_REQUEST)
+
+        send_verification_email(request, user)
+        return Response({"detail": "Verification email sent"})
+
+class LogoutView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        refresh = request.data.get("refresh")
+        if not refresh:
+            return api_error("refresh token required", field="refresh")
+
+        try:
+            token = RefreshToken(refresh)
+            token.blacklist()
+            return Response({"detail": "Logged out"})
+        except Exception:
+            return api_error("Invalid refresh token", code=status.HTTP_400_BAD_REQUEST)
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception:
+            return api_error("Invalid credentials", code=status.HTTP_401_UNAUTHORIZED)
+
+        user = getattr(serializer, "user", None)
+        if user and not user.is_active:
+            return api_error("Account not verified", code=status.HTTP_401_UNAUTHORIZED)
+
+        # update IP
+        if user:
+            ip = request.META.get("REMOTE_ADDR")
+            user.last_login_ip = ip
+            user.save(update_fields=["last_login_ip"])
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
@@ -73,7 +135,7 @@ class ChangePasswordView(generics.UpdateAPIView):
         return self.request.user
 
     def update(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, context={'request':request})
+        serializer = self.get_serializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({'detail':'Password updated successfully'})
+        return Response({"detail": "Password updated successfully"})
