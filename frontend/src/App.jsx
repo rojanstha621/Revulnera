@@ -34,6 +34,7 @@ export default function App() {
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/verify-email" element={<VerifyEmail />} />
             <Route path="/auth/reset-password" element={<ResetPasswordConfirm />} />
+            <Route path="/auth/reset-password/:token" element={<ResetPasswordConfirm />} />
 
 
             {/* <Route path="/scan" element={<ScanCreate />} /> */}

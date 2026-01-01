@@ -40,6 +40,25 @@ class AccountsAuthTests(APITestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(len(mail.outbox) >= 2)
 
+    def test_reregister_with_unverified_resends_email(self):
+        client = APIClient()
+        email = "eve@example.com"
+        password = "p@ssw0rd1"
+
+        # initial register
+        res = client.post("/auth/register/", {"email": email, "password": password, "full_name": "Eve"}, format='json')
+        self.assertEqual(res.status_code, 201)
+        user = User.objects.get(email=email)
+        self.assertFalse(user.is_active)
+        self.assertTrue(len(mail.outbox) >= 1)
+
+        # attempt to register again with same email -> should not error but resend verification
+        prev_outbox = len(mail.outbox)
+        res = client.post("/auth/register/", {"email": email, "password": password, "full_name": "Eve"}, format='json')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn("Verification email resent", res.data.get('detail',''))
+        self.assertTrue(len(mail.outbox) > prev_outbox)
+
         # login
         res = client.post("/auth/login/", {"email": email, "password": password}, format='json')
         self.assertEqual(res.status_code, 200)

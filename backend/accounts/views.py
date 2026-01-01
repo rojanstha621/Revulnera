@@ -23,9 +23,9 @@ def api_error(message, code=status.HTTP_400_BAD_REQUEST, field=None):
 def send_verification_email(request, user):
     token = make_verify_token(user.email)
     frontend = getattr(settings, "DEFAULT_FRONTEND_URL", "http://localhost:5173")
-    backend = getattr(settings, "DEFAULT_BACKEND_URL", "http://localhost:8000")
-    # example frontend route: /verify-email?token=...
-    verify_url = f"{backend}/verify-email?token={token}"
+    # Send the user to the frontend verification route, which will call the backend
+    # (frontend route: /auth/verify-email?token=...)
+    verify_url = f"{frontend.rstrip('/')}/auth/verify-email?token={token}"
 
     send_mail(
         "Verify your Revulnera account",
@@ -38,6 +38,21 @@ def send_verification_email(request, user):
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        # If a user with this email already exists, handle accordingly
+        email = request.data.get("email")
+        if email:
+            existing = User.objects.filter(email=email).first()
+            if existing:
+                if existing.is_active:
+                    return api_error("Email already registered", code=status.HTTP_400_BAD_REQUEST)
+                # existing but not active -> resend verification and return a successful message
+                send_verification_email(request, existing)
+                return Response({"detail": "Account exists but not verified. Verification email resent."}, status=status.HTTP_200_OK)
+
+        # Default: create new user and send verification
+        return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         user = serializer.save()
@@ -83,6 +98,24 @@ class ResendVerificationView(APIView):
 
         send_verification_email(request, user)
         return Response({"detail": "Verification email sent"})
+
+
+class ValidateResetTokenView(APIView):
+    """Validate password reset token (dev-friendly)"""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        token = request.GET.get("token")
+        if not token:
+            return api_error("token is required", field="token")
+
+        from django_rest_passwordreset.models import ResetPasswordToken
+
+        exists = ResetPasswordToken.objects.filter(key=token).exists()
+        if not exists:
+            return api_error("Invalid or expired token", code=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"ok": True})
 
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]

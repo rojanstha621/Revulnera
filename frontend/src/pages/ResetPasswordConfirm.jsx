@@ -1,17 +1,19 @@
 // src/pages/ResetPasswordConfirm.jsx
 import React, { useState } from "react";
-import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import { useSearchParams, useParams, Link, useNavigate } from "react-router-dom";
 import { postJSON } from "../api/api";
 
 export default function ResetPasswordConfirm() {
   const [params] = useSearchParams();
-  const token = params.get("token");
+  const routeParams = useParams();
+  const token = routeParams?.token || params.get("token");
 
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
   const nav = useNavigate();
 
@@ -19,41 +21,51 @@ export default function ResetPasswordConfirm() {
     e.preventDefault();
     setErr("");
     setMsg("");
+    setSubmitted(true);
 
     if (!token) {
       setErr("Invalid or missing reset token.");
       return;
     }
+
     if (password.length < 8) {
       setErr("Password must be at least 8 characters.");
       return;
     }
+
     if (password !== password2) {
       setErr("Passwords do not match.");
       return;
     }
 
     setLoading(true);
-    const res = await postJSON("/auth/password-reset/confirm/", {
-      token,
-      password,
-    });
-    setLoading(false);
 
-    if (res?.detail) {
-      setMsg(res.detail);
-      setTimeout(() => nav("/auth/login"), 2000);
-    } else {
-      setErr("Password reset failed. Please try again.");
+    try {
+      const res = await postJSON("/auth/password-reset/confirm/", {
+        token,
+        password,
+      });
+
+      // Handle success response from django-rest-passwordreset
+      if (res?.status === "OK") {
+        setMsg("Password reset successful. Redirecting to login...");
+        setTimeout(() => nav("/auth/login"), 2000);
+      } else if (res?.detail) {
+        setErr(res.detail);
+      } else {
+        setErr("Password reset failed. Please try again.");
+      }
+    } catch {
+      setErr("Network or server error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-slate-900 to-slate-800 px-4">
       <div className="card w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4 text-white">
-          Reset password
-        </h2>
+        <h2 className="text-2xl font-bold mb-4 text-white">Reset password</h2>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <input
