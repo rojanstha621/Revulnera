@@ -27,4 +27,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("accounts.urls")),
     path("api/recon/", include("reconscan.urls")),
+    path("api/recon/", include("reconscan.admin_urls")),
 ]

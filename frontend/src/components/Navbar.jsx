@@ -10,12 +10,20 @@ export default function Navbar() {
   const { isAuthenticated, auth, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const navigation = [
+  const userNavigation = [
     { name: "Dashboard", href: "/" },
     { name: "Scanners", href: "/scanners" },
     { name: "Logs", href: "/logs" },
     { name: "Reports", href: "/reports" },
   ];
+
+  const adminNavigation = [
+    { name: "Admin Dashboard", href: "/admin" },
+    { name: "Users", href: "/admin/users" },
+    { name: "System Settings", href: "/admin/settings" },
+  ];
+
+  const isAdmin = auth?.user?.role === "admin";
 
   const handleLogout = () => {
     logout();
@@ -26,14 +34,24 @@ export default function Navbar() {
 
   const activeLinkClass =
     "text-purple-400 border-b-2 border-purple-500 pb-1";
-  const baseLinkClass = "text-gray-300 hover:text-purple-400 transition pb-1";
+  const baseLinkClass =
+    "text-gray-300 hover:text-purple-400 transition pb-1";
+
+  const currentNav = isAdmin ? adminNavigation : userNavigation;
 
   return (
     <nav className="bg-gray-900 border-b border-purple-600/40 sticky top-0 z-50 backdrop-blur">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        
         {/* BRAND */}
         <Link
-          to={isAuthenticated ? "/" : "/auth/login"}
+          to={
+            !isAuthenticated
+              ? "/auth/login"
+              : isAdmin
+              ? "/admin"
+              : "/"
+          }
           className="text-xl font-bold text-purple-400 tracking-wide"
         >
           Revulnera
@@ -42,7 +60,7 @@ export default function Navbar() {
         {/* DESKTOP NAV */}
         {isAuthenticated && (
           <div className="hidden md:flex space-x-8">
-            {navigation.map((item) => (
+            {currentNav.map((item) => (
               <NavLink
                 key={item.name}
                 to={item.href}
@@ -56,7 +74,7 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* USER / AUTH MENU (DESKTOP) */}
+        {/* RIGHT SIDE MENU */}
         <div className="hidden md:flex items-center space-x-4">
           {!isAuthenticated ? (
             <>
@@ -66,6 +84,7 @@ export default function Navbar() {
               >
                 Login
               </Link>
+
               <Link to="/auth/register" className="btn-primary text-sm">
                 Sign Up
               </Link>
@@ -81,6 +100,7 @@ export default function Navbar() {
                   alt="avatar"
                   className="w-8 h-8 rounded-full border-2 border-purple-500/50"
                 />
+
                 <div className="text-left text-xs leading-tight">
                   <p className="text-gray-200">
                     {auth?.user?.full_name || "User"}
@@ -89,6 +109,7 @@ export default function Navbar() {
                     {auth?.user?.email || ""}
                   </p>
                 </div>
+
                 <ChevronDown size={18} className="text-gray-300" />
               </button>
 
@@ -101,6 +122,7 @@ export default function Navbar() {
                   >
                     Profile
                   </Link>
+
                   <Link
                     to="/settings"
                     className="block px-3 py-2 rounded hover:bg-purple-600/30 text-gray-200"
@@ -108,14 +130,7 @@ export default function Navbar() {
                   >
                     Settings
                   </Link>
-                  <a
-                    href="http://localhost:8000/admin"
-                    className="block px-3 py-2 rounded hover:bg-purple-600/30 text-gray-200"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Admin
-                  </a>
+
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-3 py-2 rounded text-red-400 hover:bg-red-600/20"
@@ -128,7 +143,7 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* MOBILE TOGGLE */}
+        {/* MOBILE MENU BUTTON */}
         <button
           onClick={() => setMobileOpen((v) => !v)}
           className="md:hidden text-gray-200"
@@ -140,6 +155,7 @@ export default function Navbar() {
       {/* MOBILE MENU */}
       {mobileOpen && (
         <div className="md:hidden bg-gray-800 border-t border-purple-600/40 px-6 py-4 space-y-2">
+
           {!isAuthenticated && (
             <>
               <Link
@@ -149,6 +165,7 @@ export default function Navbar() {
               >
                 Login
               </Link>
+
               <Link
                 to="/auth/register"
                 className="block py-2 text-gray-300 hover:text-purple-400"
@@ -161,7 +178,7 @@ export default function Navbar() {
 
           {isAuthenticated && (
             <>
-              {navigation.map((item) => (
+              {currentNav.map((item) => (
                 <NavLink
                   key={item.name}
                   to={item.href}
@@ -187,21 +204,7 @@ export default function Navbar() {
               >
                 Profile
               </NavLink>
-              <NavLink
-                to="/settings"
-                className="block py-2 text-gray-300 hover:text-purple-400"
-                onClick={() => setMobileOpen(false)}
-              >
-                Settings
-              </NavLink>
-              <a
-                href="http://localhost:8000/admin"
-                className="block py-2 text-gray-300 hover:text-purple-400"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Admin
-              </a>
+
               <button
                 onClick={handleLogout}
                 className="block w-full text-left py-2 text-red-400 hover:text-red-500"

@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
 from .utils import make_verify_token, verify_token
@@ -132,7 +133,22 @@ class LogoutView(APIView):
         except Exception:
             return api_error("Invalid refresh token", code=status.HTTP_400_BAD_REQUEST)
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Custom JWT serializer that includes user role and other info"""
+    
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add custom claims
+        token['email'] = user.email
+        token['full_name'] = user.full_name
+        token['role'] = user.role
+        token['is_staff'] = user.is_staff
+        return token
+
 class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
