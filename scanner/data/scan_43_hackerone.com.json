@@ -1,0 +1,92 @@
+{
+  "scan_id": 43,
+  "target": "hackerone.com",
+  "subdomains": [
+    {
+      "name": "gslink.hackerone.com",
+      "ip": "13.225.5.128",
+      "alive": true
+    },
+    {
+      "name": "websockets.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "b.ns.hackerone.com",
+      "ip": "162.159.1.31",
+      "alive": true
+    },
+    {
+      "name": "hackerone.com",
+      "ip": "104.18.36.214",
+      "alive": true
+    },
+    {
+      "name": "mta-sts.forwarding.hackerone.com",
+      "ip": "185.199.110.153",
+      "alive": true
+    },
+    {
+      "name": "mta-sts.managed.hackerone.com",
+      "ip": "185.199.111.153",
+      "alive": true
+    },
+    {
+      "name": "design.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "links.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "go.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "www.hackerone.com",
+      "ip": "104.18.36.214",
+      "alive": true
+    },
+    {
+      "name": "docs.hackerone.com",
+      "ip": "172.64.151.42",
+      "alive": true
+    },
+    {
+      "name": "support.hackerone.com",
+      "ip": "162.159.140.147",
+      "alive": true
+    },
+    {
+      "name": "a.ns.hackerone.com",
+      "ip": "162.159.0.31",
+      "alive": true
+    },
+    {
+      "name": "info.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "api.hackerone.com",
+      "ip": "104.18.36.214",
+      "alive": true
+    },
+    {
+      "name": "events.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "mta-sts.hackerone.com",
+      "ip": "185.199.109.153",
+      "alive": true
+    }
+  ],
+  "saved_at": "2026-01-27T05:09:17.556523573Z"
+}

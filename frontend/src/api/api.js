@@ -129,3 +129,14 @@ export function putJSON(path, body) {
 export function logoutClient() {
   clearTokens();
 }
+
+/* =========================
+   Scan API functions
+========================= */
+export async function getUserScans() {
+  return getJSON("/api/recon/user/scans/");
+}
+
+export async function getUserScanDetail(scanId) {
+  return getJSON(`/api/recon/user/scans/${scanId}/`);
+}

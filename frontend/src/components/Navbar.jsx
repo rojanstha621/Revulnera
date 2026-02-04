@@ -1,6 +1,6 @@
 // src/components/Navbar.jsx
 import React, { useState, useContext } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Shield, Zap, Home, Settings } from "lucide-react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -11,19 +11,12 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const userNavigation = [
-    { name: "Dashboard", href: "/" },
-    { name: "Scanners", href: "/scanners" },
-    { name: "Logs", href: "/logs" },
-    { name: "Reports", href: "/reports" },
+    { name: "Dashboard", href: "/", icon: Home },
+    { name: "Scanners", href: "/scanners", icon: Zap },
+    { name: "Scans", href: "/scans", icon: Shield },
+    { name: "Logs", href: "/logs", icon: Shield },
+    { name: "Reports", href: "/reports", icon: Shield },
   ];
-
-  const adminNavigation = [
-    { name: "Admin Dashboard", href: "/admin" },
-    { name: "Users", href: "/admin/users" },
-    { name: "System Settings", href: "/admin/settings" },
-  ];
-
-  const isAdmin = auth?.user?.role === "admin";
 
   const handleLogout = () => {
     logout();
@@ -32,187 +25,165 @@ export default function Navbar() {
     navigate("/auth/login");
   };
 
-  const activeLinkClass =
-    "text-purple-400 border-b-2 border-purple-500 pb-1";
-  const baseLinkClass =
-    "text-gray-300 hover:text-purple-400 transition pb-1";
-
-  const currentNav = isAdmin ? adminNavigation : userNavigation;
-
   return (
-    <nav className="bg-gray-900 border-b border-purple-600/40 sticky top-0 z-50 backdrop-blur">
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-gray-950/80 border-b border-gradient-to-r from-purple-600/40 via-pink-600/20 to-purple-600/40">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         
         {/* BRAND */}
         <Link
-          to={
-            !isAuthenticated
-              ? "/auth/login"
-              : isAdmin
-              ? "/admin"
-              : "/"
-          }
-          className="text-xl font-bold text-purple-400 tracking-wide"
+          to="/"
+          className="flex items-center gap-2 group cursor-pointer"
         >
-          Revulnera
+          <img 
+            src="/logoImage.png" 
+            alt="Revulnera Logo" 
+            className="w-10 h-10 rounded-lg shadow-lg shadow-purple-500/50 group-hover:shadow-purple-500/70 transition-all object-contain"
+          />
+          <span className="text-2xl font-bold text-gradient hidden sm:inline">
+            Revulnera
+          </span>
         </Link>
 
         {/* DESKTOP NAV */}
         {isAuthenticated && (
-          <div className="hidden md:flex space-x-8">
-            {currentNav.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                className={({ isActive }) =>
-                  isActive ? activeLinkClass : baseLinkClass
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
+          <div className="hidden lg:flex items-center gap-2">
+            {userNavigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.name}
+                  to={item.href}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600/30 text-purple-300 border border-purple-500/50 font-semibold transition-all"
+                      : "flex items-center gap-2 px-4 py-2 rounded-lg text-gray-300 hover:text-purple-400 hover:bg-purple-600/10 transition-all"
+                  }
+                >
+                  <Icon className="w-4 h-4" />
+                  {item.name}
+                </NavLink>
+              );
+            })}
           </div>
         )}
 
         {/* RIGHT SIDE MENU */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="flex items-center gap-4">
           {!isAuthenticated ? (
             <>
               <Link
                 to="/auth/login"
-                className="text-gray-300 hover:text-purple-400"
+                className="text-gray-300 hover:text-purple-400 font-semibold transition-colors"
               >
                 Login
               </Link>
-
               <Link to="/auth/register" className="btn-primary text-sm">
                 Sign Up
               </Link>
             </>
           ) : (
-            <div className="relative">
-              <button
-                onClick={() => setAvatarOpen((v) => !v)}
-                className="flex items-center space-x-2 focus:outline-none"
-              >
-                <img
-                  src="https://api.dicebear.com/7.x/bottts/svg?seed=boss"
-                  alt="avatar"
-                  className="w-8 h-8 rounded-full border-2 border-purple-500/50"
-                />
+            <div className="hidden md:flex items-center gap-4">
+              <div className="relative">
+                <button
+                  onClick={() => setAvatarOpen((v) => !v)}
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-all border border-white/0 hover:border-purple-500/30"
+                >
+                  <div className="text-left text-sm">
+                    <p className="text-gray-100 font-semibold truncate max-w-[150px]">
+                      {auth?.user?.full_name || "User"}
+                    </p>
+                  </div>
+                  <ChevronDown size={16} className={`text-gray-400 transition-transform ${avatarOpen ? "rotate-180" : ""}`} />
+                </button>
 
-                <div className="text-left text-xs leading-tight">
-                  <p className="text-gray-200">
-                    {auth?.user?.full_name || "User"}
-                  </p>
-                  <p className="text-gray-400 truncate max-w-[140px]">
-                    {auth?.user?.email || ""}
-                  </p>
-                </div>
+                {avatarOpen && (
+                  <div className="absolute right-0 mt-2 w-60 bg-gray-900 border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/10 p-2 backdrop-blur-md">
+                    <div className="px-4 py-3 border-b border-white/10">
+                      <p className="text-white font-semibold">{auth?.user?.full_name}</p>
+                    </div>
 
-                <ChevronDown size={18} className="text-gray-300" />
-              </button>
+                    <Link
+                      to="/profile"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-600/20 text-gray-300 hover:text-purple-300 transition-all"
+                      onClick={() => setAvatarOpen(false)}
+                    >
+                      <Settings className="w-4 h-4" />
+                      Profile Settings
+                    </Link>
 
-              {avatarOpen && (
-                <div className="absolute right-0 mt-3 w-56 bg-gray-800 shadow-lg border border-purple-500/30 rounded-lg p-2">
-                  <Link
-                    to="/profile"
-                    className="block px-3 py-2 rounded hover:bg-purple-600/30 text-gray-200"
-                    onClick={() => setAvatarOpen(false)}
-                  >
-                    Profile
-                  </Link>
+                    <Link
+                      to="/change-password"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-600/20 text-gray-300 hover:text-purple-300 transition-all"
+                      onClick={() => setAvatarOpen(false)}
+                    >
+                      <Shield className="w-4 h-4" />
+                      Change Password
+                    </Link>
 
-                  <Link
-                    to="/settings"
-                    className="block px-3 py-2 rounded hover:bg-purple-600/30 text-gray-200"
-                    onClick={() => setAvatarOpen(false)}
-                  >
-                    Settings
-                  </Link>
+                    <hr className="my-2 border-white/10" />
 
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-3 py-2 rounded text-red-400 hover:bg-red-600/20"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-3 rounded-lg text-red-400 hover:bg-red-600/20 hover:text-red-300 transition-all font-semibold"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           )}
-        </div>
 
-        {/* MOBILE MENU BUTTON */}
-        <button
-          onClick={() => setMobileOpen((v) => !v)}
-          className="md:hidden text-gray-200"
-        >
-          {mobileOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+          {/* MOBILE MENU BUTTON */}
+          <button
+            onClick={() => setMobileOpen((v) => !v)}
+            className="lg:hidden text-gray-200 hover:text-purple-400 transition-colors"
+          >
+            {mobileOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </div>
 
       {/* MOBILE MENU */}
-      {mobileOpen && (
-        <div className="md:hidden bg-gray-800 border-t border-purple-600/40 px-6 py-4 space-y-2">
-
-          {!isAuthenticated && (
-            <>
-              <Link
-                to="/auth/login"
-                className="block py-2 text-gray-300 hover:text-purple-400"
-                onClick={() => setMobileOpen(false)}
-              >
-                Login
-              </Link>
-
-              <Link
-                to="/auth/register"
-                className="block py-2 text-gray-300 hover:text-purple-400"
-                onClick={() => setMobileOpen(false)}
-              >
-                Sign Up
-              </Link>
-            </>
-          )}
-
-          {isAuthenticated && (
-            <>
-              {currentNav.map((item) => (
-                <NavLink
-                  key={item.name}
-                  to={item.href}
-                  className={({ isActive }) =>
-                    `block py-2 ${
-                      isActive
-                        ? "text-purple-400"
-                        : "text-gray-300 hover:text-purple-400"
-                    }`
-                  }
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {item.name}
-                </NavLink>
-              ))}
-
-              <hr className="my-3 border-purple-600/20" />
-
+      {mobileOpen && isAuthenticated && (
+        <div className="lg:hidden bg-gradient-to-b from-gray-900 to-gray-950 border-t border-purple-600/40 px-4 py-4 space-y-2 backdrop-blur-md">
+          {userNavigation.map((item) => {
+            const Icon = item.icon;
+            return (
               <NavLink
-                to="/profile"
-                className="block py-2 text-gray-300 hover:text-purple-400"
+                key={item.name}
+                to={item.href}
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-600/30 text-purple-300 font-semibold transition-all"
+                    : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-purple-600/20 transition-all"
+                }
                 onClick={() => setMobileOpen(false)}
               >
-                Profile
+                <Icon className="w-5 h-5" />
+                {item.name}
               </NavLink>
+            );
+          })}
 
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left py-2 text-red-400 hover:text-red-500"
-              >
-                Logout
-              </button>
-            </>
-          )}
+          <hr className="my-4 border-purple-600/20" />
+
+          <Link
+            to="/profile"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-purple-600/20 transition-all"
+            onClick={() => setMobileOpen(false)}
+          >
+            <Settings className="w-5 h-5" />
+            Profile
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            className="w-full text-left flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-600/20 transition-all font-semibold"
+          >
+            <X className="w-5 h-5" />
+            Logout
+          </button>
         </div>
       )}
     </nav>

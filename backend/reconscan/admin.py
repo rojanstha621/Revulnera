@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db.models import Count
-from .models import Scan, Subdomain, Endpoint
+from .models import Scan, Subdomain, Endpoint, PortScanFinding, TLSScanResult, DirectoryFinding
 
 
 class SubdomainInline(admin.TabularInline):
@@ -71,3 +71,33 @@ class EndpointAdmin(admin.ModelAdmin):
     raw_id_fields = ("scan",)
     readonly_fields = ("headers", "fingerprints", "evidence")
     date_hierarchy = "scan__created_at"
+
+
+@admin.register(PortScanFinding)
+class PortScanFindingAdmin(admin.ModelAdmin):
+    list_display = ("id", "scan", "host", "port", "protocol", "state", "service", "product", "version", "created_at")
+    list_filter = ("state", "protocol", "service", "created_at")
+    search_fields = ("host", "service", "product", "banner")
+    raw_id_fields = ("scan",)
+    readonly_fields = ("created_at",)
+    date_hierarchy = "created_at"
+
+
+@admin.register(TLSScanResult)
+class TLSScanResultAdmin(admin.ModelAdmin):
+    list_display = ("id", "scan", "host", "has_https", "cert_valid", "cert_expires_at", "created_at")
+    list_filter = ("has_https", "cert_valid", "created_at")
+    search_fields = ("host", "cert_issuer")
+    raw_id_fields = ("scan",)
+    readonly_fields = ("created_at", "supported_versions", "weak_versions", "issues")
+    date_hierarchy = "created_at"
+
+
+@admin.register(DirectoryFinding)
+class DirectoryFindingAdmin(admin.ModelAdmin):
+    list_display = ("id", "scan", "host", "path", "status_code", "issue_type", "created_at")
+    list_filter = ("issue_type", "status_code", "created_at")
+    search_fields = ("host", "path", "evidence")
+    raw_id_fields = ("scan",)
+    readonly_fields = ("created_at",)
+    date_hierarchy = "created_at"

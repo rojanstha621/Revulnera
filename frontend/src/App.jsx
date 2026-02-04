@@ -2,9 +2,13 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
+import ErrorBoundary from "./components/ErrorBoundary";
+import usePageLoader from "./hooks/usePageLoader";
 
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import LoadingScreen from "./components/LoadingScreen";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,6 +19,8 @@ import Dashboard from "./pages/Dashboard";
 import Scanners from "./pages/Scanners";
 import Logs from "./pages/Logs";
 import Reports from "./pages/Reports";
+import AllScans from "./pages/AllScans";
+import ScanDetail from "./pages/ScanDetail";
 import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -30,121 +36,152 @@ import AdminScans from "./pages/AdminScans";
 import AdminScanDetail from "./pages/AdminScanDetail";
 import AdminAnalytics from "./pages/AdminAnalytics";
 
+function AppContent() {
+  const loading = usePageLoader();
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <Layout>
+      <Routes>
+        {/* Auth */}
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Register />} />
+        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+        <Route path="/auth/verify-email" element={<VerifyEmail />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordConfirm />} />
+        <Route path="/auth/reset-password/:token" element={<ResetPasswordConfirm />} />
+
+
+        {/* <Route path="/scan" element={<ScanCreate />} /> */}
+        {/* <Route path="/scans/:scanId" element={<ScanLive />} /> */}
+
+        {/* Home Page - Landing + Auto Redirect */}
+        <Route path="/" element={<HomePage />} />
+
+        {/* Protected pages */}
+
+        <Route path="/change-password" element={<ChangePassword />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/scanners"
+          element={
+            <ProtectedRoute>
+              <Scanners />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/scans"
+          element={
+            <ProtectedRoute>
+              <AllScans />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/scan/:scanId"
+          element={
+            <ProtectedRoute>
+              <ScanDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/logs"
+          element={
+            <ProtectedRoute>
+              <Logs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/profile" element={<Profile />} />
+
+        {/* Admin pages */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users/:userId"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminUserDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/scans"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminScans />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/scans/:scanId"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminScanDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/analytics"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminAnalytics />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fallback */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Layout>
+  );
+}
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            {/* Auth */}
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            <Route path="/auth/verify-email" element={<VerifyEmail />} />
-            <Route path="/auth/reset-password" element={<ResetPasswordConfirm />} />
-            <Route path="/auth/reset-password/:token" element={<ResetPasswordConfirm />} />
-
-
-            {/* <Route path="/scan" element={<ScanCreate />} /> */}
-            {/* <Route path="/scans/:scanId" element={<ScanLive />} /> */}
-
-            {/* Home Page - Landing + Auto Redirect */}
-            <Route path="/" element={<HomePage />} />
-
-            {/* Protected pages */}
-
-            <Route path="/change-password" element={<ChangePassword />} />
-
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/scanners"
-              element={
-                <ProtectedRoute>
-                  <Scanners />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/logs"
-              element={
-                <ProtectedRoute>
-                  <Logs />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/reports"
-              element={
-                <ProtectedRoute>
-                  <Reports />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/profile" element={<Profile />} />
-
-            {/* Admin pages */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminUsers />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/users/:userId"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminUserDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/scans"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminScans />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/scans/:scanId"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminScanDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/analytics"
-              element={
-                <ProtectedRoute adminOnly>
-                  <AdminAnalytics />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Fallback */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <ToastProvider>
+          <BrowserRouter>
+            <AppContent />
+          </BrowserRouter>
+        </ToastProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

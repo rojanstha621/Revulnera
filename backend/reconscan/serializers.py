@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Scan, Subdomain, Endpoint
+from .models import Scan, Subdomain, Endpoint, PortScanFinding, TLSScanResult, DirectoryFinding
 
 class ScanSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +15,19 @@ class EndpointSerializer(serializers.ModelSerializer):
     class Meta:
         model = Endpoint
         fields = ["url", "status_code", "title", "headers", "fingerprints", "evidence"]
+
+class PortScanFindingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PortScanFinding
+        fields = ["host", "port", "protocol", "state", "service", "product", "version", "banner"]
+
+class TLSScanResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TLSScanResult
+        fields = ["host", "has_https", "supported_versions", "weak_versions", "cert_valid", 
+                  "cert_expires_at", "cert_issuer", "issues"]
+
+class DirectoryFindingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DirectoryFinding
+        fields = ["host", "base_url", "path", "status_code", "issue_type", "evidence"]

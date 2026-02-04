@@ -9,6 +9,7 @@ import (
 	"time"
 
 	endpointspkg "recon/endpoints"
+	networkpkg "recon/network"
 	reconpkg "recon/recon"
 )
 
@@ -46,6 +47,9 @@ func runFullScan(req ScanRequest) {
 	statusURL := fmt.Sprintf("%s/api/recon/scans/%d/status/", req.BackendBase, req.ScanID)
 	subIngest := fmt.Sprintf("%s/api/recon/scans/%d/ingest/subdomains/", req.BackendBase, req.ScanID)
 	epIngest := fmt.Sprintf("%s/api/recon/scans/%d/ingest/endpoints/", req.BackendBase, req.ScanID)
+	portIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/ports/ingest/", req.BackendBase, req.ScanID)
+	tlsIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/tls/ingest/", req.BackendBase, req.ScanID)
+	dirIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/dirs/ingest/", req.BackendBase, req.ScanID)
 
 	postStatus(req.AuthHeader, statusURL, "RUNNING", "")
 
@@ -86,7 +90,100 @@ func runFullScan(req ScanRequest) {
 		})
 	}
 
+	// 3) Network Analysis - Run port scanning, TLS checks, and directory checks for discovered hosts
+	log.Printf("[network] starting network analysis for scan %d", req.ScanID)
+	
+	// Collect unique hosts from subdomains (alive hosts)
+	hosts := make([]string, 0)
+	for _, sub := range subs {
+		if sub.Alive {
+			hosts = append(hosts, sub.Name)
+		}
+	}
+
+	if len(hosts) == 0 {
+		log.Printf("[network] no alive hosts found, skipping network analysis")
+	} else {
+		log.Printf("[network] analyzing %d hosts", len(hosts))
+		
+		// Run network analysis concurrently with worker pool
+		runNetworkAnalysis(hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest)
+	}
+
 	postStatus(req.AuthHeader, statusURL, "COMPLETED", "")
+}
+
+func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {
+	workers := 10
+	jobs := make(chan string, len(hosts))
+	
+	// Worker pool for concurrent host scanning
+	for i := 0; i < workers; i++ {
+		go func() {
+			for host := range jobs {
+				analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest)
+			}
+		}()
+	}
+
+	// Send jobs
+	for _, host := range hosts {
+		jobs <- host
+	}
+	close(jobs)
+
+	// Wait a bit for workers to finish (simple approach)
+	time.Sleep(2 * time.Second)
+}
+
+func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest string) {
+	log.Printf("[network] analyzing host: %s", host)
+
+	// 1) Port Scanning
+	portFindings, err := networkpkg.ScanHostPorts(host, 200)
+	if err != nil {
+		log.Printf("[network] port scan failed for %s: %v", host, err)
+	} else if len(portFindings) > 0 {
+		log.Printf("[network] found %d open ports on %s", len(portFindings), host)
+		
+		// Send port findings in chunks of 50
+		chunkSize := 50
+		for i := 0; i < len(portFindings); i += chunkSize {
+			j := i + chunkSize
+			if j > len(portFindings) {
+				j = len(portFindings)
+			}
+			postJSON(authHeader, portIngest, map[string]any{
+				"items": portFindings[i:j],
+			})
+		}
+	}
+
+	// 2) TLS Check
+	tlsResult := networkpkg.CheckTLS(host)
+	if tlsResult.HasHTTPS || len(tlsResult.Issues) > 0 {
+		log.Printf("[network] TLS check for %s: HTTPS=%v, issues=%d", 
+			host, tlsResult.HasHTTPS, len(tlsResult.Issues))
+		postJSON(authHeader, tlsIngest, tlsResult)
+	}
+
+	// 3) Directory Checks
+	dirFindings := networkpkg.CheckDirectories(host, tlsResult.HasHTTPS)
+	if len(dirFindings) > 0 {
+		log.Printf("[network] found %d directory issues on %s", len(dirFindings), host)
+		
+		// Send directory findings in chunks of 50
+		chunkSize := 50
+		for i := 0; i < len(dirFindings); i += chunkSize {
+			j := i + chunkSize
+			if j > len(dirFindings) {
+				j = len(dirFindings)
+			}
+			postJSON(authHeader, dirIngest, map[string]any{
+				"items": dirFindings[i:j],
+			})
+		}
+	}
 }
 
 func postStatus(authHeader, url, status, errMsg string) {

@@ -36,7 +36,11 @@ export default function AdminNavbar() {
           to="/admin"
           className="text-xl font-bold text-red-400 tracking-wide flex items-center space-x-2"
         >
-          <LayoutDashboard className="w-6 h-6" />
+          <img 
+            src="/logoImage.png" 
+            alt="Revulnera Logo" 
+            className="w-6 h-6 rounded object-contain"
+          />
           <span>Revulnera Admin</span>
         </Link>
 
@@ -81,11 +85,6 @@ export default function AdminNavbar() {
                 onClick={() => setAvatarOpen((v) => !v)}
                 className="flex items-center space-x-2 focus:outline-none"
               >
-                <img
-                  src="https://api.dicebear.com/7.x/bottts/svg?seed=admin"
-                  alt="avatar"
-                  className="w-8 h-8 rounded-full border-2 border-red-500/50"
-                />
                 <div className="text-left text-xs leading-tight">
                   <p className="text-gray-200">
                     {auth?.user?.full_name || "Admin"}
@@ -97,9 +96,6 @@ export default function AdminNavbar() {
 
               {avatarOpen && (
                 <div className="absolute right-0 mt-3 w-56 bg-gray-800 shadow-lg border border-red-500/30 rounded-lg p-2">
-                  <div className="px-3 py-2 text-xs text-gray-400 border-b border-gray-700/30 mb-2">
-                    {auth?.user?.email}
-                  </div>
                   <Link
                     to="/profile"
                     className="block px-3 py-2 rounded hover:bg-red-600/30 text-gray-200"

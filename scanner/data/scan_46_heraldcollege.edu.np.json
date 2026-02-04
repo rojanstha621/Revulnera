@@ -1,0 +1,162 @@
+{
+  "scan_id": 46,
+  "target": "heraldcollege.edu.np",
+  "subdomains": [
+    {
+      "name": "cpcalendars.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "webmail.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "bizcorecommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "alive": true
+    },
+    {
+      "name": "heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "alive": true
+    },
+    {
+      "name": "portal.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "alive": true
+    },
+    {
+      "name": "creators.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "alive": true
+    },
+    {
+      "name": "www.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "alive": true
+    },
+    {
+      "name": "mail.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "dns01.heraldcollege.edu.np",
+      "ip": "110.34.30.120",
+      "alive": false
+    },
+    {
+      "name": "project2.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "iotinnovatorscommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "alive": true
+    },
+    {
+      "name": "webdisk.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "www.videos.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "admission.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "alive": true
+    },
+    {
+      "name": "devplat.heraldcollege.edu.np",
+      "ip": "110.34.30.60",
+      "alive": true
+    },
+    {
+      "name": "project.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "v2.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "cpanel.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "demo.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "alive": true
+    },
+    {
+      "name": "ethicalcommunity.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "alive": true
+    },
+    {
+      "name": "gamedevheroes.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "alive": true
+    },
+    {
+      "name": "uivisualscommunity.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "alive": true
+    },
+    {
+      "name": "ailearnerscommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "alive": true
+    },
+    {
+      "name": "events.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "alive": true
+    },
+    {
+      "name": "devopspioneercommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "alive": true
+    },
+    {
+      "name": "showcase.heraldcollege.edu.np",
+      "ip": "110.34.30.60",
+      "alive": true
+    },
+    {
+      "name": "v3.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "alive": true
+    },
+    {
+      "name": "cpcontacts.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "videos.heraldcollege.edu.np",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "attendance.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "alive": true
+    },
+    {
+      "name": "creatorscommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "alive": true
+    }
+  ],
+  "saved_at": "2026-01-29T09:16:31.314681698Z"
+}

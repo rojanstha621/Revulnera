@@ -34,3 +34,55 @@ class Endpoint(models.Model):
 
     class Meta:
         unique_together = ("scan", "url")
+
+class PortScanFinding(models.Model):
+    scan = models.ForeignKey(Scan, on_delete=models.CASCADE, related_name="port_findings")
+    host = models.CharField(max_length=255, db_index=True)
+    port = models.IntegerField()
+    protocol = models.CharField(max_length=10, default="tcp")
+    state = models.CharField(max_length=20, default="open")
+    service = models.CharField(max_length=100, blank=True)
+    product = models.CharField(max_length=255, blank=True)
+    version = models.CharField(max_length=100, blank=True)
+    banner = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("scan", "host", "port", "protocol")
+        indexes = [
+            models.Index(fields=["scan", "host"]),
+            models.Index(fields=["created_at"]),
+        ]
+
+class TLSScanResult(models.Model):
+    scan = models.ForeignKey(Scan, on_delete=models.CASCADE, related_name="tls_results")
+    host = models.CharField(max_length=255, db_index=True)
+    has_https = models.BooleanField(default=False)
+    supported_versions = models.JSONField(default=list)
+    weak_versions = models.JSONField(default=list)
+    cert_valid = models.BooleanField(null=True, blank=True)
+    cert_expires_at = models.DateTimeField(null=True, blank=True)
+    cert_issuer = models.TextField(blank=True)
+    issues = models.JSONField(default=list)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("scan", "host")
+
+class DirectoryFinding(models.Model):
+    scan = models.ForeignKey(Scan, on_delete=models.CASCADE, related_name="directory_findings")
+    host = models.CharField(max_length=255, db_index=True)
+    base_url = models.CharField(max_length=500)
+    path = models.CharField(max_length=500)
+    status_code = models.IntegerField()
+    issue_type = models.CharField(max_length=100)
+    evidence = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("scan", "host", "path")
+        indexes = [
+            models.Index(fields=["scan", "host"]),
+            models.Index(fields=["issue_type"]),
+            models.Index(fields=["created_at"]),
+        ]
