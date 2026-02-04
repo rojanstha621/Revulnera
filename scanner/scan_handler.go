@@ -4,13 +4,16 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	endpointspkg "recon/endpoints"
 	networkpkg "recon/network"
 	reconpkg "recon/recon"
+	vulnpkg "recon/vuln"
 )
 
 type ScanRequest struct {
@@ -50,6 +53,7 @@ func runFullScan(req ScanRequest) {
 	portIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/ports/ingest/", req.BackendBase, req.ScanID)
 	tlsIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/tls/ingest/", req.BackendBase, req.ScanID)
 	dirIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/dirs/ingest/", req.BackendBase, req.ScanID)
+	vulnIngest := fmt.Sprintf("%s/api/vuln/scans/%d/vulnerabilities/ingest/", req.BackendBase, req.ScanID)
 
 	postStatus(req.AuthHeader, statusURL, "RUNNING", "")
 
@@ -107,21 +111,24 @@ func runFullScan(req ScanRequest) {
 		log.Printf("[network] analyzing %d hosts", len(hosts))
 		
 		// Run network analysis concurrently with worker pool
-		runNetworkAnalysis(hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest)
+		runNetworkAnalysis(hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest, vulnIngest)
 	}
 
 	postStatus(req.AuthHeader, statusURL, "COMPLETED", "")
 }
 
-func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {
+func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest string) {
 	workers := 10
 	jobs := make(chan string, len(hosts))
+	var wg sync.WaitGroup
 	
 	// Worker pool for concurrent host scanning
 	for i := 0; i < workers; i++ {
+		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			for host := range jobs {
-				analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest)
+				analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest)
 			}
 		}()
 	}
@@ -131,12 +138,12 @@ func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIn
 		jobs <- host
 	}
 	close(jobs)
-
-	// Wait a bit for workers to finish (simple approach)
-	time.Sleep(2 * time.Second)
+	
+	// Wait for workers to finish
+	wg.Wait()
 }
 
-func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest string) {
+func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest string) {
 	log.Printf("[network] analyzing host: %s", host)
 
 	// 1) Port Scanning
@@ -184,6 +191,22 @@ func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest string) {
 			})
 		}
 	}
+
+	// 4) Vulnerability detection (A01/A02)
+	vulnFindings := vulnpkg.DetectHostFindings(host, tlsResult)
+	if len(vulnFindings) > 0 {
+		log.Printf("[vuln] found %d findings on %s", len(vulnFindings), host)
+		chunkSize := 50
+		for i := 0; i < len(vulnFindings); i += chunkSize {
+			j := i + chunkSize
+			if j > len(vulnFindings) {
+				j = len(vulnFindings)
+			}
+			postJSON(authHeader, vulnIngest, map[string]any{
+				"findings": vulnFindings[i:j],
+			})
+		}
+	}
 }
 
 func postStatus(authHeader, url, status, errMsg string) {
@@ -209,4 +232,12 @@ func postJSON(authHeader, url string, payload any) {
 		return
 	}
 	defer resp.Body.Close()
+	
+	// Log response status
+	if resp.StatusCode >= 400 {
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		log.Printf("[scan] POST %s returned %d: %s", url, resp.StatusCode, string(bodyBytes))
+	} else {
+		log.Printf("[scan] POST %s succeeded (%d)", url, resp.StatusCode)
+	}
 }

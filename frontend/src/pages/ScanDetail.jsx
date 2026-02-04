@@ -1,8 +1,9 @@
 // src/pages/ScanDetail.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Shield, Globe, Copy, Check, Loader, Lock, FolderOpen, Network } from "lucide-react";
+import { ArrowLeft, Shield, Globe, Copy, Check, Loader, Lock, FolderOpen, Network, AlertTriangle, LayoutGrid, Table } from "lucide-react";
 import { getUserScanDetail } from "../api/api";
+import VulnerabilityCard from "../components/VulnerabilityCard";
 
 export default function ScanDetail() {
   const { scanId } = useParams();
@@ -11,7 +12,8 @@ export default function ScanDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [copiedId, setCopiedId] = useState(null);
-  const [activeTab, setActiveTab] = useState("subdomains");
+  const [activeTab, setActiveTab] = useState("vulnerabilities");
+  const [vulnViewMode, setVulnViewMode] = useState("cards"); // "cards" or "table"
 
   useEffect(() => {
     const loadScan = async () => {
@@ -19,6 +21,9 @@ export default function ScanDetail() {
         setLoading(true);
         const data = await getUserScanDetail(scanId);
         setScan(data);
+        console.log("Scan data loaded:", data);
+        console.log("Vulnerability findings:", data.vulnerability_findings);
+        console.log("Vulnerability count:", data.vulnerability_findings_count);
       } catch (err) {
         console.error("Error loading scan:", err);
         setError("Failed to load scan details");
@@ -68,6 +73,8 @@ export default function ScanDetail() {
   const openPortsCount = scan.port_findings_count || 0;
   const tlsIssuesCount = scan.tls_results?.filter(t => t.weak_versions && t.weak_versions.length > 0).length || 0;
   const dirIssuesCount = scan.directory_findings_count || 0;
+  const vulnCount = scan.vulnerability_findings_count || 0;
+  const criticalVulns = scan.vulnerability_findings?.filter(v => v.severity === "High").length || 0;
 
   return (
     <div className="space-y-8">
@@ -117,10 +124,19 @@ export default function ScanDetail() {
         </div>
       </div>
 
-      {/* Network Analysis Summary */}
-      {(openPortsCount > 0 || tlsIssuesCount > 0 || dirIssuesCount > 0) && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-slide-up">
-          <div className="card card-hover bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-cyan-500/20">
+      {(tlsIssuesCount > 0 || dirIssuesCount > 0 || vulnCount > 0) && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 animate-slide-up">
+          <div className="card bg-gradient-to-br from-red-500/10 to-orange-500/10 border-red-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 text-sm">Vulnerabilities</p>
+                <p className="text-2xl font-bold text-red-300 mt-1">{vulnCount}</p>
+                <p className="text-xs text-red-400 mt-1">Critical: {criticalVulns}</p>
+              </div>
+              <AlertTriangle className="w-8 h-8 text-red-400 opacity-50" />
+            </div>
+          </div>
+          <div className="card bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-cyan-500/20">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">TLS Issues</p>
@@ -129,20 +145,20 @@ export default function ScanDetail() {
               <Lock className="w-8 h-8 text-orange-400 opacity-50" />
             </div>
           </div>
-          <div className="card card-hover bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/20">
+          <div className="card bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/20">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Directory Issues</p>
-                <p className="text-2xl font-bold text-red-300 mt-1">{dirIssuesCount}</p>
+                <p className="text-2xl font-bold text-pink-300 mt-1">{dirIssuesCount}</p>
               </div>
-              <FolderOpen className="w-8 h-8 text-red-400 opacity-50" />
+              <FolderOpen className="w-8 h-8 text-pink-400 opacity-50" />
             </div>
           </div>
-          <div className="card card-hover bg-gradient-to-br from-green-500/10 to-teal-500/10 border-green-500/20">
+          <div className="card bg-gradient-to-br from-green-500/10 to-teal-500/10 border-green-500/20">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Total Findings</p>
-                <p className="text-2xl font-bold text-green-300 mt-1">{openPortsCount + tlsIssuesCount + dirIssuesCount}</p>
+                <p className="text-2xl font-bold text-green-300 mt-1">{openPortsCount + tlsIssuesCount + dirIssuesCount + vulnCount}</p>
               </div>
               <Network className="w-8 h-8 text-green-400 opacity-50" />
             </div>
@@ -151,7 +167,7 @@ export default function ScanDetail() {
       )}
 
       {/* Scan Info Card */}
-      <div className="card card-hover animate-slide-up">
+      <div className="card animate-slide-up">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <p className="text-gray-400 text-sm mb-2">Created</p>
@@ -166,6 +182,17 @@ export default function ScanDetail() {
 
       {/* Tabs */}
       <div className="flex gap-4 border-b border-white/10 animate-slide-up overflow-x-auto">
+        <button
+          onClick={() => setActiveTab("vulnerabilities")}
+          className={`px-6 py-3 font-semibold transition-colors border-b-2 whitespace-nowrap ${
+            activeTab === "vulnerabilities"
+              ? "text-red-400 border-red-500"
+              : "text-gray-400 hover:text-gray-300 border-transparent"
+          }`}
+        >
+          <AlertTriangle className="w-5 h-5 inline-block mr-2" />
+          Vulnerabilities ({vulnCount})
+        </button>
         <button
           onClick={() => setActiveTab("subdomains")}
           className={`px-6 py-3 font-semibold transition-colors border-b-2 whitespace-nowrap ${
@@ -223,9 +250,106 @@ export default function ScanDetail() {
         </button>
       </div>
 
+      {/* Vulnerabilities Table */}
+      {activeTab === "vulnerabilities" && (
+        <div className="card animate-slide-up">
+          <div className="overflow-x-auto rounded-lg border border-white/10">
+            <table className="table-premium w-full text-sm">
+              <thead>
+                <tr>
+                  <th>Host</th>
+                  <th>OWASP Category</th>
+                  <th>Title</th>
+                  <th>Severity</th>
+                  <th>Confidence</th>
+                  <th>URL</th>
+                  <th>Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                {scan.vulnerability_findings && scan.vulnerability_findings.length > 0 ? (
+                  scan.vulnerability_findings.map((finding, idx) => (
+                    <tr key={idx}>
+                      <td className="text-cyan-300 font-mono text-xs">{finding.host}</td>
+                      <td>
+                        <span className={
+                          finding.owasp_category === "A01" 
+                            ? "badge-error" 
+                            : finding.owasp_category === "A02"
+                            ? "badge-warning"
+                            : "badge-info"
+                        }>
+                          {finding.owasp_category}
+                        </span>
+                      </td>
+                      <td className="text-white max-w-xs">
+                        {finding.title}
+                      </td>
+                      <td>
+                        <span className={
+                          finding.severity === "High" 
+                            ? "badge-error" 
+                            : finding.severity === "Medium"
+                            ? "badge-warning"
+                            : "badge-info"
+                        }>
+                          {finding.severity}
+                        </span>
+                      </td>
+                      <td>
+                        <span className="text-gray-400 text-xs">{finding.confidence}</span>
+                      </td>
+                      <td>
+                        <a
+                          href={finding.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-purple-400 hover:text-purple-300 truncate max-w-xs inline-block"
+                        >
+                          {finding.url}
+                        </a>
+                      </td>
+                      <td className="text-gray-400 text-xs max-w-xs">
+                        {finding.evidence && Object.keys(finding.evidence).length > 0 ? (
+                          <details className="cursor-pointer">
+                            <summary className="text-purple-400 hover:text-purple-300">View</summary>
+                            <pre className="mt-2 p-2 bg-gray-900/50 rounded text-xs overflow-auto">
+                              {JSON.stringify(finding.evidence, null, 2)}
+                            </pre>
+                          </details>
+                        ) : (
+                          "-"
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="text-center py-8">
+                      <p className="text-gray-400">No vulnerabilities found</p>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* className={`px-6 py-3 font-semibold transition-colors border-b-2 whitespace-nowrap ${
+            activeTab === "directories"
+              ? "text-red-400 border-red-500"
+              : "text-gray-400 hover:text-gray-300 border-transparent"
+          }`}
+        >
+          <FolderOpen className="w-5 h-5 inline-block mr-2" />
+          Directories ({dirIssuesCount})
+        </button>
+      </div>
+
       {/* Subdomains Table */}
       {activeTab === "subdomains" && (
-        <div className="card card-hover animate-slide-up">
+        <div className="card animate-slide-up">
           <div className="overflow-hidden rounded-lg border border-white/10">
             <table className="table-premium w-full">
               <thead>
@@ -280,7 +404,7 @@ export default function ScanDetail() {
 
       {/* Endpoints Table */}
       {activeTab === "endpoints" && (
-        <div className="card card-hover animate-slide-up">
+        <div className="card animate-slide-up">
           <div className="overflow-x-auto rounded-lg border border-white/10">
             <table className="table-premium w-full text-sm">
               <thead>

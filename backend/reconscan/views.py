@@ -196,6 +196,11 @@ class UserScanDetailView(APIView):
             "id", "host", "base_url", "path", "status_code", "issue_type", "evidence"
         )
         
+        # Vulnerability findings (from vulnscan app)
+        vuln_findings = scan.vulnerability_findings.all().values(
+            "id", "host", "url", "owasp_category", "title", "severity", "confidence", "evidence", "created_at"
+        )
+        
         return Response({
             "id": scan.id,
             "target": scan.target,
@@ -214,6 +219,9 @@ class UserScanDetailView(APIView):
             "port_findings_count": scan.port_findings.count(),
             "tls_results_count": scan.tls_results.count(),
             "directory_findings_count": scan.directory_findings.count(),
+            # Vulnerability data
+            "vulnerability_findings": list(vuln_findings),
+            "vulnerability_findings_count": scan.vulnerability_findings.count(),
         })
 
 

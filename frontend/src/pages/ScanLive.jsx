@@ -9,17 +9,21 @@ export default function ScanLive() {
   const [error, setError] = useState("");
   const [subdomains, setSubdomains] = useState([]);
   const [endpoints, setEndpoints] = useState([]);
+  const [vulnerabilities, setVulnerabilities] = useState([]);
 
   const subSeen = useRef(new Set());
   const epSeen = useRef(new Set());
+  const vulnSeen = useRef(new Set());
   const wsRef = useRef(null);
 
   useEffect(() => {
     setError("");
     setSubdomains([]);
     setEndpoints([]);
+    setVulnerabilities([]);
     subSeen.current = new Set();
     epSeen.current = new Set();
+    vulnSeen.current = new Set();
 
     const url = `${WS_ROOT}/ws/scans/${scanId}/`;
     const ws = new WebSocket(url);
@@ -57,16 +61,38 @@ export default function ScanLive() {
             next.push(it);
           }
           return next;
+      if (msg.type === "vulnerability_chunk") {
+        const items = Array.isArray(msg.data) ? msg.data : [];
+        setVulnerabilities((prev) => {
+          const next = [...prev];
+          for (const it of items) {
+            const key = `${it?.host}_${it?.url}_${it?.owasp_category}`;
+            if (!key || vulnSeen.current.has(key)) continue;
+            vulnSeen.current.add(key);
+            next.push(it);
+  const criticalVulns = useMemo(() => vulnerabilities.filter((v) => v.severity === "High").length, [vulnerabilities]);
+          }
+          return next;
+        });
+      }
         });
       }
     };
+  <span>Vulnerabilities: <b>{vulnerabilities.length}</b> (critical: <b style={{ color: criticalVulns > 0 ? "tomato" : "inherit" }}>{criticalVulns}</b>)</span>
+      </div>
+      {error && <p style={{ color: "tomato" }}>{error}</p>}
 
-    ws.onerror = () => setError("WebSocket error. Is Daphne running?");
-    ws.onclose = () => {};
+      <pre style={{ marginTop: 14, padding: 12, border: "1px solid #2a2a2a", borderRadius: 12, overflow: "auto" }}>
+        Latest endpoints:\n
+        {JSON.stringify(endpoints.slice(-5), null, 2)}
+      </pre>
 
-    return () => { try { ws.close(); } catch {} };
-  }, [scanId]);
-
+      {vulnerabilities.length > 0 && (
+        <pre style={{ marginTop: 14, padding: 12, border: "1px solid tomato", borderRadius: 12, overflow: "auto", backgroundColor: "rgba(255, 99, 71, 0.05)" }}>
+          Latest vulnerabilities:\n
+          {JSON.stringify(vulnerabilities.slice(-10), null, 2)}
+        </pre>
+      )}
   const aliveCount = useMemo(() => subdomains.filter((s) => s.alive).length, [subdomains]);
 
   return (
