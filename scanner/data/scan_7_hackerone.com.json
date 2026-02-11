@@ -1,0 +1,167 @@
+{
+  "scan_id": 7,
+  "target": "hackerone.com",
+  "subdomains": [
+    {
+      "name": "a.ns.hackerone.com",
+      "ip": "2400:cb00:2049:1::a29f:1f",
+      "alive": true
+    },
+    {
+      "name": "gslink.hackerone.com",
+      "ip": "2600:9000:21b4:2000:1:9f06:1140:93a1",
+      "alive": true
+    },
+    {
+      "name": ".hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "mta-sts.managed.hackerone.com",
+      "ip": "2606:50c0:8001::153",
+      "alive": true
+    },
+    {
+      "name": "websockets.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "zendesk1.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "3d.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "fwdkim1.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "zendesk2.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "zendesk3.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "docs.hackerone.com",
+      "ip": "2606:4700:440a::6812:24d6",
+      "alive": true
+    },
+    {
+      "name": "support.hackerone.com",
+      "ip": "162.159.140.147",
+      "alive": true
+    },
+    {
+      "name": "design.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "email.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "go.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "mta-sts.hackerone.com",
+      "ip": "2606:50c0:8000::153",
+      "alive": true
+    },
+    {
+      "name": "ns.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "www.hackerone.com",
+      "ip": "2606:4700:440a::6812:24d6",
+      "alive": true
+    },
+    {
+      "name": "b.ns.hackerone.com",
+      "ip": "2400:cb00:2049:1::a29f:11f",
+      "alive": true
+    },
+    {
+      "name": "info.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "mta-sts.forwarding.hackerone.com",
+      "ip": "2606:50c0:8000::153",
+      "alive": true
+    },
+    {
+      "name": "o3.email.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "resources.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "apis.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "events.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "links.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "pmbounces.hackerone.com",
+      "ip": "3.129.157.21",
+      "alive": true
+    },
+    {
+      "name": "api.hackerone.com",
+      "ip": "2606:4700:440a::6812:24d6",
+      "alive": true
+    },
+    {
+      "name": "blog.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "o2.email.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "zendesk4.hackerone.com",
+      "ip": "",
+      "alive": false
+    },
+    {
+      "name": "o1.email.hackerone.com",
+      "ip": "",
+      "alive": false
+    }
+  ],
+  "saved_at": "2026-02-10T16:17:44.19470772Z"
+}

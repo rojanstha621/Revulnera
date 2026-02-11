@@ -1,30 +1,120 @@
 // src/pages/Scanners.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { Zap, Shield, Globe, ChevronDown, Copy, Check, Search, Download } from "lucide-react";
+import { 
+  Zap, Shield, Globe, Activity, Lock, FolderOpen, 
+  AlertTriangle, Download, Check, TrendingUp, Network,
+  Radar, Target, ChevronRight
+} from "lucide-react";
 import { postJSON, WS_ROOT } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 export default function Scanners() {
+  const navigate = useNavigate();
   const [target, setTarget] = useState("");
   const [scanId, setScanId] = useState(null);
 
   const [status, setStatus] = useState("IDLE");
   const [error, setError] = useState("");
 
-  const [subdomains, setSubdomains] = useState([]);
-  const [endpoints, setEndpoints] = useState([]);
-  
-  // Enhanced state for filtering and expansion
-  const [expandedEndpoint, setExpandedEndpoint] = useState(null);
-  const [subdomainSearch, setSubdomainSearch] = useState("");
-  const [endpointSearch, setEndpointSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [copiedText, setCopiedText] = useState(null);
+  // Metrics state
+  const [metrics, setMetrics] = useState({
+    subdomains: 0,
+    aliveSubdomains: 0,
+    endpoints: 0,
+    ports: 0,
+    tlsIssues: 0,
+    directoryIssues: 0,
+    vulnerabilities: 0,
+  });
+
+  // Phase tracking
+  const [currentPhase, setCurrentPhase] = useState("");
+
+  // Live feed messages
+  const [liveFeed, setLiveFeed] = useState([]);
+  const liveFeedRef = useRef(null);
 
   const wsRef = useRef(null);
 
+  // Load active scan from localStorage on mount
+  useEffect(() => {
+    const savedScan = localStorage.getItem("activeScan");
+    if (savedScan) {
+      try {
+        const scanData = JSON.parse(savedScan);
+        if (scanData.scanId && scanData.status === "RUNNING") {
+          setScanId(scanData.scanId);
+          setTarget(scanData.target || "");
+          setStatus(scanData.status);
+          setMetrics(scanData.metrics || {
+            subdomains: 0,
+            aliveSubdomains: 0,
+            endpoints: 0,
+            ports: 0,
+            tlsIssues: 0,
+            directoryIssues: 0,
+            vulnerabilities: 0,
+          });
+          setCurrentPhase(scanData.currentPhase || "");
+          setLiveFeed(scanData.liveFeed || []);
+        }
+      } catch (e) {
+        console.error("Failed to restore scan:", e);
+      }
+    }
+  }, []);
+
+  // Save active scan to localStorage whenever it changes
+  useEffect(() => {
+    if (scanId && status === "RUNNING") {
+      localStorage.setItem("activeScan", JSON.stringify({
+        scanId,
+        target,
+        status,
+        metrics,
+        currentPhase,
+        liveFeed: liveFeed.slice(-100), // Keep last 100 messages
+      }));
+    } else if (status === "COMPLETED" || status === "FAILED") {
+      localStorage.removeItem("activeScan");
+    }
+  }, [scanId, target, status, metrics, currentPhase, liveFeed]);
+
+  // Auto-scroll live feed to bottom
+  useEffect(() => {
+    if (liveFeedRef.current) {
+      liveFeedRef.current.scrollTop = liveFeedRef.current.scrollHeight;
+    }
+  }, [liveFeed]);
+
+  function addLogMessage(type, message, data = null) {
+    const timestamp = new Date().toLocaleTimeString();
+    setLiveFeed(prev => [...prev, { type, message, data, timestamp }]);
+  }
+
   function resetLiveState() {
-    setSubdomains([]);
-    setEndpoints([]);
+    setMetrics({
+      subdomains: 0,
+      aliveSubdomains: 0,
+      endpoints: 0,
+      ports: 0,
+      tlsIssues: 0,
+      directoryIssues: 0,
+      vulnerabilities: 0,
+    });
+    setCurrentPhase("");
+    setLiveFeed([]);
+  }
+
+  function cancelScan() {
+    if (wsRef.current) {
+      wsRef.current.close();
+    }
+    addLogMessage("status", "❌ Scan cancelled by user");
+    localStorage.removeItem("activeScan");
+    setStatus("IDLE");
+    setScanId(null);
+    resetLiveState();
   }
 
   async function startScan(e) {
@@ -67,6 +157,8 @@ export default function Scanners() {
 
     setScanId(res.id);
     setStatus(res.status || "RUNNING");
+    addLogMessage("status", `🚀 Scan initiated for target: ${t}`, { scanId: res.id });
+    addLogMessage("info", `Scan ID: ${res.id}`);
   }
 
   useEffect(() => {
@@ -99,35 +191,184 @@ export default function Scanners() {
 
       console.log("WS MSG:", msg.type, msg);
 
-      if (msg.type === "connected") return;
+      if (msg.type === "connected") {
+        addLogMessage("info", "WebSocket connected to scan", scanId);
+        return;
+      }
 
       if (msg.type === "scan_status") {
-        if (msg.status) setStatus(msg.status);
-        if (msg.error) setError(msg.error);
+        if (msg.status) {
+          setStatus(msg.status);
+          if (msg.status === "COMPLETED") {
+            addLogMessage("status", "✅ Scan completed successfully!");
+          } else if (msg.status === "FAILED") {
+            addLogMessage("error", "❌ Scan failed");
+          } else {
+            addLogMessage("status", `Scan status: ${msg.status}`);
+          }
+        }
+        if (msg.error) {
+          setError(msg.error);
+          addLogMessage("error", `Error: ${msg.error}`);
+        }
         return;
       }
 
+      // Subdomain enumeration phase
       if (msg.type === "subdomains_chunk") {
-        const items = Array.isArray(msg.data)
-          ? msg.data
-          : Array.isArray(msg.items)
-          ? msg.items
-          : [];
-
-        // append directly (no dedupe for now)
-        setSubdomains((prev) => prev.concat(items));
+        const items = Array.isArray(msg.data) ? msg.data : Array.isArray(msg.items) ? msg.items : [];
+        if (currentPhase !== "Subdomain Enumeration") {
+          addLogMessage("status", "🔍 Phase: Subdomain Enumeration started");
+        }
+        setCurrentPhase("Subdomain Enumeration");
+        
+        // Log each subdomain individually
+        items.forEach(item => {
+          const status = item?.alive ? "✓ ALIVE" : "✗ offline";
+          addLogMessage(
+            "subdomain", 
+            `${item?.name}`, 
+            { ip: item?.ip, alive: item?.alive, status }
+          );
+        });
+        
+        setMetrics((prev) => ({
+          ...prev,
+          subdomains: prev.subdomains + items.length,
+          aliveSubdomains: prev.aliveSubdomains + items.filter(s => s?.alive).length,
+        }));
         return;
       }
 
+      // Endpoint discovery phase
       if (msg.type === "endpoints_chunk") {
-        const items = Array.isArray(msg.data)
-          ? msg.data
-          : Array.isArray(msg.items)
-          ? msg.items
-          : [];
+        const items = Array.isArray(msg.data) ? msg.data : Array.isArray(msg.items) ? msg.items : [];
+        if (currentPhase !== "Endpoint Discovery") {
+          addLogMessage("status", "🌐 Phase: Endpoint Discovery started");
+        }
+        setCurrentPhase("Endpoint Discovery");
+        
+        // Log each endpoint individually
+        items.forEach(item => {
+          const statusCode = item?.status_code || "N/A";
+          const statusClass = statusCode >= 200 && statusCode < 300 ? "success" : 
+                            statusCode >= 400 ? "error" : "info";
+          addLogMessage(
+            "endpoint",
+            `${item?.url}`,
+            { statusCode, title: item?.title, class: statusClass }
+          );
+        });
+        
+        setMetrics((prev) => ({
+          ...prev,
+          endpoints: prev.endpoints + items.length,
+        }));
+        return;
+      }
 
-        // append directly (no dedupe, no filtering)
-        setEndpoints((prev) => prev.concat(items));
+      // Network analysis - ports
+      if (msg.type === "network_ports_chunk") {
+        const items = Array.isArray(msg.data) ? msg.data : [];
+        if (currentPhase !== "Port Scanning") {
+          addLogMessage("status", "📡 Phase: Port Scanning started");
+        }
+        setCurrentPhase("Port Scanning");
+        
+        // Log each port individually
+        items.forEach(item => {
+          addLogMessage(
+            "port",
+            `${item?.host}:${item?.port}`,
+            { service: item?.service, product: item?.product, version: item?.version }
+          );
+        });
+        
+        setMetrics((prev) => ({
+          ...prev,
+          ports: prev.ports + items.length,
+        }));
+        return;
+      }
+
+      // Network analysis - TLS
+      if (msg.type === "network_tls_result") {
+        const data = msg.data || {};
+        if (currentPhase !== "TLS Analysis") {
+          addLogMessage("status", "🔒 Phase: TLS Analysis started");
+        }
+        setCurrentPhase("TLS Analysis");
+        
+        const hasIssues = data.weak_versions && data.weak_versions.length > 0;
+        addLogMessage(
+          hasIssues ? "tls-warning" : "tls",
+          `TLS scan: ${data.host}`,
+          { 
+            hasHttps: data.has_https, 
+            weakVersions: data.weak_versions,
+            issues: data.issues 
+          }
+        );
+        
+        if (hasIssues) {
+          setMetrics((prev) => ({
+            ...prev,
+            tlsIssues: prev.tlsIssues + 1,
+          }));
+        }
+        return;
+      }
+
+      // Network analysis - directories
+      if (msg.type === "network_dirs_chunk") {
+        const items = Array.isArray(msg.data) ? msg.data : [];
+        if (currentPhase !== "Directory Analysis") {
+          addLogMessage("status", "📁 Phase: Directory Analysis started");
+        }
+        setCurrentPhase("Directory Analysis");
+        
+        // Log each directory finding individually
+        items.forEach(item => {
+          addLogMessage(
+            "directory",
+            `${item?.host}${item?.path}`,
+            { issueType: item?.issue_type, statusCode: item?.status_code }
+          );
+        });
+        
+        setMetrics((prev) => ({
+          ...prev,
+          directoryIssues: prev.directoryIssues + items.length,
+        }));
+        return;
+      }
+
+      // Vulnerability detection
+      if (msg.type === "vulnerability_chunk") {
+        const items = Array.isArray(msg.data) ? msg.data : [];
+        if (currentPhase !== "Vulnerability Detection") {
+          addLogMessage("status", "⚠️ Phase: Vulnerability Detection started");
+        }
+        setCurrentPhase("Vulnerability Detection");
+        
+        // Log each vulnerability individually
+        items.forEach(item => {
+          addLogMessage(
+            "vulnerability",
+            `${item?.title}`,
+            { 
+              url: item?.url, 
+              severity: item?.severity,
+              category: item?.owasp_category,
+              confidence: item?.confidence
+            }
+          );
+        });
+        
+        setMetrics((prev) => ({
+          ...prev,
+          vulnerabilities: prev.vulnerabilities + items.length,
+        }));
         return;
       }
     };
@@ -142,66 +383,24 @@ export default function Scanners() {
     };
 
     return () => {
+      // Close WebSocket on unmount, but state is saved in localStorage
+      // so it will reconnect when user returns to the page
       try {
         ws.close();
       } catch {}
     };
   }, [scanId]);
 
-  // hard proof of state changes
-  useEffect(() => {
-    console.log("STATE: subdomains =", subdomains.length, "endpoints =", endpoints.length);
-  }, [subdomains.length, endpoints.length]);
+  const phases = [
+    { name: "Subdomain Enumeration", icon: Shield, active: currentPhase === "Subdomain Enumeration" },
+    { name: "Endpoint Discovery", icon: Globe, active: currentPhase === "Endpoint Discovery" },
+    { name: "Port Scanning", icon: Network, active: currentPhase === "Port Scanning" },
+    { name: "TLS Analysis", icon: Lock, active: currentPhase === "TLS Analysis" },
+    { name: "Directory Analysis", icon: FolderOpen, active: currentPhase === "Directory Analysis" },
+    { name: "Vulnerability Detection", icon: AlertTriangle, active: currentPhase === "Vulnerability Detection" },
+  ];
 
-  const aliveCount = subdomains.filter((s) => s?.alive).length;
-
-  // Filtered results based on search
-  const filteredSubdomains = subdomains.filter(s =>
-    s?.name?.toLowerCase().includes(subdomainSearch.toLowerCase())
-  );
-
-  const filteredEndpoints = endpoints.filter(e => {
-    const matchesSearch = e?.url?.toLowerCase().includes(endpointSearch.toLowerCase());
-    if (statusFilter === "all") return matchesSearch;
-    if (statusFilter === "2xx") return matchesSearch && e?.status_code >= 200 && e?.status_code < 300;
-    if (statusFilter === "4xx") return matchesSearch && e?.status_code >= 400 && e?.status_code < 500;
-    if (statusFilter === "5xx") return matchesSearch && e?.status_code >= 500;
-    return matchesSearch;
-  });
-
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    setCopiedText(text);
-    setTimeout(() => setCopiedText(null), 2000);
-  };
-
-  const exportData = (format) => {
-    let dataStr;
-    let filename;
-
-    if (format === "json") {
-      dataStr = JSON.stringify({ target, subdomains, endpoints }, null, 2);
-      filename = `scan_${scanId}_${new Date().getTime()}.json`;
-    } else if (format === "csv") {
-      let csv = "Type,Data,Status\n";
-      subdomains.forEach(s => {
-        csv += `Subdomain,"${s?.name || ''}","${s?.alive ? 'Alive' : 'Offline'}"\n`;
-      });
-      endpoints.forEach(e => {
-        csv += `Endpoint,"${e?.url || ''}","${e?.status_code || 'N/A'}"\n`;
-      });
-      dataStr = csv;
-      filename = `scan_${scanId}_${new Date().getTime()}.csv`;
-    }
-
-    const blob = new Blob([dataStr], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+  const isScanning = status === "RUNNING" || status === "STARTING";
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -209,8 +408,14 @@ export default function Scanners() {
       <div className="space-y-4 animate-slide-up">
         <h1 className="text-5xl font-bold text-gradient">Reconnaissance Scanner</h1>
         <p className="text-gray-400 text-lg">
-          Discover subdomains and map endpoints in real-time with live status updates
+          Advanced security reconnaissance with real-time vulnerability detection
         </p>
+        {scanId && isScanning && (
+          <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-500/30 rounded-lg px-4 py-2 text-sm text-blue-300">
+            <Activity className="w-4 h-4 animate-pulse" />
+            <span>Active scan in progress - safe to navigate away</span>
+          </div>
+        )}
       </div>
 
       {/* Scan Input Card */}
@@ -221,353 +426,658 @@ export default function Scanners() {
               Target Domain
             </label>
             <div className="relative">
+              <Target className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
               <input
                 value={target}
                 onChange={(e) => setTarget(e.target.value)}
-                placeholder="example.com"
-                className="input-premium w-full text-lg"
-                disabled={status === "RUNNING"}
+                placeholder="example.com or 192.168.1.1"
+                className="input-premium w-full text-lg pl-12"
+                disabled={isScanning}
               />
-              {status === "RUNNING" && (
-                <div className="absolute right-4 top-3">
-                  <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-purple-500"></div>
-                </div>
-              )}
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-300">
-              {error}
+            <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-300 animate-slide-up">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5" />
+                {error}
+              </div>
             </div>
           )}
 
           <button
             type="submit"
-            disabled={status === "RUNNING" || !target.trim()}
-            className="btn-primary w-full py-4 text-lg font-bold flex items-center justify-center gap-2"
+            disabled={isScanning || !target.trim()}
+            className="btn-primary w-full py-4 text-lg font-bold flex items-center justify-center gap-3 transition-all transform hover:scale-[1.02]"
           >
-            {status === "RUNNING" ? (
+            {isScanning ? (
               <>
-                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white"></div>
-                Scanning in Progress
+                <div className="relative flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                  <div className="absolute animate-ping rounded-full h-5 w-5 border border-white opacity-20"></div>
+                </div>
+                Scanning in Progress...
               </>
             ) : (
               <>
                 <Zap className="w-6 h-6" />
-                Start Scan
+                Launch Reconnaissance Scan
               </>
             )}
           </button>
+
+          {isScanning && (
+            <button
+              type="button"
+              onClick={cancelScan}
+              className="w-full py-3 text-sm font-semibold bg-red-600/20 hover:bg-red-600/30 border border-red-500/50 rounded-lg text-red-300 transition-all"
+            >
+              Cancel Scan
+            </button>
+          )}
         </form>
       </div>
 
-      {/* Status Bar */}
-      {scanId && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-slide-up">
-          <div className="stat-card group">
-            <p className="text-gray-400 text-sm">Scan Status</p>
-            <p className="text-2xl font-bold text-white mt-1">
-              <span className={status === "RUNNING" ? "text-yellow-400 animate-pulse" : "text-green-400"}>
-                {status}
-              </span>
-            </p>
+      {/* Live Feed and Scanning Animation Side by Side */}
+      {scanId && isScanning && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up">
+          {/* Live Feed Log - LEFT */}
+          <div className="order-1">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <Activity className="w-6 h-6 text-green-400 animate-pulse" />
+                Live Scan Feed
+                <span className="text-sm text-gray-500 font-normal">({liveFeed.length} events)</span>
+              </h2>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    const logText = liveFeed.map(log => 
+                      `[${log.timestamp}] ${log.type.toUpperCase()}: ${log.message}${
+                        log.data ? ` | ${JSON.stringify(log.data)}` : ''
+                      }`
+                    ).join('\n');
+                    const blob = new Blob([logText], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `scan_${scanId}_log_${Date.now()}.txt`;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                  }}
+                  className="text-sm text-gray-400 hover:text-gray-300 transition-colors flex items-center gap-1"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setLiveFeed([])}
+                  className="text-sm text-gray-400 hover:text-gray-300 transition-colors"
+                  title="Clear Log"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+            
+            <div className="card bg-black/40 border-green-500/20">
+              <div 
+                ref={liveFeedRef}
+                className="h-[500px] overflow-y-auto font-mono text-xs space-y-1 p-4 bg-black/30 rounded-lg"
+                style={{
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#374151 #1f2937'
+                }}
+              >
+                {liveFeed.map((log, idx) => {
+                  const getLogStyle = () => {
+                    switch (log.type) {
+                      case "subdomain":
+                        return log.data?.alive 
+                          ? "text-purple-300 border-l-purple-500" 
+                          : "text-purple-400/50 border-l-purple-700";
+                      case "endpoint":
+                        return log.data?.class === "success"
+                          ? "text-green-300 border-l-green-500"
+                          : log.data?.class === "error"
+                          ? "text-red-300 border-l-red-500"
+                          : "text-blue-300 border-l-blue-500";
+                      case "port":
+                        return "text-cyan-300 border-l-cyan-500";
+                      case "tls":
+                        return "text-blue-300 border-l-blue-500";
+                      case "tls-warning":
+                        return "text-orange-300 border-l-orange-500";
+                      case "directory":
+                        return "text-yellow-300 border-l-yellow-500";
+                      case "vulnerability":
+                        return "text-red-300 border-l-red-500";
+                      case "status":
+                        return "text-green-400 border-l-green-500";
+                      case "error":
+                        return "text-red-400 border-l-red-500";
+                      case "info":
+                        return "text-gray-400 border-l-gray-500";
+                      default:
+                        return "text-gray-300 border-l-gray-500";
+                    }
+                  };
+
+                  const getIcon = () => {
+                    switch (log.type) {
+                      case "subdomain":
+                        return <Shield className="w-3 h-3" />;
+                      case "endpoint":
+                        return <Globe className="w-3 h-3" />;
+                      case "port":
+                        return <Network className="w-3 h-3" />;
+                      case "tls":
+                      case "tls-warning":
+                        return <Lock className="w-3 h-3" />;
+                      case "directory":
+                        return <FolderOpen className="w-3 h-3" />;
+                      case "vulnerability":
+                        return <AlertTriangle className="w-3 h-3" />;
+                      case "status":
+                        return <Activity className="w-3 h-3" />;
+                      default:
+                        return <ChevronRight className="w-3 h-3" />;
+                    }
+                  };
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`border-l-2 pl-3 py-1 ${getLogStyle()} hover:bg-white/5 transition-colors`}
+                    >
+                      <div className="flex items-start gap-2">
+                        <span className="text-gray-500 text-[10px] min-w-[60px]">
+                          {log.timestamp}
+                        </span>
+                        <div className="flex items-center gap-1 min-w-[16px]">
+                          {getIcon()}
+                        </div>
+                        <div className="flex-1">
+                          <span className="break-all">{log.message}</span>
+                          {log.data && (
+                            <div className="text-gray-500 text-[10px] mt-0.5">
+                              {log.type === "subdomain" && (
+                                <span>
+                                  {log.data.ip && `[${log.data.ip}]`} {log.data.status}
+                                </span>
+                              )}
+                              {log.type === "endpoint" && (
+                                <span>
+                                  [HTTP {log.data.statusCode}] {log.data.title && `"${log.data.title}"`}
+                                </span>
+                              )}
+                              {log.type === "port" && (
+                                <span>
+                                  {log.data.service && `[${log.data.service}]`} 
+                                  {log.data.product && ` ${log.data.product}`}
+                                  {log.data.version && ` ${log.data.version}`}
+                                </span>
+                              )}
+                              {log.type === "tls-warning" && log.data.weakVersions && (
+                                <span>
+                                  Weak: {log.data.weakVersions.join(", ")}
+                                </span>
+                              )}
+                              {log.type === "directory" && (
+                                <span>
+                                  [{log.data.issueType}] HTTP {log.data.statusCode}
+                                </span>
+                              )}
+                              {log.type === "vulnerability" && (
+                                <span>
+                                  [{log.data.category}] Severity: {log.data.severity} | Confidence: {log.data.confidence}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+                {liveFeed.length === 0 && (
+                  <div className="flex items-center justify-center h-full text-gray-500">
+                    <div className="text-center">
+                      <Activity className="w-8 h-8 mx-auto mb-2 animate-pulse" />
+                      <p>Waiting for scan data...</p>
+                    </div>
+                  </div>
+                )}
+                {liveFeed.length > 0 && (
+                  <div className="flex items-center gap-2 text-gray-500 animate-pulse py-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+                    <span>Listening for updates...</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="stat-card">
-            <p className="text-gray-400 text-sm">Subdomains Found</p>
-            <p className="text-2xl font-bold text-purple-300">{subdomains.length}</p>
-            <p className="text-xs text-purple-400 mt-1">Alive: {aliveCount}</p>
-          </div>
-          <div className="stat-card">
-            <p className="text-gray-400 text-sm">Endpoints Mapped</p>
-            <p className="text-2xl font-bold text-pink-300">{endpoints.length}</p>
-          </div>
-          <div className="stat-card">
-            <p className="text-gray-400 text-sm">Scan ID</p>
-            <p className="text-xs font-mono text-gray-300 mt-1 truncate">{scanId}</p>
+
+          {/* Scanning Animation - RIGHT */}
+          <div className="order-2">
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                <Radar className="w-6 h-6 text-purple-400" />
+                Scan Status
+              </h2>
+            </div>
+            
+            <div className="card bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-blue-900/20 border-purple-500/30">
+              <div className="flex flex-col items-center justify-center py-12 space-y-8">
+                {/* Radar Animation */}
+                <div className="relative">
+                  {/* Outer rings */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-64 h-64 rounded-full border-2 border-purple-500/20 animate-pulse"></div>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-48 h-48 rounded-full border-2 border-pink-500/20 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-32 h-32 rounded-full border-2 border-blue-500/20 animate-pulse" style={{ animationDelay: '1s' }}></div>
+                  </div>
+                  
+                  {/* Rotating radar beam */}
+                  <div className="relative w-64 h-64 flex items-center justify-center">
+                    <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s' }}>
+                      <div className="h-full w-1 bg-gradient-to-t from-transparent via-purple-500 to-transparent mx-auto"></div>
+                    </div>
+                    
+                    {/* Center icon */}
+                    <div className="relative z-10 bg-gray-900 rounded-full p-6 border-2 border-purple-500 shadow-lg shadow-purple-500/50">
+                      <Radar className="w-12 h-12 text-purple-400 animate-pulse" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Current Phase */}
+                <div className="text-center space-y-2">
+                  <p className="text-gray-400 text-sm font-semibold uppercase tracking-wider">
+                    Current Phase
+                  </p>
+                  <p className="text-2xl font-bold text-white animate-pulse">
+                    {currentPhase || "Initializing..."}
+                  </p>
+                </div>
+
+                {/* Phase Progress */}
+                <div className="w-full max-w-lg">
+                  <div className="grid grid-cols-3 gap-4">
+                    {phases.map((phase, idx) => {
+                      const Icon = phase.icon;
+                      const isActive = phase.active;
+                      const isPast = phases.findIndex(p => p.active) > idx;
+                      
+                      return (
+                        <div key={phase.name} className="flex flex-col items-center">
+                          <div
+                            className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                              isActive
+                                ? 'bg-purple-500 shadow-lg shadow-purple-500/50 scale-110'
+                                : isPast
+                                ? 'bg-green-500/50'
+                                : 'bg-gray-700/50'
+                            }`}
+                          >
+                            <Icon className="w-6 h-6 text-white" />
+                          </div>
+                          <p className={`text-[10px] mt-2 text-center ${
+                            isActive ? 'text-purple-300 font-semibold' : 'text-gray-500'
+                          }`}>
+                            {phase.name}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Results Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up">
-        {/* Subdomains Table */}
-        <div className="card card-hover">
+      {/* Show Live Feed below when not scanning but has data */}
+      {scanId && !isScanning && liveFeed.length > 0 && (
+        <div className="animate-slide-up">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Shield className="w-6 h-6 text-purple-400" />
-              Subdomains Discovered
-            </h3>
-            <span className="badge-info">{subdomains.length}</span>
-          </div>
-          
-          {/* Search Bar */}
-          {subdomains.length > 0 && (
-            <div className="mb-4 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Search subdomains..."
-                value={subdomainSearch}
-                onChange={(e) => setSubdomainSearch(e.target.value)}
-                className="input-premium w-full pl-10"
-              />
-            </div>
-          )}
-          
-          <div className="overflow-hidden rounded-lg border border-white/10">
-            <table className="table-premium w-full text-sm">
-              <thead>
-                <tr>
-                  <th>Domain Name</th>
-                  <th>IP Address</th>
-                  <th className="text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredSubdomains.length > 0 ? (
-                  filteredSubdomains.map((s, idx) => (
-                    <tr key={`${s?.name}-${idx}`}>
-                      <td>
-                        <code className="text-purple-300 font-mono text-xs">{s?.name || "-"}</code>
-                      </td>
-                      <td className="text-gray-300 font-mono">{s?.ip || "-"}</td>
-                      <td className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          {s?.alive ? (
-                            <span className="badge-success text-xs">Live</span>
-                          ) : (
-                            <span className="badge-warning text-xs">Offline</span>
-                          )}
-                          <button
-                            onClick={() => copyToClipboard(s?.name)}
-                            className="p-1 hover:bg-white/10 rounded transition-colors"
-                          >
-                            {copiedText === s?.name ? (
-                              <Check className="w-4 h-4 text-green-400" />
-                            ) : (
-                              <Copy className="w-4 h-4 text-gray-400" />
-                            )}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : subdomains.length > 0 ? (
-                  <tr>
-                    <td colSpan={3} className="text-center py-8">
-                      <p className="text-gray-400">No subdomains match your search</p>
-                    </td>
-                  </tr>
-                ) : (
-                  <tr>
-                    <td colSpan={3} className="text-center py-8">
-                      <Zap className="w-8 h-8 text-gray-600 mx-auto mb-2" />
-                      <p className="text-gray-400">Start a scan to discover subdomains</p>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Endpoints Table */}
-        <div className="card card-hover">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Globe className="w-6 h-6 text-pink-400" />
-              Endpoints Mapped
-            </h3>
-            <span className="badge-info">{endpoints.length}</span>
-          </div>
-
-          {/* Search & Filter */}
-          {endpoints.length > 0 && (
-            <div className="mb-4 space-y-3">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Search endpoints..."
-                  value={endpointSearch}
-                  onChange={(e) => setEndpointSearch(e.target.value)}
-                  className="input-premium w-full pl-10"
-                />
-              </div>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="input-premium w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm cursor-pointer"
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <Activity className="w-6 h-6 text-green-400" />
+              Scan Log
+              <span className="text-sm text-gray-500 font-normal">({liveFeed.length} events)</span>
+            </h2>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const logText = liveFeed.map(log => 
+                    `[${log.timestamp}] ${log.type.toUpperCase()}: ${log.message}${
+                      log.data ? ` | ${JSON.stringify(log.data)}` : ''
+                    }`
+                  ).join('\n');
+                  const blob = new Blob([logText], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = `scan_${scanId}_log_${Date.now()}.txt`;
+                  link.click();
+                  URL.revokeObjectURL(url);
+                }}
+                className="text-sm text-gray-400 hover:text-gray-300 transition-colors flex items-center gap-1"
               >
-                <option value="all">All Status Codes</option>
-                <option value="2xx">2xx Success</option>
-                <option value="4xx">4xx Client Error</option>
-                <option value="5xx">5xx Server Error</option>
-              </select>
+                <Download className="w-4 h-4" />
+                Export Log
+              </button>
+              <button
+                onClick={() => setLiveFeed([])}
+                className="text-sm text-gray-400 hover:text-gray-300 transition-colors"
+              >
+                Clear Log
+              </button>
             </div>
-          )}
+          </div>
+          
+          <div className="card bg-black/40 border-green-500/20">
+            <div 
+              ref={liveFeedRef}
+              className="h-96 overflow-y-auto font-mono text-xs space-y-1 p-4 bg-black/30 rounded-lg"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#374151 #1f2937'
+              }}
+            >
+              {liveFeed.map((log, idx) => {
+                const getLogStyle = () => {
+                  switch (log.type) {
+                    case "subdomain":
+                      return log.data?.alive 
+                        ? "text-purple-300 border-l-purple-500" 
+                        : "text-purple-400/50 border-l-purple-700";
+                    case "endpoint":
+                      return log.data?.class === "success"
+                        ? "text-green-300 border-l-green-500"
+                        : log.data?.class === "error"
+                        ? "text-red-300 border-l-red-500"
+                        : "text-blue-300 border-l-blue-500";
+                    case "port":
+                      return "text-cyan-300 border-l-cyan-500";
+                    case "tls":
+                      return "text-blue-300 border-l-blue-500";
+                    case "tls-warning":
+                      return "text-orange-300 border-l-orange-500";
+                    case "directory":
+                      return "text-yellow-300 border-l-yellow-500";
+                    case "vulnerability":
+                      return "text-red-300 border-l-red-500";
+                    case "status":
+                      return "text-green-400 border-l-green-500";
+                    case "error":
+                      return "text-red-400 border-l-red-500";
+                    case "info":
+                      return "text-gray-400 border-l-gray-500";
+                    default:
+                      return "text-gray-300 border-l-gray-500";
+                  }
+                };
 
-          <div className="overflow-hidden rounded-lg border border-white/10">
-            <div className="max-h-96 overflow-y-auto">
-              <table className="table-premium w-full text-sm">
-                <thead>
-                  <tr>
-                    <th>URL</th>
-                    <th>Status Code</th>
-                    <th className="text-right">Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredEndpoints.length > 0 ? (
-                    filteredEndpoints.map((e, idx) => (
-                      <React.Fragment key={`${e?.url}-${idx}`}>
-                        <tr 
-                          onClick={() => setExpandedEndpoint(expandedEndpoint === idx ? null : idx)}
-                          className="cursor-pointer hover:bg-white/5"
-                        >
-                          <td>
-                            {e?.url ? (
-                              <a
-                                href={e.url}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="text-purple-400 hover:text-purple-300 truncate inline-block max-w-xs"
-                              >
-                                {e.url}
-                              </a>
-                            ) : (
-                              "-"
-                            )}
-                          </td>
-                          <td>
-                            {e?.status_code && (
-                              <span
-                                className={
-                                  e.status_code >= 200 && e.status_code < 300
-                                    ? "badge-success"
-                                    : e.status_code >= 400 && e.status_code < 500
-                                    ? "badge-warning"
-                                    : e.status_code >= 500
-                                    ? "badge-error"
-                                    : "badge-info"
-                                }
-                              >
-                                {e.status_code}
+                const getIcon = () => {
+                  switch (log.type) {
+                    case "subdomain":
+                      return <Shield className="w-3 h-3" />;
+                    case "endpoint":
+                      return <Globe className="w-3 h-3" />;
+                    case "port":
+                      return <Network className="w-3 h-3" />;
+                    case "tls":
+                    case "tls-warning":
+                      return <Lock className="w-3 h-3" />;
+                    case "directory":
+                      return <FolderOpen className="w-3 h-3" />;
+                    case "vulnerability":
+                      return <AlertTriangle className="w-3 h-3" />;
+                    case "status":
+                      return <Activity className="w-3 h-3" />;
+                    default:
+                      return <ChevronRight className="w-3 h-3" />;
+                  }
+                };
+
+                return (
+                  <div
+                    key={idx}
+                    className={`border-l-2 pl-3 py-1 ${getLogStyle()} hover:bg-white/5 transition-colors`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className="text-gray-500 text-[10px] min-w-[60px]">
+                        {log.timestamp}
+                      </span>
+                      <div className="flex items-center gap-1 min-w-[16px]">
+                        {getIcon()}
+                      </div>
+                      <div className="flex-1">
+                        <span className="break-all">{log.message}</span>
+                        {log.data && (
+                          <div className="text-gray-500 text-[10px] mt-0.5">
+                            {log.type === "subdomain" && (
+                              <span>
+                                {log.data.ip && `[${log.data.ip}]`} {log.data.status}
                               </span>
                             )}
-                          </td>
-                          <td className="text-right">
-                            <ChevronDown
-                              className={`w-4 h-4 inline-block transition-transform ${
-                                expandedEndpoint === idx ? "rotate-180" : ""
-                              }`}
-                            />
-                          </td>
-                        </tr>
-                        {expandedEndpoint === idx && (
-                          <tr className="bg-white/5">
-                            <td colSpan={3} className="p-4">
-                              <div className="space-y-3 text-sm">
-                                {e?.title && (
-                                  <div>
-                                    <p className="text-gray-400 text-xs font-semibold mb-1">Title</p>
-                                    <p className="text-gray-300">{e.title}</p>
-                                  </div>
-                                )}
-                                {e?.headers && Object.keys(e.headers).length > 0 && (
-                                  <div>
-                                    <p className="text-gray-400 text-xs font-semibold mb-1">Headers</p>
-                                    <div className="bg-black/30 rounded p-2 font-mono text-xs max-h-32 overflow-y-auto">
-                                      {Object.entries(e.headers).map(([key, val]) => (
-                                        <div key={key} className="text-gray-300">
-                                          <span className="text-purple-300">{key}:</span> {val}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                                {e?.fingerprints && e.fingerprints.length > 0 && (
-                                  <div>
-                                    <p className="text-gray-400 text-xs font-semibold mb-1">Fingerprints</p>
-                                    <div className="flex flex-wrap gap-2">
-                                      {e.fingerprints.map((fp, i) => (
-                                        <span key={i} className="badge-info text-xs">
-                                          {fp}
-                                        </span>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                                <button
-                                  onClick={(event) => {
-                                    event.stopPropagation();
-                                    copyToClipboard(e?.url);
-                                  }}
-                                  className="mt-2 px-3 py-1 rounded bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 text-xs font-semibold flex items-center gap-2 w-fit transition-colors"
-                                >
-                                  {copiedText === e?.url ? (
-                                    <>
-                                      <Check className="w-3 h-3" />
-                                      Copied
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Copy className="w-3 h-3" />
-                                      Copy URL
-                                    </>
-                                  )}
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
+                            {log.type === "endpoint" && (
+                              <span>
+                                [HTTP {log.data.statusCode}] {log.data.title && `"${log.data.title}"`}
+                              </span>
+                            )}
+                            {log.type === "port" && (
+                              <span>
+                                {log.data.service && `[${log.data.service}]`} 
+                                {log.data.product && ` ${log.data.product}`}
+                                {log.data.version && ` ${log.data.version}`}
+                              </span>
+                            )}
+                            {log.type === "tls-warning" && log.data.weakVersions && (
+                              <span>
+                                Weak: {log.data.weakVersions.join(", ")}
+                              </span>
+                            )}
+                            {log.type === "directory" && (
+                              <span>
+                                [{log.data.issueType}] HTTP {log.data.statusCode}
+                              </span>
+                            )}
+                            {log.type === "vulnerability" && (
+                              <span>
+                                [{log.data.category}] Severity: {log.data.severity} | Confidence: {log.data.confidence}
+                              </span>
+                            )}
+                          </div>
                         )}
-                      </React.Fragment>
-                    ))
-                  ) : endpoints.length > 0 ? (
-                    <tr>
-                      <td colSpan={3} className="text-center py-8">
-                        <p className="text-gray-400">No endpoints match your filters</p>
-                      </td>
-                    </tr>
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="text-center py-8">
-                        <Globe className="w-8 h-8 text-gray-600 mx-auto mb-2" />
-                        <p className="text-gray-400">Endpoints will appear here</p>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Export Section */}
-      {scanId && (subdomains.length > 0 || endpoints.length > 0) && (
-        <div className="card card-hover animate-slide-up">
-          <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <Download className="w-5 h-5 text-green-400" />
-            Export Results
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {/* Metrics Dashboard */}
+      {scanId && (
+        <div className="animate-slide-up">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <Activity className="w-6 h-6 text-purple-400" />
+              Live Metrics
+            </h2>
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${isScanning ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`}></div>
+              <span className="text-sm text-gray-400">
+                {isScanning ? 'Scanning' : status}
+              </span>
+              {scanId && (
+                <button
+                  onClick={() => navigate(`/scan/${scanId}`)}
+                  className="ml-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"
+                >
+                  View Details
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Subdomains */}
+            <div className="stat-card bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 group hover:border-purple-400/40 transition-all">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">Subdomains</p>
+                  <p className="text-3xl font-bold text-purple-300 mt-2">
+                    {metrics.subdomains}
+                  </p>
+                  <p className="text-xs text-purple-400 mt-1 flex items-center gap-1">
+                    <Check className="w-3 h-3" />
+                    {metrics.aliveSubdomains} alive
+                  </p>
+                </div>
+                <Shield className="w-10 h-10 text-purple-500/30 group-hover:text-purple-400/50 transition-colors" />
+              </div>
+            </div>
+
+            {/* Endpoints */}
+            <div className="stat-card bg-gradient-to-br from-pink-500/10 to-pink-600/5 border-pink-500/20 group hover:border-pink-400/40 transition-all">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">Endpoints</p>
+                  <p className="text-3xl font-bold text-pink-300 mt-2">
+                    {metrics.endpoints}
+                  </p>
+                  <p className="text-xs text-pink-400 mt-1 flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    Mapped
+                  </p>
+                </div>
+                <Globe className="w-10 h-10 text-pink-500/30 group-hover:text-pink-400/50 transition-colors" />
+              </div>
+            </div>
+
+            {/* Open Ports */}
+            <div className="stat-card bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 border-cyan-500/20 group hover:border-cyan-400/40 transition-all">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">Open Ports</p>
+                  <p className="text-3xl font-bold text-cyan-300 mt-2">
+                    {metrics.ports}
+                  </p>
+                  <p className="text-xs text-cyan-400 mt-1 flex items-center gap-1">
+                    <Network className="w-3 h-3" />
+                    Discovered
+                  </p>
+                </div>
+                <Network className="w-10 h-10 text-cyan-500/30 group-hover:text-cyan-400/50 transition-colors" />
+              </div>
+            </div>
+
+            {/* Vulnerabilities */}
+            <div className="stat-card bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20 group hover:border-red-400/40 transition-all">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">Vulnerabilities</p>
+                  <p className="text-3xl font-bold text-red-300 mt-2">
+                    {metrics.vulnerabilities}
+                  </p>
+                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3" />
+                    Found
+                  </p>
+                </div>
+                <AlertTriangle className="w-10 h-10 text-red-500/30 group-hover:text-red-400/50 transition-colors" />
+              </div>
+            </div>
+
+            {/* TLS Issues */}
+            <div className="stat-card bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">TLS Issues</p>
+                  <p className="text-3xl font-bold text-orange-300 mt-2">
+                    {metrics.tlsIssues}
+                  </p>
+                  <p className="text-xs text-orange-400 mt-1">Weak protocols</p>
+                </div>
+                <Lock className="w-8 h-8 text-orange-500/30" />
+              </div>
+            </div>
+
+            {/* Directory Issues */}
+            <div className="stat-card bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm font-medium">Directory Issues</p>
+                  <p className="text-3xl font-bold text-yellow-300 mt-2">
+                    {metrics.directoryIssues}
+                  </p>
+                  <p className="text-xs text-yellow-400 mt-1">Exposed paths</p>
+                </div>
+                <FolderOpen className="w-8 h-8 text-yellow-500/30" />
+              </div>
+            </div>
+
+            {/* Scan ID */}
+            <div className="stat-card col-span-2">
+              <div>
+                <p className="text-gray-400 text-sm font-medium mb-2">Scan ID</p>
+                <p className="text-lg font-mono text-purple-300 break-all">{scanId}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Completion Message */}
+      {scanId && status === "COMPLETED" && (
+        <div className="card animate-slide-up bg-gradient-to-r from-green-900/20 to-blue-900/20 border-green-500/30">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="bg-green-500/20 rounded-full p-3">
+                <Check className="w-8 h-8 text-green-400" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white">Scan Completed Successfully</h3>
+                <p className="text-gray-400 mt-1">
+                  Found {metrics.subdomains} subdomains, {metrics.endpoints} endpoints, and {metrics.vulnerabilities} vulnerabilities
+                </p>
+              </div>
+            </div>
             <button
-              onClick={() => exportData("json")}
-              className="btn-secondary text-sm py-2 flex items-center justify-center gap-2"
+              onClick={() => navigate(`/scan/${scanId}`)}
+              className="btn-primary px-6 py-3 flex items-center gap-2"
             >
-              <Download className="w-4 h-4" />
-              JSON
+              View Full Report
+              <ChevronRight className="w-5 h-5" />
             </button>
-            <button
-              onClick={() => exportData("csv")}
-              className="btn-secondary text-sm py-2 flex items-center justify-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              CSV
-            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Failed Message */}
+      {scanId && status === "FAILED" && (
+        <div className="card animate-slide-up bg-gradient-to-r from-red-900/20 to-orange-900/20 border-red-500/30">
+          <div className="flex items-center gap-4">
+            <div className="bg-red-500/20 rounded-full p-3">
+              <AlertTriangle className="w-8 h-8 text-red-400" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-white">Scan Failed</h3>
+              <p className="text-gray-400 mt-1">
+                {error || "An error occurred during the scan. Please try again."}
+              </p>
+            </div>
           </div>
         </div>
       )}
