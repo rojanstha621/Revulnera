@@ -107,6 +107,12 @@ func CheckHostWithOptions(host string, opts *ProbeOptions) HostCheck {
 // ProbeHosts probes multiple hosts concurrently using a worker pool.
 // This is the main concurrent function you should use for bulk probing.
 func ProbeHosts(hosts []string, opts *ProbeOptions) []HostCheck {
+	return ProbeHostsWithCallback(hosts, opts, nil)
+}
+
+// ProbeHostsWithCallback probes hosts and calls the callback immediately for each result.
+// If callback is nil, behaves like ProbeHosts (returns all results at end).
+func ProbeHostsWithCallback(hosts []string, opts *ProbeOptions, callback func(HostCheck)) []HostCheck {
 	if opts == nil {
 		opts = DefaultProbeOptions()
 	}
@@ -125,7 +131,13 @@ func ProbeHosts(hosts []string, opts *ProbeOptions) []HostCheck {
 		go func() {
 			defer wg.Done()
 			for idx := range jobs {
-				results[idx] = CheckHostWithOptions(hosts[idx], opts)
+				result := CheckHostWithOptions(hosts[idx], opts)
+				results[idx] = result
+
+				// Immediately call callback if provided
+				if callback != nil {
+					callback(result)
+				}
 			}
 		}()
 	}

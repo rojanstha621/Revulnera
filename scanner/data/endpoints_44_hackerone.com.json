@@ -1,0 +1,3178 @@
+{
+  "scan_id": 44,
+  "target": "hackerone.com",
+  "endpoints": [
+    {
+      "url": "https://api.hackerone.com/v1/reports",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/me/organizations",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/reports?filter",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/?utm_campaign=HackerOne\u0026utm_medium=referral\u0026utm_source=JSON+API+App\u0026utm_term=HackerOne",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/#introduction",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-cfc9d06b.eot?-syv14m",
+      "status_code": 200,
+      "content_length": 1876,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/vnd.ms-fontobject",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-cfc9d06b.eot",
+      "status_code": 200,
+      "content_length": 1876,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/vnd.ms-fontobject",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-7b7da4fe.ttf?-syv14m",
+      "status_code": 200,
+      "content_length": 1720,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/x-font-ttf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-33847ce5.woff?-syv14m",
+      "status_code": 200,
+      "content_length": 1796,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/font-woff",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/favicon.ico",
+      "status_code": 200,
+      "content_length": 5430,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/x-icon",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-e55b8307.svg?-syv14m",
+      "status_code": 200,
+      "content_length": 2936,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/effra-regular-7ebee9e1.woff",
+      "status_code": 200,
+      "content_length": 26116,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/font-woff",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/effra-medium-d33322a0.woff",
+      "status_code": 200,
+      "content_length": 24256,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/font-woff",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/roboto-mono-regular-5d9f74e5.ttf",
+      "status_code": 200,
+      "content_length": 109212,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/x-font-ttf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/getting-started-icon-8e568c9c.svg",
+      "status_code": 200,
+      "content_length": 888,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/navbar-cad8cdcb.png",
+      "status_code": 200,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/home-icon-e212aeb8.svg",
+      "status_code": 200,
+      "content_length": 1137,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/home-active-icon-6979dd36.svg",
+      "status_code": 200,
+      "content_length": 1136,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/getting-started-active-icon-f7dee771.svg",
+      "status_code": 200,
+      "content_length": 936,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/logo-bbd4b66d.svg",
+      "status_code": 200,
+      "content_length": 3545,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/resources-icon-eb571889.svg",
+      "status_code": 200,
+      "content_length": 2676,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/rss-feed-icon-565f423d.svg",
+      "status_code": 200,
+      "content_length": 441,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/reference-active-icon-a9da1614.svg",
+      "status_code": 200,
+      "content_length": 1718,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/rss-feed-active-icon-0a4a2f9c.svg",
+      "status_code": 200,
+      "content_length": 441,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/resources-active-icon-bdf6f13e.svg",
+      "status_code": 200,
+      "content_length": 2714,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/reference-icon-740a9c21.svg",
+      "status_code": 200,
+      "content_length": 1630,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/use-cases-active-icon-8c939a80.svg",
+      "status_code": 200,
+      "content_length": 1513,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/app/breadcrumbs-cdf04b49.js",
+      "status_code": 200,
+      "content_length": 497,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/all-6f28b40b.js",
+      "status_code": 200,
+      "content_length": 283,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/use-cases-icon-27cdd84f.svg",
+      "status_code": 200,
+      "content_length": 1926,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/webhooks-active-icon-9c399eb3.svg",
+      "status_code": 200,
+      "content_length": 2088,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/app/lang-88b01eee.js",
+      "status_code": 200,
+      "content_length": 2366,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/webhooks-icon-b2932429.svg",
+      "status_code": 200,
+      "content_length": 2106,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/app/toc-8871687e.js",
+      "status_code": 200,
+      "content_length": 1538,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/lib/energize-c9ca2008.js",
+      "status_code": 200,
+      "content_length": 1454,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/stylesheets/print-058b6ba1.css",
+      "status_code": 200,
+      "content_length": 5040,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/lib/jquery-6ee8aaa3.js",
+      "status_code": 200,
+      "content_length": 87458,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/stylesheets/screen-3e3f5655.css",
+      "status_code": 200,
+      "content_length": 18631,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/changelog.rss",
+      "status_code": 200,
+      "content_length": 39518,
+      "title": "HackerOne API Changelog",
+      "headers": {
+        "Content-Type": "application/rss+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-reference",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources?javascript",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-reference#activity-activity-report-vulnerability-information-updated",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-reference#member",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/docs/v1",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources?shell",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started-hacker-api",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/hacker-resources",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started?shell",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/hacker-reference",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started/#error-responses",
+      "status_code": 200,
+      "content_length": 47765,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/hackers/programs",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/webhooks",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/hackers/reports",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/use-cases",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/api-docs/v1/swagger.json",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/api",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/hackers/programs/${handle}/structured_scopes`",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/?referrer=T1",
+      "status_code": 302,
+      "content_length": 108,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/",
+      "status_code": 302,
+      "content_length": 108,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/account",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/accounts",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/?referrer=T1support.hackerone.com%2F%3Freferrer%3DT1",
+      "status_code": 302,
+      "content_length": 108,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/integrations.js",
+      "status_code": 200,
+      "content_length": 2591,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/nonce.js",
+      "status_code": 200,
+      "content_length": 113,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/images/no-results.png",
+      "status_code": 200,
+      "content_length": 8969,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/search.js",
+      "status_code": 200,
+      "content_length": 11390,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/locales/en.js",
+      "status_code": 200,
+      "content_length": 4117,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/head.js",
+      "status_code": 200,
+      "content_length": 24797,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/login.js",
+      "status_code": 200,
+      "content_length": 16154,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/signup.js",
+      "status_code": 200,
+      "content_length": 37152,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/bottom.js",
+      "status_code": 200,
+      "content_length": 132531,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/marketplace.js",
+      "status_code": 200,
+      "content_length": 130224,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/misc/favicon.ico",
+      "status_code": 200,
+      "content_length": 1150,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/x-icon",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/touch/touch-icon-ipad.png",
+      "status_code": 200,
+      "content_length": 1947,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/misc/favicon.ico?702017",
+      "status_code": 200,
+      "content_length": 1150,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/x-icon",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/touch/touch-icon-iphone-retina.png",
+      "status_code": 200,
+      "content_length": 8100,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/styles/fonts/icomoon.ttf?qilaa4",
+      "status_code": 200,
+      "content_length": 21380,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/x-font-ttf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/touch/touch-icon-ipad-retina.png",
+      "status_code": 200,
+      "content_length": 2534,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/scripts/single-solution.js",
+      "status_code": 200,
+      "content_length": 38930,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/touch/touch-icon-iphone.png",
+      "status_code": 200,
+      "content_length": 1622,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/styles/theme.css",
+      "status_code": 200,
+      "content_length": 1172480,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/vendor.js",
+      "status_code": 200,
+      "content_length": 978067,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/assets/cdn/portal/styles/theme.css?FD003",
+      "status_code": 200,
+      "content_length": 1172480,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources/#programs-get-triage-reviews",
+      "status_code": 200,
+      "content_length": 3154543,
+      "title": "HackerOne API v1",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources/#organizations-get-member",
+      "status_code": 200,
+      "content_length": 3154543,
+      "title": "HackerOne API v1",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/freshid/authorize_callback?error=login_required\u0026error_description=user_login_is_required\u0026hd=support.hackerone.com",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/groups",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/freshid/authorize_callback?error=login_required\u0026error_description=user_login_is_required\u0026hd=https%3A%2F%2Fsupport.hackerone.com",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/helpdesk/theme.css",
+      "status_code": 200,
+      "content_length": 4079,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/helpdesk/theme.css?v=1765476844",
+      "status_code": 200,
+      "content_length": 4079,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/helpdesk/theme.css?v=1715165688",
+      "status_code": 200,
+      "content_length": 4079,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/helpdesk",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/login",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/password_resets/new",
+      "status_code": 302,
+      "content_length": 125,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/register/Pt0XF35Y3KJiSZraUHI2",
+      "status_code": 302,
+      "content_length": 115,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/reports",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/login/normal",
+      "status_code": 200,
+      "content_length": 14003,
+      "title": "Helpdesk : HackerOne Support Portal",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS",
+        "Ruby",
+        "Ruby on Rails"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1df32e7885e3831e62c5f0af2cf6e668/extremely_happy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1479838f21efd8b8ba8e33f0c896fe8d/extremely_unhappy/new?source=new_via_portal",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1479838f21efd8b8ba8e33f0c896fe8d/very_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1c42470604e8dd174af7b3f3dec961ca/extremely_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/robots.txt",
+      "status_code": 200,
+      "content_length": 515,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/plain",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1df32e7885e3831e62c5f0af2cf6e668/neutral/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1df32e7885e3831e62c5f0af2cf6e668/very_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/44f7b4e0a1693bea3cd10035f8994a9c/extremely_happy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/986c37e0d082ab2ed17fbda898c14f8d/extremely_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1df32e7885e3831e62c5f0af2cf6e668/extremely_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/64ada76e943f268b2f766bbaed8dd7cf/very_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/1df32e7885e3831e62c5f0af2cf6e668/very_happy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/371887f28b0921d6204b82abd45d812f/extremely_unhappy/new?source=new_via_portal",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/986c37e0d082ab2ed17fbda898c14f8d/extremely_happy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/986c37e0d082ab2ed17fbda898c14f8d/neutral/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/b1d11a0e884ea8778e1f342fafe14365/extremely_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/b1d11a0e884ea8778e1f342fafe14365/very_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/986c37e0d082ab2ed17fbda898c14f8d/very_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/c7bccec2817d18079038bc1d023cce03/extremely_unhappy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/b1d11a0e884ea8778e1f342fafe14365/extremely_happy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/a2fd64f1cb2c910561069bd4a9c82123/extremely_unhappy/new?source=new_via_portal",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/b1d11a0e884ea8778e1f342fafe14365/very_happy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/b1d11a0e884ea8778e1f342fafe14365/neutral/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/custom_surveys/986c37e0d082ab2ed17fbda898c14f8d/very_happy/new",
+      "status_code": 302,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/home",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/signup",
+      "status_code": 302,
+      "content_length": 330,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000134934",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000134935",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/search",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/sitemap.xml",
+      "status_code": 200,
+      "content_length": 330,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000109874",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/profile/edit",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/login",
+      "status_code": 302,
+      "content_length": 330,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/recaptcha",
+      "status_code": 200,
+      "content_length": 3063,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS",
+        "reCAPTCHA"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000159607",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000134996",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/folders/151000400381",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/461959",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000148023",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000134938",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000134939",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/solutions/151000134940",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/helpdesk/theme.css?v=1682957345",
+      "status_code": 200,
+      "content_length": 4079,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/570761",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/573156",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/537471",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/553760",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/570209",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/473101",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/564565",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/556846",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/570212",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/570762",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/573158",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/573157",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/605999",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/597101",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/586226",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/576178",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/601056",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/591300",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/586795",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/586227",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/620549",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/619552",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/620369",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/620547",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/622075",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/619551",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/606550",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/617878",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/621271",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/622584",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets?wf_filter=open_or_pending\u0026wf_order=created_at\u0026wf_order_type=desc",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/new",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/new?ticket_form=contact_hackerone",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/x",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets/634602",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/support/tickets?page=2\u0026wf_filter=open_or_pending\u0026wf_order=created_at\u0026wf_order_type=desc",
+      "status_code": 302,
+      "content_length": 101,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/ticket_fields",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/users",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-02-17T14:24:02.248823069Z"
+}

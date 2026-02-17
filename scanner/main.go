@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -11,10 +12,21 @@ import (
 )
 
 func main() {
+	// Set up logging to both terminal and file
+	logFile, err := os.OpenFile("scanner.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("failed to open log file: %v", err)
+	}
+	defer logFile.Close()
+
+	// Create multi-writer to write to both stdout and file
+	multiWriter := io.MultiWriter(os.Stdout, logFile)
+	log.SetOutput(multiWriter)
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/jobs", jobHandler)
 	mux.HandleFunc("/endpoints", endpointsHandler)
-	    mux.HandleFunc("/scan", scanHandler) 
+	mux.HandleFunc("/scan", scanHandler)
 
 	addr := ":8080"
 	if v := os.Getenv("RECON_HTTP_ADDR"); v != "" {

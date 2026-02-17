@@ -1,0 +1,299 @@
+{
+  "scan_id": 35,
+  "target": "hackerone.com",
+  "subdomains": [
+    {
+      "name": "support.hackerone.com",
+      "ip": "162.159.140.147",
+      "ips": [
+        "162.159.140.147",
+        "172.66.0.145"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "blog.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup blog.hackerone.com: no such host"
+    },
+    {
+      "name": "zendesk1.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup zendesk1.hackerone.com: no such host"
+    },
+    {
+      "name": "design.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup design.hackerone.com: no such host"
+    },
+    {
+      "name": "www.hackerone.com",
+      "ip": "2606:4700:440a::6812:24d6",
+      "ips": [
+        "2606:4700:440a::6812:24d6",
+        "2a06:98c1:3106::ac40:972a",
+        "172.64.151.42",
+        "104.18.36.214"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "a.ns.hackerone.com",
+      "ip": "2400:cb00:2049:1::a29f:1f",
+      "ips": [
+        "2400:cb00:2049:1::a29f:1f",
+        "162.159.0.31"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "b.ns.hackerone.com",
+      "ip": "2400:cb00:2049:1::a29f:11f",
+      "ips": [
+        "2400:cb00:2049:1::a29f:11f",
+        "162.159.1.31"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "api.hackerone.com",
+      "ip": "2606:4700:440a::6812:24d6",
+      "ips": [
+        "2606:4700:440a::6812:24d6",
+        "2a06:98c1:3106::ac40:972a",
+        "104.18.36.214",
+        "172.64.151.42"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "events.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup events.hackerone.com: no such host"
+    },
+    {
+      "name": "email.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup email.hackerone.com: no such host"
+    },
+    {
+      "name": "resources.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup resources.hackerone.com: no such host"
+    },
+    {
+      "name": "zendesk2.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup zendesk2.hackerone.com: no such host"
+    },
+    {
+      "name": "zendesk3.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup zendesk3.hackerone.com: no such host"
+    },
+    {
+      "name": "links.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup links.hackerone.com: no such host"
+    },
+    {
+      "name": "gslink.hackerone.com",
+      "ip": "2600:9000:200a:a200:1:9f06:1140:93a1",
+      "ips": [
+        "2600:9000:200a:a200:1:9f06:1140:93a1",
+        "2600:9000:200a:4000:1:9f06:1140:93a1",
+        "2600:9000:200a:0:1:9f06:1140:93a1",
+        "2600:9000:200a:8000:1:9f06:1140:93a1",
+        "2600:9000:200a:6000:1:9f06:1140:93a1",
+        "2600:9000:200a:3400:1:9f06:1140:93a1",
+        "2600:9000:200a:6600:1:9f06:1140:93a1",
+        "2600:9000:200a:b600:1:9f06:1140:93a1",
+        "13.227.249.98",
+        "13.227.249.113",
+        "13.227.249.99",
+        "13.227.249.110"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": ".hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup .hackerone.com: no such host"
+    },
+    {
+      "name": "o1.email.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup o1.email.hackerone.com: no such host"
+    },
+    {
+      "name": "go.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup go.hackerone.com: no such host"
+    },
+    {
+      "name": "mta-sts.hackerone.com",
+      "ip": "2606:50c0:8003::153",
+      "ips": [
+        "2606:50c0:8003::153",
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "185.199.109.153",
+        "185.199.110.153",
+        "185.199.111.153",
+        "185.199.108.153"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "apis.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup apis.hackerone.com: no such host"
+    },
+    {
+      "name": "ns.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup ns.hackerone.com: no such host"
+    },
+    {
+      "name": "o3.email.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup o3.email.hackerone.com: no such host"
+    },
+    {
+      "name": "pmbounces.hackerone.com",
+      "ip": "18.118.190.143",
+      "ips": [
+        "18.118.190.143",
+        "18.117.22.235",
+        "3.151.223.192"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "docs.hackerone.com",
+      "ip": "2606:4700:440a::6812:24d6",
+      "ips": [
+        "2606:4700:440a::6812:24d6",
+        "2a06:98c1:3106::ac40:972a",
+        "104.18.36.214",
+        "172.64.151.42"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "3d.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup 3d.hackerone.com: no such host"
+    },
+    {
+      "name": "fwdkim1.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup fwdkim1.hackerone.com: no such host"
+    },
+    {
+      "name": "websockets.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup websockets.hackerone.com: no such host"
+    },
+    {
+      "name": "info.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup info.hackerone.com: no such host"
+    },
+    {
+      "name": "mta-sts.managed.hackerone.com",
+      "ip": "2606:50c0:8000::153",
+      "ips": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "2606:50c0:8003::153",
+        "185.199.110.153",
+        "185.199.109.153",
+        "185.199.108.153",
+        "185.199.111.153"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "mta-sts.forwarding.hackerone.com",
+      "ip": "2606:50c0:8000::153",
+      "ips": [
+        "2606:50c0:8000::153",
+        "2606:50c0:8003::153",
+        "2606:50c0:8001::153",
+        "2606:50c0:8002::153",
+        "185.199.108.153",
+        "185.199.109.153",
+        "185.199.111.153",
+        "185.199.110.153"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "o2.email.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup o2.email.hackerone.com: no such host"
+    },
+    {
+      "name": "zendesk4.hackerone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup zendesk4.hackerone.com: no such host"
+    }
+  ],
+  "saved_at": "2026-02-17T11:05:14.975031938Z"
+}

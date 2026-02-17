@@ -22,10 +22,17 @@ import (
 )
 
 const (
-	defaultWordlistPath = "wordlists/common.txt"
-	defaultWorkerCount  = 20
-	defaultRPS          = 10
+	defaultWorkerCount = 20
+	defaultRPS         = 10
 )
+
+// Global log callback for progress messages
+var globalLogCallback func(message, level string)
+
+// SetLogCallback sets the callback for sending progress log messages
+func SetLogCallback(callback func(message, level string)) {
+	globalLogCallback = callback
+}
 
 // ---------------- TYPES ----------------
 
@@ -44,71 +51,83 @@ type EndpointResult struct {
 
 // DiscoverEndpointsFromScan:
 // 1) load alive subdomains
-// 2) brute-force paths
-// 3) probe endpoints
-// 4) domain + endpoint fingerprinting
-// 5) save results
+// 2) dynamically discover endpoints using gau, katana, and JS analysis
+// 3) normalize and deduplicate URLs
+// 4) probe discovered endpoints
+// 5) domain + endpoint fingerprinting
+// 6) save results
 func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, error) {
+	return DiscoverEndpointsFromScanWithCallback(scanID, target, nil)
+}
+
+// DiscoverEndpointsFromScanWithCallback allows streaming results via callback
+// Use SetLogCallback to enable progress log messages during discovery
+func DiscoverEndpointsFromScanWithCallback(scanID int64, target string, callback func(EndpointResult)) ([]EndpointResult, error) {
 	subdomains, scanFile, err := recon.LoadSubdomainsForScan(scanID, target)
 	if err != nil {
 		return nil, fmt.Errorf("load subdomains: %w", err)
 	}
 	log.Printf("[endpoints] loaded %d subdomains from %s", len(subdomains), scanFile)
 
-	wordlistPath := getEnvOrDefault("ENDPOINT_WORDLIST", defaultWordlistPath)
-	paths, err := loadWordlist(wordlistPath)
-	if err != nil {
-		return nil, err
-	}
-
-	schemes := []string{"http", "https"}
-
-	urls := make([]string, 0)
+	// Extract alive hosts for dynamic discovery
+	aliveHosts := make([]string, 0)
 	for _, s := range subdomains {
-		if !s.Alive {
-			continue
-		}
-		for _, scheme := range schemes {
-			for _, p := range paths {
-				urls = append(urls, fmt.Sprintf("%s://%s%s", scheme, s.Name, p))
-			}
+		if s.Alive {
+			aliveHosts = append(aliveHosts, s.Name)
 		}
 	}
 
+	if len(aliveHosts) == 0 {
+		log.Printf("[endpoints] no alive hosts found, skipping endpoint discovery")
+		return []EndpointResult{}, nil
+	}
+
+	log.Printf("[endpoints] starting dynamic discovery for %d alive hosts", len(aliveHosts))
+
+	// Dynamic endpoint discovery using gau, katana, and JS analysis
+	discoveryOpts := DefaultDiscoveryOptions()
+	discoveryOpts.Workers = getEnvIntOrDefault("ENDPOINT_DISCOVERY_WORKERS", 5)
+	discoveryOpts.KatanaDepth = getEnvIntOrDefault("KATANA_DEPTH", 2)
+	discoveryOpts.MaxURLsPerHost = getEnvIntOrDefault("MAX_URLS_PER_HOST", 500)
+
+	urls := DiscoverURLsFromHosts(aliveHosts, discoveryOpts)
+
+	if len(urls) == 0 {
+		log.Printf("[endpoints] no URLs discovered, falling back to basic paths")
+		if globalLogCallback != nil {
+			globalLogCallback("⚠️ No URLs discovered from gau/katana, using basic paths", "warning")
+		}
+		// Fallback: add basic root URLs
+		for _, host := range aliveHosts {
+			urls = append(urls, "https://"+host+"/", "http://"+host+"/")
+		}
+	} else {
+		if globalLogCallback != nil {
+			globalLogCallback(fmt.Sprintf("📊 Discovered %d unique URLs from gau/katana", len(urls)), "info")
+		}
+	}
+
+	log.Printf("[endpoints] discovered %d unique URLs, starting probing", len(urls))
+	if globalLogCallback != nil {
+		globalLogCallback(fmt.Sprintf("🔍 Starting probing of %d URLs...", len(urls)), "info")
+	}
+
+	// Probe discovered URLs with streaming callback
 	workers := getEnvIntOrDefault("ENDPOINT_WORKERS", defaultWorkerCount)
 	rps := getEnvIntOrDefault("ENDPOINT_RPS", defaultRPS)
 
-	results := probeURLsConcurrently(urls, workers, rps)
+	results := probeURLsConcurrentlyWithCallback(urls, workers, rps, callback)
+
+	log.Printf("[endpoints] probing complete: %d endpoints responding", len(results))
+	if globalLogCallback != nil {
+		globalLogCallback(fmt.Sprintf("✅ Probing complete: %d/%d endpoints responding", len(results), len(urls)), "success")
+	}
 
 	if _, err := saveEndpointsToFile(scanID, target, results); err != nil {
 		log.Printf("[endpoints] save error: %v", err)
 	}
 
 	return results, nil
-}
-
-// ---------------- WORDLIST ----------------
-
-func loadWordlist(path string) ([]string, error) {
-	f, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	var paths []string
-	sc := bufio.NewScanner(f)
-	for sc.Scan() {
-		l := strings.TrimSpace(sc.Text())
-		if l == "" || strings.HasPrefix(l, "#") {
-			continue
-		}
-		if !strings.HasPrefix(l, "/") {
-			l = "/" + l
-		}
-		paths = append(paths, l)
-	}
-	return paths, sc.Err()
 }
 
 // ---------------- HTTPX INTEGRATION ----------------
@@ -127,19 +146,29 @@ type HttpxResponse struct {
 
 // probeURLsConcurrently uses httpx for efficient bulk probing
 func probeURLsConcurrently(urls []string, workers int, rps int) []EndpointResult {
+	return probeURLsConcurrentlyWithCallback(urls, workers, rps, nil)
+}
+
+// probeURLsConcurrentlyWithCallback allows streaming results via callback
+func probeURLsConcurrentlyWithCallback(urls []string, workers int, rps int, callback func(EndpointResult)) []EndpointResult {
 	// Try httpx first (much faster and more reliable)
-	if results, err := probeWithHttpx(urls, workers, rps); err == nil && len(results) > 0 {
+	if results, err := probeWithHttpxCallback(urls, workers, rps, callback); err == nil && len(results) > 0 {
 		log.Printf("[endpoints] httpx found %d results", len(results))
 		return results
 	}
 
 	// Fallback to native Go implementation
 	log.Printf("[endpoints] httpx failed, using native Go client")
-	return probeWithNativeHTTP(urls, workers, rps)
+	return probeWithNativeHTTPCallback(urls, workers, rps, callback)
 }
 
 // probeWithHttpx uses httpx tool for efficient probing
 func probeWithHttpx(urls []string, workers int, rps int) ([]EndpointResult, error) {
+	return probeWithHttpxCallback(urls, workers, rps, nil)
+}
+
+// probeWithHttpxCallback allows streaming results via callback
+func probeWithHttpxCallback(urls []string, workers int, rps int, callback func(EndpointResult)) ([]EndpointResult, error) {
 	// Create temp file for input URLs
 	tmpfile, err := os.CreateTemp("", "httpx-input-*.txt")
 	if err != nil {
@@ -226,6 +255,11 @@ func probeWithHttpx(urls []string, workers int, rps int) ([]EndpointResult, erro
 		}
 
 		results = append(results, result)
+
+		// Immediately call callback if provided
+		if callback != nil {
+			callback(result)
+		}
 	}
 
 	return results, nil
@@ -233,6 +267,11 @@ func probeWithHttpx(urls []string, workers int, rps int) ([]EndpointResult, erro
 
 // probeWithNativeHTTP is the fallback implementation
 func probeWithNativeHTTP(urls []string, workers int, rps int) []EndpointResult {
+	return probeWithNativeHTTPCallback(urls, workers, rps, nil)
+}
+
+// probeWithNativeHTTPCallback allows streaming results via callback
+func probeWithNativeHTTPCallback(urls []string, workers int, rps int, callback func(EndpointResult)) []EndpointResult {
 	jobs := make(chan string, workers*2)
 	results := make(chan EndpointResult, workers*2)
 
@@ -272,6 +311,11 @@ func probeWithNativeHTTP(urls []string, workers int, rps int) []EndpointResult {
 	out := make([]EndpointResult, 0)
 	for r := range results {
 		out = append(out, r)
+
+		// Immediately call callback if provided
+		if callback != nil {
+			callback(r)
+		}
 	}
 	return out
 }

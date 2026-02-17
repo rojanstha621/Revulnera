@@ -1,0 +1,231 @@
+{
+  "scan_id": 32,
+  "target": "hackerone.com",
+  "endpoints": [
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://docs.hackerone.com/",
+      "status_code": 200,
+      "content_length": 74688,
+      "title": "HackerOne Help Center",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": 252786,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/admin",
+      "status_code": 403,
+      "content_length": 156348,
+      "title": "403 Not Authorized | HackerOne",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/user",
+      "status_code": 200,
+      "content_length": 8915,
+      "title": "Log in | HackerOne",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://docs.hackerone.com/",
+      "status_code": 200,
+      "content_length": 74686,
+      "title": "HackerOne Help Center",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://pmbounces.hackerone.com/",
+      "status_code": 200,
+      "content_length": 4374,
+      "title": "Postmark — Email delivery for web apps",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "nginx/1.28.0"
+      },
+      "fingerprints": [
+        "Nginx:1.28.0"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/admin",
+      "status_code": 403,
+      "content_length": 156348,
+      "title": "403 Not Authorized | HackerOne",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": 252786,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/user",
+      "status_code": 200,
+      "content_length": 8915,
+      "title": "Log in | HackerOne",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-02-17T10:23:41.041086975Z"
+}

@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"recon/enum"
@@ -14,9 +15,10 @@ import (
 )
 
 type Job struct {
-	ScanID  int64  `json:"scan_id"`
-	Target  string `json:"target"`
-	Workers int    `json:"workers"` // Optional: number of concurrent workers
+	ScanID   int64                 `json:"scan_id"`
+	Target   string                `json:"target"`
+	Workers  int                   `json:"workers"` // Optional: number of concurrent workers
+	Callback func(SubdomainResult) `json:"-"`       // Optional: callback for streaming results
 }
 
 type SubdomainResult struct {
@@ -70,19 +72,16 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 		HttpxTimeout: 5,
 	}
 
-	// Probe all hosts concurrently
-	checks := probe.ProbeHosts(subdomains, opts)
-
-	// Convert to SubdomainResult format
-	results := make([]SubdomainResult, 0, len(checks))
+	// Probe all hosts concurrently with streaming callback
+	results := make([]SubdomainResult, 0, len(subdomains))
 	aliveCount := 0
-	for _, check := range checks {
+	var resultsMutex sync.Mutex
+
+	// Create callback for immediate streaming
+	streamCallback := func(check probe.HostCheck) {
 		primaryIP := ""
 		if len(check.IPs) > 0 {
 			primaryIP = check.IPs[0]
-		}
-		if check.Alive {
-			aliveCount++
 		}
 
 		// Ensure ips is always an array, never null
@@ -91,14 +90,30 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 			ips = []string{}
 		}
 
-		results = append(results, SubdomainResult{
+		result := SubdomainResult{
 			Name:     check.Host,
 			IP:       primaryIP,
 			IPs:      ips,
 			Alive:    check.Alive,
 			ErrorMsg: check.ErrorMsg,
-		})
+		}
+
+		// Thread-safe result storage
+		resultsMutex.Lock()
+		results = append(results, result)
+		if check.Alive {
+			aliveCount++
+		}
+		resultsMutex.Unlock()
+
+		// Call user-provided callback immediately (for real-time updates)
+		if job.Callback != nil {
+			job.Callback(result)
+		}
 	}
+
+	// Probe all hosts with streaming
+	probe.ProbeHostsWithCallback(subdomains, opts, streamCallback)
 
 	log.Printf("[recon] probing complete: %d alive out of %d subdomains", aliveCount, len(results))
 

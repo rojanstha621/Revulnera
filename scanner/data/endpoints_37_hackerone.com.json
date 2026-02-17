@@ -1,0 +1,1054 @@
+{
+  "scan_id": 37,
+  "target": "hackerone.com",
+  "endpoints": [
+    {
+      "url": "https://api.hackerone.com/v1/me/organizations",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/reports?filter",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/reports",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/#introduction",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/?utm_campaign=HackerOne\u0026utm_medium=referral\u0026utm_source=JSON+API+App\u0026utm_term=HackerOne",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/effra-regular-7ebee9e1.woff",
+      "status_code": 200,
+      "content_length": 26116,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/font-woff",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/effra-medium-d33322a0.woff",
+      "status_code": 200,
+      "content_length": 24256,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/font-woff",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/roboto-mono-regular-5d9f74e5.ttf",
+      "status_code": 200,
+      "content_length": 109212,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/x-font-ttf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-7b7da4fe.ttf?-syv14m",
+      "status_code": 200,
+      "content_length": 1720,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/x-font-ttf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-33847ce5.woff?-syv14m",
+      "status_code": 200,
+      "content_length": 1796,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/font-woff",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-cfc9d06b.eot",
+      "status_code": 200,
+      "content_length": 1876,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/vnd.ms-fontobject",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/home-active-icon-6979dd36.svg",
+      "status_code": 200,
+      "content_length": 1136,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/getting-started-active-icon-f7dee771.svg",
+      "status_code": 200,
+      "content_length": 936,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/getting-started-icon-8e568c9c.svg",
+      "status_code": 200,
+      "content_length": 888,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-cfc9d06b.eot?-syv14m",
+      "status_code": 200,
+      "content_length": 1876,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/vnd.ms-fontobject",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/favicon.ico",
+      "status_code": 200,
+      "content_length": 5430,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/x-icon",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/home-icon-e212aeb8.svg",
+      "status_code": 200,
+      "content_length": 1137,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/fonts/slate-e55b8307.svg?-syv14m",
+      "status_code": 200,
+      "content_length": 2936,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/logo-bbd4b66d.svg",
+      "status_code": 200,
+      "content_length": 3545,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/resources-icon-eb571889.svg",
+      "status_code": 200,
+      "content_length": 2676,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/reference-active-icon-a9da1614.svg",
+      "status_code": 200,
+      "content_length": 1718,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/rss-feed-active-icon-0a4a2f9c.svg",
+      "status_code": 200,
+      "content_length": 441,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/navbar-cad8cdcb.png",
+      "status_code": 200,
+      "content_length": 96,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/resources-active-icon-bdf6f13e.svg",
+      "status_code": 200,
+      "content_length": 2714,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/reference-icon-740a9c21.svg",
+      "status_code": 200,
+      "content_length": 1630,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/webhooks-active-icon-9c399eb3.svg",
+      "status_code": 200,
+      "content_length": 2088,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/use-cases-icon-27cdd84f.svg",
+      "status_code": 200,
+      "content_length": 1926,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/use-cases-active-icon-8c939a80.svg",
+      "status_code": 200,
+      "content_length": 1513,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/rss-feed-icon-565f423d.svg",
+      "status_code": 200,
+      "content_length": 441,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/images/webhooks-icon-b2932429.svg",
+      "status_code": 200,
+      "content_length": 2106,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/all-6f28b40b.js",
+      "status_code": 200,
+      "content_length": 283,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/app/lang-88b01eee.js",
+      "status_code": 200,
+      "content_length": 2366,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/app/breadcrumbs-cdf04b49.js",
+      "status_code": 200,
+      "content_length": 497,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/app/toc-8871687e.js",
+      "status_code": 200,
+      "content_length": 1538,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/stylesheets/print-058b6ba1.css",
+      "status_code": 200,
+      "content_length": 5040,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/lib/jquery-6ee8aaa3.js",
+      "status_code": 200,
+      "content_length": 87458,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/javascripts/lib/energize-c9ca2008.js",
+      "status_code": 200,
+      "content_length": 1454,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/assets/stylesheets/screen-3e3f5655.css",
+      "status_code": 200,
+      "content_length": 18631,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-reference#member",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources?javascript",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-reference#activity-activity-report-vulnerability-information-updated",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-reference",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/changelog.rss",
+      "status_code": 200,
+      "content_length": 39518,
+      "title": "HackerOne API Changelog",
+      "headers": {
+        "Content-Type": "application/rss+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources?shell",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/docs/v1",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/hacker-resources",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started?shell",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started/#error-responses",
+      "status_code": 200,
+      "content_length": 47765,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/getting-started-hacker-api",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/hacker-reference",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/api-docs/v1/swagger.json",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/api",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/hackers/programs",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/use-cases",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/hackers/programs/${handle}/structured_scopes`",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/v1/hackers/reports",
+      "status_code": 401,
+      "content_length": 27,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/json",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Basic",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/webhooks",
+      "status_code": 301,
+      "content_length": 162,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources/#organizations-get-member",
+      "status_code": 200,
+      "content_length": 3154543,
+      "title": "HackerOne API v1",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/customer-resources/#programs-get-triage-reviews",
+      "status_code": 200,
+      "content_length": 3154543,
+      "title": "HackerOne API v1",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-02-17T13:15:01.875662794Z"
+}

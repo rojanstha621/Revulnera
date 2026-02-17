@@ -52,45 +52,73 @@ func runFullScan(req ScanRequest) {
 	portIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/ports/ingest/", req.BackendBase, req.ScanID)
 	tlsIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/tls/ingest/", req.BackendBase, req.ScanID)
 	dirIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/dirs/ingest/", req.BackendBase, req.ScanID)
+	logURL := fmt.Sprintf("%s/api/recon/scans/%d/logs/", req.BackendBase, req.ScanID)
 
 	postStatus(req.AuthHeader, statusURL, "RUNNING", "")
 
-	// 1) Subdomains (your existing HandleJob saves to file too; fine)
-	subs, err := reconpkg.HandleJob(reconpkg.Job{ScanID: req.ScanID, Target: req.Target})
-	if err != nil {
-		postStatus(req.AuthHeader, statusURL, "FAILED", err.Error())
-		return
-	}
+	// 1) Subdomains with real-time streaming
+	log.Printf("[scan] starting subdomain discovery with streaming")
+	postLog(req.AuthHeader, logURL, fmt.Sprintf("🔍 Starting subdomain enumeration for %s...", req.Target), "info")
 
-	// Send subdomains in chunks
-	chunkSize := 50
-	for i := 0; i < len(subs); i += chunkSize {
-		j := i + chunkSize
-		if j > len(subs) {
-			j = len(subs)
-		}
+	// Create streaming callback for immediate updates
+	subdomainCallback := func(sub reconpkg.SubdomainResult) {
+		// Send immediately to backend (single item)
 		postJSON(req.AuthHeader, subIngest, map[string]any{
-			"items": subs[i:j],
+			"items": []reconpkg.SubdomainResult{sub},
 		})
+		log.Printf("[scan] streamed subdomain: %s (alive=%v)", sub.Name, sub.Alive)
 	}
 
-	// 2) Endpoints (includes filtering + fingerprinting + saves endpoints json)
-	eps, err := endpointspkg.DiscoverEndpointsFromScan(req.ScanID, req.Target)
+	subs, err := reconpkg.HandleJob(reconpkg.Job{
+		ScanID:   req.ScanID,
+		Target:   req.Target,
+		Callback: subdomainCallback,
+	})
 	if err != nil {
 		postStatus(req.AuthHeader, statusURL, "FAILED", err.Error())
+		postLog(req.AuthHeader, logURL, fmt.Sprintf("❌ Subdomain enumeration failed: %v", err), "error")
 		return
 	}
 
-	// Send endpoints in chunks
-	for i := 0; i < len(eps); i += chunkSize {
-		j := i + chunkSize
-		if j > len(eps) {
-			j = len(eps)
+	log.Printf("[scan] subdomain discovery complete: %d total", len(subs))
+	aliveCount := 0
+	for _, sub := range subs {
+		if sub.Alive {
+			aliveCount++
 		}
-		postJSON(req.AuthHeader, epIngest, map[string]any{
-			"items": eps[i:j],
-		})
 	}
+	postLog(req.AuthHeader, logURL, fmt.Sprintf("✅ Subdomain enumeration complete: found %d subdomains (%d alive)", len(subs), aliveCount), "success")
+
+	// 2) Endpoints with real-time streaming
+	log.Printf("[scan] starting endpoint discovery with streaming")
+	postLog(req.AuthHeader, logURL, "🕷️ Starting endpoint discovery (gau + katana)...", "info")
+
+	// Set log callbacks for progress updates during discovery and probing
+	endpointspkg.SetLogCallback(func(message, level string) {
+		postLog(req.AuthHeader, logURL, message, level)
+	})
+	endpointspkg.SetDiscoveryLogCallback(func(message, level string) {
+		postLog(req.AuthHeader, logURL, message, level)
+	})
+
+	// Create streaming callback for immediate updates
+	endpointCallback := func(ep endpointspkg.EndpointResult) {
+		// Send immediately to backend (single item)
+		postJSON(req.AuthHeader, epIngest, map[string]any{
+			"items": []endpointspkg.EndpointResult{ep},
+		})
+		log.Printf("[scan] streamed endpoint: %s (status=%d)", ep.URL, ep.StatusCode)
+	}
+
+	eps, err := endpointspkg.DiscoverEndpointsFromScanWithCallback(req.ScanID, req.Target, endpointCallback)
+	if err != nil {
+		postStatus(req.AuthHeader, statusURL, "FAILED", err.Error())
+		postLog(req.AuthHeader, logURL, fmt.Sprintf("❌ Endpoint discovery failed: %v", err), "error")
+		return
+	}
+
+	log.Printf("[scan] endpoint discovery complete: %d total", len(eps))
+	// Note: Progress log already sent by endpoints package
 
 	// 3) Network Analysis - Run port scanning, TLS checks, and directory checks for discovered hosts
 	log.Printf("[network] starting network analysis for scan %d", req.ScanID)
@@ -105,14 +133,18 @@ func runFullScan(req ScanRequest) {
 
 	if len(hosts) == 0 {
 		log.Printf("[network] no alive hosts found, skipping network analysis")
+		postLog(req.AuthHeader, logURL, "⚠️ No alive hosts found, skipping network analysis", "warning")
 	} else {
 		log.Printf("[network] analyzing %d hosts", len(hosts))
+		postLog(req.AuthHeader, logURL, fmt.Sprintf("🔬 Starting network analysis for %d hosts...", len(hosts)), "info")
 
 		// Run network analysis concurrently with worker pool
 		runNetworkAnalysis(hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest)
+		postLog(req.AuthHeader, logURL, fmt.Sprintf("✅ Network analysis complete for %d hosts", len(hosts)), "success")
 	}
 
 	postStatus(req.AuthHeader, statusURL, "COMPLETED", "")
+	postLog(req.AuthHeader, logURL, "🎉 Scan completed successfully!", "success")
 }
 
 func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {
@@ -195,6 +227,15 @@ func postStatus(authHeader, url, status, errMsg string) {
 	body := map[string]any{"status": status}
 	if errMsg != "" {
 		body["error"] = errMsg
+	}
+	postJSON(authHeader, url, body)
+}
+
+func postLog(authHeader, url, message, level string) {
+	body := map[string]any{
+		"message":   message,
+		"level":     level,
+		"timestamp": time.Now().Format(time.RFC3339),
 	}
 	postJSON(authHeader, url, body)
 }

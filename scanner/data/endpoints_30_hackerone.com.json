@@ -1,0 +1,733 @@
+{
+  "scan_id": 30,
+  "target": "hackerone.com",
+  "endpoints": [
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/auth",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/admin/login",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/admin",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/dashboard",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/api",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/user",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/api/v1",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/login",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/api/internal",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/signup",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/account",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/profile",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/settings",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://docs.hackerone.com/",
+      "status_code": 302,
+      "content_length": 0,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/auth",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/admin",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/api/v1",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/api",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/account",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/api/internal",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/admin/login",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/settings",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/dashboard",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/profile",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/signup",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/login",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/user",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/",
+      "status_code": 302,
+      "content_length": 108,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/account",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/login",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": 252786,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/admin",
+      "status_code": 403,
+      "content_length": 156348,
+      "title": "403 Not Authorized | HackerOne",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/user",
+      "status_code": 302,
+      "content_length": 390,
+      "title": "Redirecting to https://www.hackerone.com/user/login",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://pmbounces.hackerone.com/",
+      "status_code": 200,
+      "content_length": 4374,
+      "title": "Postmark — Email delivery for web apps",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "nginx/1.28.0"
+      },
+      "fingerprints": [
+        "Nginx:1.28.0"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://docs.hackerone.com/",
+      "status_code": 302,
+      "content_length": 0,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/account",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/",
+      "status_code": 302,
+      "content_length": 108,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/login",
+      "status_code": 302,
+      "content_length": 109,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/admin",
+      "status_code": 403,
+      "content_length": 156348,
+      "title": "403 Not Authorized | HackerOne",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": 252786,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/user",
+      "status_code": 302,
+      "content_length": 390,
+      "title": "Redirecting to https://www.hackerone.com/user/login",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-02-17T10:02:21.038876003Z"
+}
