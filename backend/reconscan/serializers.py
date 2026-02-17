@@ -9,7 +9,7 @@ class ScanSerializer(serializers.ModelSerializer):
 class SubdomainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subdomain
-        fields = ["name", "ip", "alive"]
+        fields = ["name", "ip", "ips", "alive", "error_msg"]
 
 class EndpointSerializer(serializers.ModelSerializer):
     class Meta:

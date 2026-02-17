@@ -73,15 +73,32 @@ class IngestSubdomainsView(APIView):
             name = it.get("name")
             if not name:
                 continue
+            
+            # Extract IPs (support both old 'ip' and new 'ips' fields)
+            ips = it.get("ips", [])
+            if not ips and it.get("ip"):
+                ips = [it.get("ip")]
+            
+            # Get primary IP (first one for backward compatibility)
+            primary_ip = ips[0] if ips else None
+            
             obj, _ = Subdomain.objects.update_or_create(
                 scan=scan,
                 name=name,
                 defaults={
-                    "ip": it.get("ip") or None,
+                    "ip": primary_ip,
+                    "ips": ips,
                     "alive": bool(it.get("alive", False)),
+                    "error_msg": it.get("error_msg", ""),
                 }
             )
-            out.append({"name": obj.name, "ip": obj.ip, "alive": obj.alive})
+            out.append({
+                "name": obj.name, 
+                "ip": obj.ip, 
+                "ips": obj.ips,
+                "alive": obj.alive,
+                "error_msg": obj.error_msg
+            })
 
         broadcast(scan.id, {"type": "subdomains_chunk", "scan_id": scan.id, "data": out})
         return Response({"ok": True, "count": len(out)})
@@ -179,7 +196,7 @@ class UserScanDetailView(APIView):
         if scan.created_by != request.user:
             return Response({"detail": "Not found"}, status=404)
         
-        subdomains = scan.subdomains.all().values("id", "name", "ip", "alive")
+        subdomains = scan.subdomains.all().values("id", "name", "ip", "ips", "alive", "error_msg")
         endpoints = scan.endpoints.all().values(
             "id", "url", "status_code", "title", "headers", "fingerprints"
         )

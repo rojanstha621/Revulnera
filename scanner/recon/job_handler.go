@@ -14,14 +14,17 @@ import (
 )
 
 type Job struct {
-	ScanID int64  `json:"scan_id"`
-	Target string `json:"target"`
+	ScanID  int64  `json:"scan_id"`
+	Target  string `json:"target"`
+	Workers int    `json:"workers"` // Optional: number of concurrent workers
 }
 
 type SubdomainResult struct {
-	Name  string `json:"name"`
-	IP    string `json:"ip"`
-	Alive bool   `json:"alive"`
+	Name     string   `json:"name"`
+	IP       string   `json:"ip"`  // Primary IP (first one) for backward compatibility
+	IPs      []string `json:"ips"` // All resolved IPs
+	Alive    bool     `json:"alive"`
+	ErrorMsg string   `json:"error_msg"` // Error details if any
 }
 
 // ScanFilePath returns the JSON path for a given scan_id + target.
@@ -36,9 +39,11 @@ func ScanFilePath(scanID int64, target string) string {
 }
 
 // HandleJob: enum + liveness + save to file.
+// Now uses concurrent probing with worker pool.
 func HandleJob(job Job) ([]SubdomainResult, error) {
 	log.Printf("[recon] starting job: scan_id=%d target=%s", job.ScanID, job.Target)
 
+	// Enumerate subdomains
 	subdomains, err := enum.EnumerateSubdomains(job.Target, &enum.SubfinderOptions{
 		BinaryPath: "subfinder",
 		Timeout:    120 * time.Second,
@@ -48,22 +53,61 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 		return nil, err
 	}
 
-	results := make([]SubdomainResult, 0, len(subdomains))
-	for _, s := range subdomains {
-		check := probe.CheckHost(s)
+	log.Printf("[recon] found %d subdomains, starting concurrent probing", len(subdomains))
+
+	// Configure probe options
+	workers := 10
+	if job.Workers > 0 {
+		workers = job.Workers
+	}
+
+	opts := &probe.ProbeOptions{
+		Workers:      workers,
+		HTTPTimeout:  10 * time.Second,
+		DNSTimeout:   5 * time.Second,
+		UseHttpx:     true,
+		HttpxBinary:  "httpx",
+		HttpxTimeout: 5,
+	}
+
+	// Probe all hosts concurrently
+	checks := probe.ProbeHosts(subdomains, opts)
+
+	// Convert to SubdomainResult format
+	results := make([]SubdomainResult, 0, len(checks))
+	aliveCount := 0
+	for _, check := range checks {
+		primaryIP := ""
+		if len(check.IPs) > 0 {
+			primaryIP = check.IPs[0]
+		}
+		if check.Alive {
+			aliveCount++
+		}
+
+		// Ensure ips is always an array, never null
+		ips := check.IPs
+		if ips == nil {
+			ips = []string{}
+		}
+
 		results = append(results, SubdomainResult{
-			Name:  s,
-			IP:    check.IP,
-			Alive: check.Alive,
+			Name:     check.Host,
+			IP:       primaryIP,
+			IPs:      ips,
+			Alive:    check.Alive,
+			ErrorMsg: check.ErrorMsg,
 		})
 	}
+
+	log.Printf("[recon] probing complete: %d alive out of %d subdomains", aliveCount, len(results))
 
 	if _, err := SaveSubdomainsToFile(job, results); err != nil {
 		log.Printf("[recon] failed to save results for scan_id=%d: %v", job.ScanID, err)
 	}
 
-	log.Printf("[recon] job finished: scan_id=%d target=%s subdomains=%d",
-		job.ScanID, job.Target, len(results))
+	log.Printf("[recon] job finished: scan_id=%d target=%s subdomains=%d alive=%d",
+		job.ScanID, job.Target, len(results), aliveCount)
 
 	return results, nil
 }

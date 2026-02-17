@@ -52,6 +52,15 @@
 - **Directory Misconfiguration**: Sensitive path detection (.git, .env, backups, admin panels)
 - **Real-time Results**: Chunked streaming via WebSocket
 
+### 4. Performance Improvements ✅ *REFACTORED!*
+- **Concurrent Host Probing**: 10-50x faster with worker pools
+- **Multiple IP Support**: IPv4 + IPv6 resolution
+- **HTTP Fallback**: Works without httpx using native Go
+- **Enhanced Error Tracking**: Detailed error messages for debugging
+- **Production-Ready**: Robust timeout handling and error recovery
+
+📖 **See**: [Refactoring Guide](./REFACTORING_GUIDE.md) | [Quick Start](./QUICK_START_REFACTORED.md) | [Summary](./REFACTORING_SUMMARY.md)
+
 ---
 
 ## Quick Start

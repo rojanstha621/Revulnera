@@ -17,8 +17,10 @@ class Scan(models.Model):
 class Subdomain(models.Model):
     scan = models.ForeignKey(Scan, on_delete=models.CASCADE, related_name="subdomains")
     name = models.CharField(max_length=255, db_index=True)
-    ip = models.GenericIPAddressField(null=True, blank=True)
+    ip = models.GenericIPAddressField(null=True, blank=True)  # Keep for backward compatibility (primary IP)
+    ips = models.JSONField(default=list, blank=True, null=False)  # All resolved IPs (IPv4 + IPv6)
     alive = models.BooleanField(default=False)
+    error_msg = models.TextField(blank=True, default="", null=False)  # Error details if any
 
     class Meta:
         unique_together = ("scan", "name")

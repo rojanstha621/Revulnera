@@ -2,12 +2,15 @@ package endpoints
 
 import (
 	"bufio"
+	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"html"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -108,46 +111,137 @@ func loadWordlist(path string) ([]string, error) {
 	return paths, sc.Err()
 }
 
-// ---------------- RATE LIMITER ----------------
+// ---------------- HTTPX INTEGRATION ----------------
 
-type RateLimiter struct {
-	tokens chan struct{}
+// HttpxResponse matches httpx JSON output structure
+type HttpxResponse struct {
+	URL           string   `json:"url"`
+	StatusCode    int      `json:"status_code"`
+	ContentLength int      `json:"content_length"`
+	Title         string   `json:"title"`
+	Tech          []string `json:"tech"`
+	Server        string   `json:"webserver"`
+	ContentType   string   `json:"content_type"`
+	ResponseTime  string   `json:"response_time"`
 }
 
-func NewRateLimiter(rps int) *RateLimiter {
-	if rps <= 0 {
-		rps = defaultRPS
-	}
-	rl := &RateLimiter{tokens: make(chan struct{}, rps)}
-
-	for i := 0; i < rps; i++ {
-		rl.tokens <- struct{}{}
-	}
-
-	go func() {
-		ticker := time.NewTicker(time.Second / time.Duration(rps))
-		defer ticker.Stop()
-		for range ticker.C {
-			select {
-			case rl.tokens <- struct{}{}:
-			default:
-			}
-		}
-	}()
-
-	return rl
-}
-
-func (r *RateLimiter) Acquire() { <-r.tokens }
-
-// ---------------- CONCURRENCY ----------------
-
+// probeURLsConcurrently uses httpx for efficient bulk probing
 func probeURLsConcurrently(urls []string, workers int, rps int) []EndpointResult {
+	// Try httpx first (much faster and more reliable)
+	if results, err := probeWithHttpx(urls, workers, rps); err == nil && len(results) > 0 {
+		log.Printf("[endpoints] httpx found %d results", len(results))
+		return results
+	}
+
+	// Fallback to native Go implementation
+	log.Printf("[endpoints] httpx failed, using native Go client")
+	return probeWithNativeHTTP(urls, workers, rps)
+}
+
+// probeWithHttpx uses httpx tool for efficient probing
+func probeWithHttpx(urls []string, workers int, rps int) ([]EndpointResult, error) {
+	// Create temp file for input URLs
+	tmpfile, err := os.CreateTemp("", "httpx-input-*.txt")
+	if err != nil {
+		return nil, fmt.Errorf("create temp file: %w", err)
+	}
+	defer os.Remove(tmpfile.Name())
+
+	// Write URLs to temp file
+	for _, url := range urls {
+		fmt.Fprintln(tmpfile, url)
+	}
+	tmpfile.Close()
+
+	// Run httpx with optimal flags
+	args := []string{
+		"-silent",
+		"-json",
+		"-l", tmpfile.Name(),
+		"-threads", fmt.Sprintf("%d", workers),
+		"-rate-limit", fmt.Sprintf("%d", rps),
+		"-timeout", "7",
+		"-retries", "1",
+		"-status-code",
+		"-content-length",
+		"-title",
+		"-tech-detect",
+		"-web-server",
+		"-content-type",
+		"-response-time",
+		"-match-code", "200,201,202,204,301,302,307,308,401,403,405",
+		"-no-color",
+	}
+
+	cmd := exec.Command("httpx", args...)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		if strings.Contains(err.Error(), "executable file not found") {
+			return nil, fmt.Errorf("httpx not installed")
+		}
+		return nil, fmt.Errorf("httpx error: %w (stderr: %s)", err, stderr.String())
+	}
+
+	// Parse JSON output
+	results := make([]EndpointResult, 0)
+	scanner := bufio.NewScanner(strings.NewReader(stdout.String()))
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+
+		var httpxResp HttpxResponse
+		if err := json.Unmarshal([]byte(line), &httpxResp); err != nil {
+			log.Printf("[endpoints] parse error: %v", err)
+			continue
+		}
+
+		// Convert httpx response to our format
+		result := EndpointResult{
+			URL:           httpxResp.URL,
+			StatusCode:    httpxResp.StatusCode,
+			ContentLength: int64(httpxResp.ContentLength),
+			Title:         httpxResp.Title,
+			Headers:       make(map[string]string),
+			Fingerprints:  httpxResp.Tech,
+			Evidence:      make(map[string]string),
+		}
+
+		// Populate headers map
+		if httpxResp.Server != "" {
+			result.Headers["Server"] = httpxResp.Server
+		}
+		if httpxResp.ContentType != "" {
+			result.Headers["Content-Type"] = httpxResp.ContentType
+		}
+
+		// Add evidence
+		if httpxResp.ResponseTime != "" {
+			result.Evidence["response_time"] = httpxResp.ResponseTime
+		}
+
+		results = append(results, result)
+	}
+
+	return results, nil
+}
+
+// probeWithNativeHTTP is the fallback implementation
+func probeWithNativeHTTP(urls []string, workers int, rps int) []EndpointResult {
 	jobs := make(chan string, workers*2)
 	results := make(chan EndpointResult, workers*2)
 
-	client := &http.Client{Timeout: 7 * time.Second}
-	limiter := NewRateLimiter(rps)
+	client := &http.Client{
+		Timeout: 7 * time.Second,
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
 
 	var wg sync.WaitGroup
 	for i := 0; i < workers; i++ {
@@ -155,9 +249,10 @@ func probeURLsConcurrently(urls []string, workers int, rps int) []EndpointResult
 		go func() {
 			defer wg.Done()
 			for url := range jobs {
-				if res, err := probeURL(client, limiter, url); err == nil {
+				if res, err := probeURLNative(client, url); err == nil {
 					results <- *res
 				}
+				time.Sleep(time.Second / time.Duration(rps)) // Simple rate limiting
 			}
 		}()
 	}
@@ -181,44 +276,6 @@ func probeURLsConcurrently(urls []string, workers int, rps int) []EndpointResult
 	return out
 }
 
-// ---------------- DOMAIN FINGERPRINT CACHE ----------------
-
-var domainFP sync.Map // map[string]fingerprint.DomainResult
-
-func getDomainFingerprint(client *http.Client, url string) fingerprint.DomainResult {
-	host := extractHost(url)
-
-	if v, ok := domainFP.Load(host); ok {
-		return v.(fingerprint.DomainResult)
-	}
-
-	req, _ := http.NewRequest("GET", "https://"+host, nil)
-	req.Header.Set("User-Agent", "RevulneraRecon/1.0")
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return fingerprint.DomainResult{}
-	}
-	defer resp.Body.Close()
-
-	buf := make([]byte, 4096)
-	n, _ := resp.Body.Read(buf)
-
-	headers := snapshotHeaders(resp) // ✅ FIX
-	fp := fingerprint.FingerprintDomain(headers, string(buf[:n]))
-
-	domainFP.Store(host, fp)
-	return fp
-}
-
-func extractHost(url string) string {
-	u := strings.Split(url, "://")
-	if len(u) > 1 {
-		return strings.Split(u[1], "/")[0]
-	}
-	return url
-}
-
 // ---------------- PROBE ----------------
 
 func shouldKeepStatus(code int) bool {
@@ -233,9 +290,8 @@ func shouldKeepStatus(code int) bool {
 	}
 }
 
-func probeURL(client *http.Client, limiter *RateLimiter, url string) (*EndpointResult, error) {
-	limiter.Acquire()
-
+// probeURLNative is the native Go fallback implementation
+func probeURLNative(client *http.Client, url string) (*EndpointResult, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -260,18 +316,8 @@ func probeURL(client *http.Client, limiter *RateLimiter, url string) (*EndpointR
 	title := extractTitle(snippet)
 	headers := snapshotHeaders(resp)
 
-	// DOMAIN + ENDPOINT FINGERPRINTING
-	dfp := getDomainFingerprint(client, url)
+	// ENDPOINT FINGERPRINTING
 	efp := fingerprint.FingerprintEndpoint(resp.StatusCode, title, headers)
-
-	tags := append(dfp.Tags, efp.Tags...)
-	evidence := dfp.Evidence
-	if evidence == nil {
-		evidence = map[string]string{}
-	}
-	for k, v := range efp.Evidence {
-		evidence[k] = v
-	}
 
 	return &EndpointResult{
 		URL:           url,
@@ -279,8 +325,8 @@ func probeURL(client *http.Client, limiter *RateLimiter, url string) (*EndpointR
 		ContentLength: resp.ContentLength,
 		Title:         title,
 		Headers:       headers,
-		Fingerprints:  tags,
-		Evidence:      evidence,
+		Fingerprints:  efp.Tags,
+		Evidence:      efp.Evidence,
 	}, nil
 }
 

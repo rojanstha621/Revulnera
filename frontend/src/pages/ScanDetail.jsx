@@ -231,7 +231,7 @@ export default function ScanDetail() {
               <thead>
                 <tr>
                   <th>Domain Name</th>
-                  <th>IP Address</th>
+                  <th>IP Address(es)</th>
                   <th>Status</th>
                   <th className="text-right">Action</th>
                 </tr>
@@ -242,8 +242,23 @@ export default function ScanDetail() {
                     <tr key={idx}>
                       <td>
                         <code className="text-purple-300 font-mono text-xs">{subdomain.name}</code>
+                        {subdomain.error_msg && (
+                          <div className="text-xs text-red-400 mt-1" title={subdomain.error_msg}>
+                            ⚠ {subdomain.error_msg.substring(0, 50)}{subdomain.error_msg.length > 50 ? '...' : ''}
+                          </div>
+                        )}
                       </td>
-                      <td className="text-gray-300 font-mono text-sm">{subdomain.ip || "N/A"}</td>
+                      <td className="text-gray-300 font-mono text-sm">
+                        {subdomain.ips && subdomain.ips.length > 0 ? (
+                          <div className="flex flex-col gap-1">
+                            {subdomain.ips.map((ip, i) => (
+                              <span key={i} className="text-xs">{ip}</span>
+                            ))}
+                          </div>
+                        ) : (
+                          subdomain.ip || "N/A"
+                        )}
+                      </td>
                       <td>
                         {subdomain.alive ? (
                           <span className="badge-success">Live</span>
