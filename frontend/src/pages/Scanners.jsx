@@ -24,7 +24,6 @@ export default function Scanners() {
     ports: 0,
     tlsIssues: 0,
     directoryIssues: 0,
-    vulnerabilities: 0,
   });
 
   // Phase tracking
@@ -53,7 +52,6 @@ export default function Scanners() {
             ports: 0,
             tlsIssues: 0,
             directoryIssues: 0,
-            vulnerabilities: 0,
           });
           setCurrentPhase(scanData.currentPhase || "");
           setLiveFeed(scanData.liveFeed || []);
@@ -100,7 +98,6 @@ export default function Scanners() {
       ports: 0,
       tlsIssues: 0,
       directoryIssues: 0,
-      vulnerabilities: 0,
     });
     setCurrentPhase("");
     setLiveFeed([]);
@@ -342,35 +339,6 @@ export default function Scanners() {
         }));
         return;
       }
-
-      // Vulnerability detection
-      if (msg.type === "vulnerability_chunk") {
-        const items = Array.isArray(msg.data) ? msg.data : [];
-        if (currentPhase !== "Vulnerability Detection") {
-          addLogMessage("status", "⚠️ Phase: Vulnerability Detection started");
-        }
-        setCurrentPhase("Vulnerability Detection");
-        
-        // Log each vulnerability individually
-        items.forEach(item => {
-          addLogMessage(
-            "vulnerability",
-            `${item?.title}`,
-            { 
-              url: item?.url, 
-              severity: item?.severity,
-              category: item?.owasp_category,
-              confidence: item?.confidence
-            }
-          );
-        });
-        
-        setMetrics((prev) => ({
-          ...prev,
-          vulnerabilities: prev.vulnerabilities + items.length,
-        }));
-        return;
-      }
     };
 
     ws.onerror = (e) => {
@@ -397,7 +365,6 @@ export default function Scanners() {
     { name: "Port Scanning", icon: Network, active: currentPhase === "Port Scanning" },
     { name: "TLS Analysis", icon: Lock, active: currentPhase === "TLS Analysis" },
     { name: "Directory Analysis", icon: FolderOpen, active: currentPhase === "Directory Analysis" },
-    { name: "Vulnerability Detection", icon: AlertTriangle, active: currentPhase === "Vulnerability Detection" },
   ];
 
   const isScanning = status === "RUNNING" || status === "STARTING";
@@ -983,23 +950,6 @@ export default function Scanners() {
               </div>
             </div>
 
-            {/* Vulnerabilities */}
-            <div className="stat-card bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20 group hover:border-red-400/40 transition-all">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-gray-400 text-sm font-medium">Vulnerabilities</p>
-                  <p className="text-3xl font-bold text-red-300 mt-2">
-                    {metrics.vulnerabilities}
-                  </p>
-                  <p className="text-xs text-red-400 mt-1 flex items-center gap-1">
-                    <AlertTriangle className="w-3 h-3" />
-                    Found
-                  </p>
-                </div>
-                <AlertTriangle className="w-10 h-10 text-red-500/30 group-hover:text-red-400/50 transition-colors" />
-              </div>
-            </div>
-
             {/* TLS Issues */}
             <div className="stat-card bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20">
               <div className="flex items-start justify-between">
@@ -1050,7 +1000,7 @@ export default function Scanners() {
               <div>
                 <h3 className="text-xl font-bold text-white">Scan Completed Successfully</h3>
                 <p className="text-gray-400 mt-1">
-                  Found {metrics.subdomains} subdomains, {metrics.endpoints} endpoints, and {metrics.vulnerabilities} vulnerabilities
+                  Found {metrics.subdomains} subdomains, {metrics.endpoints} endpoints, {metrics.ports} open ports, and {metrics.directoryIssues} directory issues
                 </p>
               </div>
             </div>

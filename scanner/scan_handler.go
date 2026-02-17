@@ -13,7 +13,6 @@ import (
 	endpointspkg "recon/endpoints"
 	networkpkg "recon/network"
 	reconpkg "recon/recon"
-	vulnpkg "recon/vuln"
 )
 
 type ScanRequest struct {
@@ -53,7 +52,6 @@ func runFullScan(req ScanRequest) {
 	portIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/ports/ingest/", req.BackendBase, req.ScanID)
 	tlsIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/tls/ingest/", req.BackendBase, req.ScanID)
 	dirIngest := fmt.Sprintf("%s/api/recon/scans/%d/network/dirs/ingest/", req.BackendBase, req.ScanID)
-	vulnIngest := fmt.Sprintf("%s/api/vuln/scans/%d/vulnerabilities/ingest/", req.BackendBase, req.ScanID)
 
 	postStatus(req.AuthHeader, statusURL, "RUNNING", "")
 
@@ -96,7 +94,7 @@ func runFullScan(req ScanRequest) {
 
 	// 3) Network Analysis - Run port scanning, TLS checks, and directory checks for discovered hosts
 	log.Printf("[network] starting network analysis for scan %d", req.ScanID)
-	
+
 	// Collect unique hosts from subdomains (alive hosts)
 	hosts := make([]string, 0)
 	for _, sub := range subs {
@@ -109,26 +107,26 @@ func runFullScan(req ScanRequest) {
 		log.Printf("[network] no alive hosts found, skipping network analysis")
 	} else {
 		log.Printf("[network] analyzing %d hosts", len(hosts))
-		
+
 		// Run network analysis concurrently with worker pool
-		runNetworkAnalysis(hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest, vulnIngest)
+		runNetworkAnalysis(hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest)
 	}
 
 	postStatus(req.AuthHeader, statusURL, "COMPLETED", "")
 }
 
-func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest string) {
+func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {
 	workers := 10
 	jobs := make(chan string, len(hosts))
 	var wg sync.WaitGroup
-	
+
 	// Worker pool for concurrent host scanning
 	for i := 0; i < workers; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for host := range jobs {
-				analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest)
+				analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest)
 			}
 		}()
 	}
@@ -138,12 +136,12 @@ func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIn
 		jobs <- host
 	}
 	close(jobs)
-	
+
 	// Wait for workers to finish
 	wg.Wait()
 }
 
-func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest string) {
+func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest string) {
 	log.Printf("[network] analyzing host: %s", host)
 
 	// 1) Port Scanning
@@ -152,7 +150,7 @@ func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest 
 		log.Printf("[network] port scan failed for %s: %v", host, err)
 	} else if len(portFindings) > 0 {
 		log.Printf("[network] found %d open ports on %s", len(portFindings), host)
-		
+
 		// Send port findings in chunks of 50
 		chunkSize := 50
 		for i := 0; i < len(portFindings); i += chunkSize {
@@ -169,7 +167,7 @@ func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest 
 	// 2) TLS Check
 	tlsResult := networkpkg.CheckTLS(host)
 	if tlsResult.HasHTTPS || len(tlsResult.Issues) > 0 {
-		log.Printf("[network] TLS check for %s: HTTPS=%v, issues=%d", 
+		log.Printf("[network] TLS check for %s: HTTPS=%v, issues=%d",
 			host, tlsResult.HasHTTPS, len(tlsResult.Issues))
 		postJSON(authHeader, tlsIngest, tlsResult)
 	}
@@ -178,7 +176,7 @@ func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest 
 	dirFindings := networkpkg.CheckDirectories(host, tlsResult.HasHTTPS)
 	if len(dirFindings) > 0 {
 		log.Printf("[network] found %d directory issues on %s", len(dirFindings), host)
-		
+
 		// Send directory findings in chunks of 50
 		chunkSize := 50
 		for i := 0; i < len(dirFindings); i += chunkSize {
@@ -188,22 +186,6 @@ func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest, vulnIngest 
 			}
 			postJSON(authHeader, dirIngest, map[string]any{
 				"items": dirFindings[i:j],
-			})
-		}
-	}
-
-	// 4) Vulnerability detection (A01/A02)
-	vulnFindings := vulnpkg.DetectHostFindings(host, tlsResult)
-	if len(vulnFindings) > 0 {
-		log.Printf("[vuln] found %d findings on %s", len(vulnFindings), host)
-		chunkSize := 50
-		for i := 0; i < len(vulnFindings); i += chunkSize {
-			j := i + chunkSize
-			if j > len(vulnFindings) {
-				j = len(vulnFindings)
-			}
-			postJSON(authHeader, vulnIngest, map[string]any{
-				"findings": vulnFindings[i:j],
 			})
 		}
 	}
@@ -232,7 +214,7 @@ func postJSON(authHeader, url string, payload any) {
 		return
 	}
 	defer resp.Body.Close()
-	
+
 	// Log response status
 	if resp.StatusCode >= 400 {
 		bodyBytes, _ := io.ReadAll(resp.Body)

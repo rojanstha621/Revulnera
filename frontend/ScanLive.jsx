@@ -11,29 +11,20 @@ export default function ScanLive() {
   const [error, setError] = useState("");
   const [subdomains, setSubdomains] = useState([]);
   const [endpoints, setEndpoints] = useState([]);
-  const [vulnerabilities, setVulnerabilities] = useState([]);
   const [activityFeed, setActivityFeed] = useState([]);
   const [currentTest, setCurrentTest] = useState("Initializing scan...");
   const [startTime, setStartTime] = useState(Date.now());
   const [radarAngle, setRadarAngle] = useState(0);
-  const [radarDots, setRadarDots] = useState([]);
 
   const subSeen = useRef(new Set());
   const epSeen = useRef(new Set());
-  const vulnSeen = useRef(new Set());
   const wsRef = useRef(null);
   const canvasRef = useRef(null);
 
   // Stats counters
   const requestsSent = useMemo(() => endpoints.length, [endpoints]);
   const urlsCrawled = useMemo(() => new Set(endpoints.map(e => e?.url)).size, [endpoints]);
-  const vulnsFound = useMemo(() => vulnerabilities.length, [vulnerabilities]);
   const aliveCount = useMemo(() => subdomains.filter((s) => s?.alive).length, [subdomains]);
-  const criticalVulns = useMemo(() => vulnerabilities.filter((v) => v?.severity === "High" || v?.severity === "Critical").length, [vulnerabilities]);
-  const highVulns = useMemo(() => vulnerabilities.filter((v) => v?.severity === "High").length, [vulnerabilities]);
-  const mediumVulns = useMemo(() => vulnerabilities.filter((v) => v?.severity === "Medium").length, [vulnerabilities]);
-  const lowVulns = useMemo(() => vulnerabilities.filter((v) => v?.severity === "Low").length, [vulnerabilities]);
-  const infoVulns = useMemo(() => vulnerabilities.filter((v) => v?.severity === "Info" || v?.severity === "Informational").length, [vulnerabilities]);
 
   // Elapsed time
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -71,28 +62,13 @@ export default function ScanLive() {
     }, ...prev].slice(0, 50));
   };
 
-  // Add dots to radar when vulnerabilities are found
-  const addRadarDot = (severity) => {
-    const angle = Math.random() * 360;
-    const distance = Math.random() * 0.7 + 0.3; // 30-100% of radius
-    setRadarDots(prev => [...prev, {
-      id: Date.now() + Math.random(),
-      angle,
-      distance,
-      severity,
-      opacity: 1
-    }].slice(-30)); // Keep last 30 dots
-  };
-
   useEffect(() => {
     setError("");
     setSubdomains([]);
     setEndpoints([]);
-    setVulnerabilities([]);
     setActivityFeed([]);
     subSeen.current = new Set();
     epSeen.current = new Set();
-    vulnSeen.current = new Set();
     setStartTime(Date.now());
 
     const url = `${WS_ROOT}/ws/scans/${scanId}/`;
@@ -145,24 +121,6 @@ export default function ScanLive() {
             next.push(it);
             addActivity(`Crawling ${key}`, "info");
             setCurrentTest(`Probing endpoints...`);
-          }
-          return next;
-        });
-      }
-
-      if (msg.type === "vulnerability_chunk") {
-        const items = Array.isArray(msg.data) ? msg.data : [];
-        setVulnerabilities((prev) => {
-          const next = [...prev];
-          for (const it of items) {
-            const key = `${it?.host}_${it?.url}_${it?.owasp_category}`;
-            if (!key || vulnSeen.current.has(key)) continue;
-            vulnSeen.current.add(key);
-            next.push(it);
-            const severity = it?.severity || "Unknown";
-            addActivity(`🔴 ${severity} vulnerability found: ${it?.owasp_category || 'Unknown'}`, "vuln");
-            addRadarDot(severity);
-            setCurrentTest(`Testing ${it?.owasp_category || 'vulnerability'}...`);
           }
           return next;
         });
@@ -231,61 +189,7 @@ export default function ScanLive() {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.restore();
-
-    // Draw vulnerability dots
-    radarDots.forEach(dot => {
-      const dotRadius = dot.distance * radius;
-      const dotAngle = (dot.angle * Math.PI) / 180;
-      const x = center + dotRadius * Math.cos(dotAngle - Math.PI / 2);
-      const y = center + dotRadius * Math.sin(dotAngle - Math.PI / 2);
-
-      let color;
-      switch(dot.severity) {
-        case 'Critical':
-        case 'High':
-          color = '#ff0044';
-          break;
-        case 'Medium':
-          color = '#ff8800';
-          break;
-        case 'Low':
-          color = '#ffcc00';
-          break;
-        default:
-          color = '#00ff88';
-      }
-
-      ctx.beginPath();
-      ctx.arc(x, y, 4, 0, 2 * Math.PI);
-      ctx.fillStyle = color;
-      ctx.fill();
-
-      // Glow effect
-      ctx.beginPath();
-      ctx.arc(x, y, 8, 0, 2 * Math.PI);
-      ctx.strokeStyle = color;
-      ctx.globalAlpha = 0.3;
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-    });
-  }, [radarAngle, radarDots]);
-
-  const getSeverityColor = (severity) => {
-    switch(severity?.toLowerCase()) {
-      case 'critical':
-      case 'high':
-        return '#ff0044';
-      case 'medium':
-        return '#ff8800';
-      case 'low':
-        return '#ffcc00';
-      case 'info':
-      case 'informational':
-        return '#00aaff';
-      default:
-        return '#888';
-    }
-  };
+  }, [radarAngle]);
 
   const getActivityIcon = (type) => {
     switch(type) {
@@ -293,8 +197,6 @@ export default function ScanLive() {
         return '✓';
       case 'error':
         return '✗';
-      case 'vuln':
-        return '⚠';
       default:
         return '→';
     }
@@ -396,40 +298,6 @@ export default function ScanLive() {
         </div>
       </div>
 
-      {/* Bottom - Vulnerability Cards */}
-      {vulnerabilities.length > 0 && (
-        <div style={styles.vulnSection}>
-          <h3 style={styles.sectionTitle}>
-            <AlertTriangle size={20} />
-            Discovered Vulnerabilities
-          </h3>
-          <div style={styles.vulnGrid}>
-            {vulnerabilities.slice(-8).reverse().map((vuln, idx) => (
-              <div key={idx} style={{
-                ...styles.vulnCard,
-                borderLeft: `4px solid ${getSeverityColor(vuln?.severity)}`
-              }}>
-                <div style={styles.vulnHeader}>
-                  <span style={{
-                    ...styles.vulnSeverity,
-                    backgroundColor: getSeverityColor(vuln?.severity) + '22',
-                    color: getSeverityColor(vuln?.severity)
-                  }}>
-                    {vuln?.severity || 'Unknown'}
-                  </span>
-                  <span style={styles.vulnTime}>Just now</span>
-                </div>
-                <div style={styles.vulnTitle}>{vuln?.owasp_category || 'Security Issue'}</div>
-                <div style={styles.vulnHost}>
-                  <ExternalLink size={14} />
-                  {vuln?.host || vuln?.url || 'Unknown host'}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Scan Complete Summary */}
       {status === "COMPLETED" && (
         <div style={styles.completeBanner}>
@@ -438,20 +306,16 @@ export default function ScanLive() {
             <h2 style={styles.completeTitle}>Scan Complete</h2>
             <div style={styles.completeSummary}>
               <div style={styles.completeStat}>
-                <span style={{...styles.completeValue, color: '#ff0044'}}>{ highVulns}</span>
-                <span>High</span>
+                <span style={{...styles.completeValue, color: '#00ff88'}}>{subdomains.length}</span>
+                <span>Subdomains</span>
               </div>
               <div style={styles.completeStat}>
-                <span style={{...styles.completeValue, color: '#ff8800'}}>{mediumVulns}</span>
-                <span>Medium</span>
+                <span style={{...styles.completeValue, color: '#00aaff'}}>{aliveCount}</span>
+                <span>Alive Hosts</span>
               </div>
               <div style={styles.completeStat}>
-                <span style={{...styles.completeValue, color: '#ffcc00'}}>{lowVulns}</span>
-                <span>Low</span>
-              </div>
-              <div style={styles.completeStat}>
-                <span style={{...styles.completeValue, color: '#00aaff'}}>{infoVulns}</span>
-                <span>Info</span>
+                <span style={{...styles.completeValue, color: '#ff8800'}}>{endpoints.length}</span>
+                <span>Endpoints</span>
               </div>
             </div>
             <button 
