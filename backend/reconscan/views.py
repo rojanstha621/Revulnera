@@ -46,6 +46,7 @@ class StartScanView(APIView):
             requests.post(go_url, json={
                 "scan_id": scan.id,
                 "target": target,
+                "user_id": request.user.id,  # Pass user ID for file organization
                 "backend_base": django_base,
                 "auth_header": token,  # Go will reuse it when posting back
             }, timeout=5)
@@ -60,6 +61,34 @@ class StartScanView(APIView):
         broadcast(scan.id, {"type": "scan_status", "scan_id": scan.id, "status": "RUNNING"})
 
         return Response(ScanSerializer(scan).data, status=201)
+
+class CancelScanView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, scan_id: int):
+        try:
+            scan = Scan.objects.get(id=scan_id, created_by=request.user)
+        except Scan.DoesNotExist:
+            return Response({"detail": "Scan not found"}, status=404)
+
+        # Only cancel if scan is running
+        if scan.status not in ["PENDING", "RUNNING"]:
+            return Response({"detail": "Scan is not running"}, status=400)
+
+        # Tell Go scanner to cancel
+        go_url = settings.GO_RECON_URL.rstrip("/") + "/cancel"
+        try:
+            response = requests.post(go_url, json={"scan_id": scan.id}, timeout=5)
+            if response.ok:
+                # Update scan status
+                scan.status = "CANCELLED"
+                scan.save(update_fields=["status"])
+                broadcast(scan.id, {"type": "scan_status", "scan_id": scan.id, "status": "CANCELLED"})
+                return Response({"detail": "Scan cancelled"}, status=200)
+            else:
+                return Response({"detail": "Failed to cancel scan in scanner"}, status=500)
+        except Exception as e:
+            return Response({"detail": f"Go worker not reachable: {e}"}, status=500)
 
 class IngestSubdomainsView(APIView):
     permission_classes = [permissions.AllowAny]  # dev; later secure this

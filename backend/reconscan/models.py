@@ -7,6 +7,7 @@ class Scan(models.Model):
         ("RUNNING", "Running"),
         ("COMPLETED", "Completed"),
         ("FAILED", "Failed"),
+        ("CANCELLED", "Cancelled"),
     ]
     target = models.CharField(max_length=255)
     status = models.CharField(max_length=16, choices=STATUS_CHOICES, default="PENDING")
@@ -40,6 +41,7 @@ class Endpoint(models.Model):
 class PortScanFinding(models.Model):
     scan = models.ForeignKey(Scan, on_delete=models.CASCADE, related_name="port_findings")
     host = models.CharField(max_length=255, db_index=True)
+    ip = models.GenericIPAddressField(null=True, blank=True)  # Resolved IP address
     port = models.IntegerField()
     protocol = models.CharField(max_length=10, default="tcp")
     state = models.CharField(max_length=20, default="open")
@@ -47,6 +49,7 @@ class PortScanFinding(models.Model):
     product = models.CharField(max_length=255, blank=True)
     version = models.CharField(max_length=100, blank=True)
     banner = models.TextField(blank=True)
+    risk_tags = models.JSONField(default=list, blank=True)  # Risk tags (ssh, ftp, rdp, etc.)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

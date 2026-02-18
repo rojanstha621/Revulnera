@@ -111,7 +111,25 @@ export default function Scanners() {
     setLiveFeed([]);
   }
 
-  function cancelScan() {
+  async function cancelScan() {
+    // Call backend to cancel the scan
+    if (scanId) {
+      try {
+        const token = localStorage.getItem("access");
+        await fetch(`http://127.0.0.1:8000/api/recon/scans/${scanId}/cancel/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        addLogMessage("status", "⏹️ Scan cancellation requested...");
+      } catch (error) {
+        console.error("Failed to cancel scan:", error);
+        addLogMessage("error", "⚠️ Failed to request scan cancellation");
+      }
+    }
+
     // Stop automatic reconnection
     shouldReconnectRef.current = false;
     

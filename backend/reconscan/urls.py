@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
     StartScanView, 
+    CancelScanView,
     IngestSubdomainsView, 
     IngestEndpointsView, 
     UpdateScanStatusView,
@@ -14,6 +15,7 @@ from .views import (
 
 urlpatterns = [
     path("scans/start/", StartScanView.as_view()),
+    path("scans/<int:scan_id>/cancel/", CancelScanView.as_view()),
     path("scans/<int:scan_id>/ingest/subdomains/", IngestSubdomainsView.as_view()),
     path("scans/<int:scan_id>/ingest/endpoints/", IngestEndpointsView.as_view()),
     path("scans/<int:scan_id>/status/", UpdateScanStatusView.as_view()),
