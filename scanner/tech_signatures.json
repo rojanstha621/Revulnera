@@ -1,0 +1,290 @@
+[
+  {
+    "name": "WordPress",
+    "category": "CMS",
+    "header_regex": [],
+    "cookie_regex": ["wp-settings-", "wordpress_"],
+    "body_regex": ["wp-content", "wp-includes", "/wp-json/"],
+    "script_regex": ["wp-content/.*\\.js", "wp-includes/.*\\.js"],
+    "meta_regex": ["WordPress"]
+  },
+  {
+    "name": "Drupal",
+    "category": "CMS",
+    "header_regex": ["X-Drupal-Cache", "X-Generator.*Drupal"],
+    "cookie_regex": ["SESS[a-z0-9]{32}"],
+    "body_regex": ["Drupal\\.settings", "sites/default/files"],
+    "script_regex": ["misc/drupal\\.js"],
+    "meta_regex": ["Drupal"]
+  },
+  {
+    "name": "Joomla",
+    "category": "CMS",
+    "header_regex": ["X-Content-Encoded-By.*Joomla"],
+    "cookie_regex": [],
+    "body_regex": ["/components/com_", "/templates/.*joomla"],
+    "script_regex": ["media/jui/js"],
+    "meta_regex": ["Joomla"]
+  },
+  {
+    "name": "Nginx",
+    "category": "Web Server",
+    "header_regex": ["Server.*nginx", "X-Powered-By.*nginx"],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Apache",
+    "category": "Web Server",
+    "header_regex": ["Server.*Apache"],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Cloudflare",
+    "category": "CDN",
+    "header_regex": ["CF-RAY", "CF-Cache-Status", "Server.*cloudflare"],
+    "cookie_regex": ["__cfduid", "__cf_bm"],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "PHP",
+    "category": "Programming Language",
+    "header_regex": ["X-Powered-By.*PHP", "Server.*PHP"],
+    "cookie_regex": ["PHPSESSID"],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Node.js",
+    "category": "Programming Language",
+    "header_regex": ["X-Powered-By.*Express", "X-Powered-By.*Node"],
+    "cookie_regex": ["connect.sid"],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "React",
+    "category": "JavaScript Framework",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": ["data-reactroot", "data-react-helmet", "__REACT", "_react"],
+    "script_regex": ["react\\.js", "react\\.min\\.js", "react-dom"],
+    "meta_regex": []
+  },
+  {
+    "name": "Vue.js",
+    "category": "JavaScript Framework",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": ["data-v-", "__vue__", "v-cloak"],
+    "script_regex": ["vue\\.js", "vue\\.min\\.js", "vuejs"],
+    "meta_regex": []
+  },
+  {
+    "name": "Angular",
+    "category": "JavaScript Framework",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": ["ng-version", "ng-app", "ng-controller"],
+    "script_regex": ["angular\\.js", "angular\\.min\\.js"],
+    "meta_regex": []
+  },
+  {
+    "name": "Next.js",
+    "category": "JavaScript Framework",
+    "header_regex": ["x-nextjs-cache"],
+    "cookie_regex": [],
+    "body_regex": ["__NEXT_DATA__", "__next"],
+    "script_regex": ["_next/static", "_next/webpack"],
+    "meta_regex": []
+  },
+  {
+    "name": "jQuery",
+    "category": "JavaScript Library",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": ["jquery\\.js", "jquery\\.min\\.js", "jquery-[0-9]"],
+    "meta_regex": []
+  },
+  {
+    "name": "Bootstrap",
+    "category": "UI Framework",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": ["bootstrap\\.css", "bootstrap\\.min\\.css"],
+    "script_regex": ["bootstrap\\.js", "bootstrap\\.min\\.js"],
+    "meta_regex": []
+  },
+  {
+    "name": "Laravel",
+    "category": "Web Framework",
+    "header_regex": ["X-Powered-By.*Laravel"],
+    "cookie_regex": ["laravel_session", "XSRF-TOKEN"],
+    "body_regex": ["laravel", "_token"],
+    "script_regex": ["laravel"],
+    "meta_regex": []
+  },
+  {
+    "name": "Django",
+    "category": "Web Framework",
+    "header_regex": ["X-Frame-Options.*SAMEORIGIN"],
+    "cookie_regex": ["csrftoken", "sessionid", "django"],
+    "body_regex": ["csrfmiddlewaretoken"],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Ruby on Rails",
+    "category": "Web Framework",
+    "header_regex": ["X-Powered-By.*Phusion Passenger"],
+    "cookie_regex": ["_.*_session"],
+    "body_regex": ["csrf-param", "csrf-token"],
+    "script_regex": ["rails"],
+    "meta_regex": []
+  },
+  {
+    "name": "Express",
+    "category": "Web Framework",
+    "header_regex": ["X-Powered-By.*Express"],
+    "cookie_regex": ["connect.sid"],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Jenkins",
+    "category": "CI/CD",
+    "header_regex": ["X-Jenkins", "X-Hudson"],
+    "cookie_regex": ["JSESSIONID"],
+    "body_regex": ["Jenkins", "hudson"],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Grafana",
+    "category": "Monitoring",
+    "header_regex": [],
+    "cookie_regex": ["grafana_session"],
+    "body_regex": ["grafana", "grafanaBootData"],
+    "script_regex": ["grafana"],
+    "meta_regex": []
+  },
+  {
+    "name": "Fastly",
+    "category": "CDN",
+    "header_regex": ["X-Served-By.*cache", "Fastly", "X-Timer.*Fastly"],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Amazon CloudFront",
+    "category": "CDN",
+    "header_regex": ["X-Amz-Cf-Id", "Via.*CloudFront"],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": [],
+    "meta_regex": []
+  },
+  {
+    "name": "Google Analytics",
+    "category": "Analytics",
+    "header_regex": [],
+    "cookie_regex": ["_ga", "_gid", "_gat"],
+    "body_regex": [],
+    "script_regex": ["google-analytics\\.com", "googletagmanager\\.com/gtag", "ga\\.js"],
+    "meta_regex": []
+  },
+  {
+    "name": "Stripe",
+    "category": "Payment",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": ["js\\.stripe\\.com"],
+    "meta_regex": []
+  },
+  {
+    "name": "PayPal",
+    "category": "Payment",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": ["paypal\\.com/sdk", "paypalobjects\\.com"],
+    "meta_regex": []
+  },
+  {
+    "name": "Tailwind CSS",
+    "category": "UI Framework",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": [],
+    "script_regex": ["tailwind"],
+    "meta_regex": []
+  },
+  {
+    "name": "Material-UI",
+    "category": "UI Framework",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": ["MuiBox", "makeStyles", "mui"],
+    "script_regex": ["@material-ui", "@mui"],
+    "meta_regex": []
+  },
+  {
+    "name": "Vite",
+    "category": "Build Tool",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": ["/@vite/", "vite"],
+    "script_regex": ["/@vite/", "vite"],
+    "meta_regex": []
+  },
+  {
+    "name": "Webpack",
+    "category": "Build Tool",
+    "header_regex": [],
+    "cookie_regex": [],
+    "body_regex": ["webpack"],
+    "script_regex": ["webpack"],
+    "meta_regex": []
+  },
+  {
+    "name": "Shopify",
+    "category": "E-commerce",
+    "header_regex": ["X-ShopId"],
+    "cookie_regex": ["_shopify"],
+    "body_regex": ["Shopify\\.", "cdn\\.shopify\\.com"],
+    "script_regex": ["cdn\\.shopify\\.com"],
+    "meta_regex": []
+  },
+  {
+    "name": "Magento",
+    "category": "E-commerce",
+    "header_regex": ["X-Magento"],
+    "cookie_regex": ["PHPSESSID"],
+    "body_regex": ["Mage\\.Cookies", "skin/frontend"],
+    "script_regex": ["mage", "varien"],
+    "meta_regex": []
+  },
+  {
+    "name": "WooCommerce",
+    "category": "E-commerce",
+    "header_regex": [],
+    "cookie_regex": ["woocommerce"],
+    "body_regex": ["woocommerce", "wp-content/plugins/woocommerce"],
+    "script_regex": ["woocommerce"],
+    "meta_regex": []
+  }
+]

@@ -157,6 +157,28 @@ class UpdateScanStatusView(APIView):
         broadcast(scan.id, payload)
         return Response({"ok": True})
 
+class ScanLogView(APIView):
+    """Receive and broadcast log messages from Go worker"""
+    permission_classes = [permissions.AllowAny]  # dev; later secure this
+
+    def post(self, request, scan_id: int):
+        message = request.data.get("message", "")
+        level = request.data.get("level", "info")  # info, success, warning, error
+        
+        if not message:
+            return Response({"detail": "message required"}, status=400)
+        
+        # Broadcast log message via WebSocket
+        broadcast(scan_id, {
+            "type": "scan_log",
+            "scan_id": scan_id,
+            "message": message,
+            "level": level,
+            "timestamp": request.data.get("timestamp", "")
+        })
+        
+        return Response({"ok": True})
+
 
 class UserScansListView(APIView):
     """Get all scans for authenticated user with summary data"""

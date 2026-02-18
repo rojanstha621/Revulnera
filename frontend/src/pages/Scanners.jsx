@@ -8,6 +8,9 @@ import {
 import { postJSON, WS_ROOT } from "../api/api";
 import { useNavigate } from "react-router-dom";
 
+// API_ROOT for direct fetch calls
+const API_ROOT = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 export default function Scanners() {
   const navigate = useNavigate();
   const [target, setTarget] = useState("");
@@ -34,6 +37,8 @@ export default function Scanners() {
   const liveFeedRef = useRef(null);
 
   const wsRef = useRef(null);
+  const shouldReconnectRef = useRef(true);
+  const reconnectTimeoutRef = useRef(null);
 
   // Load active scan from localStorage on mount
   useEffect(() => {
@@ -55,6 +60,9 @@ export default function Scanners() {
           });
           setCurrentPhase(scanData.currentPhase || "");
           setLiveFeed(scanData.liveFeed || []);
+          
+          // Fetch latest state from backend to sync up
+          fetchScanState(scanData.scanId);
         }
       } catch (e) {
         console.error("Failed to restore scan:", e);
@@ -104,14 +112,74 @@ export default function Scanners() {
   }
 
   function cancelScan() {
-    if (wsRef.current) {
-      wsRef.current.close();
+    // Stop automatic reconnection
+    shouldReconnectRef.current = false;
+    
+    // Clear any pending reconnection attempts
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
     }
+    
+    // Close WebSocket
+    if (wsRef.current) {
+      try {
+        wsRef.current.close();
+      } catch {}
+      wsRef.current = null;
+    }
+    
     addLogMessage("status", "❌ Scan cancelled by user");
     localStorage.removeItem("activeScan");
     setStatus("IDLE");
     setScanId(null);
     resetLiveState();
+  }
+
+  // Fetch current scan state from backend when reconnecting
+  async function fetchScanState(scanIdToFetch) {
+    const token = localStorage.getItem("access");
+    if (!token || !scanIdToFetch) return;
+
+    try {
+      const response = await fetch(`${API_ROOT}/api/recon/user/scans/${scanIdToFetch}/`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to fetch scan state:", response.status);
+        return;
+      }
+
+      const data = await response.json();
+      
+      // Update status
+      setStatus(data.status || "RUNNING");
+      
+      // Update metrics from backend data
+      setMetrics({
+        subdomains: data.subdomain_count || 0,
+        aliveSubdomains: data.alive_count || 0,
+        endpoints: data.endpoint_count || 0,
+        ports: data.port_findings_count || 0,
+        tlsIssues: data.tls_results_count || 0,
+        directoryIssues: data.directory_findings_count || 0,
+      });
+
+      addLogMessage("info", `🔄 Reconnected - restored scan state: ${data.subdomain_count} subdomains, ${data.endpoint_count} endpoints found so far`);
+      
+      // If scan is completed or failed, show final message
+      if (data.status === "COMPLETED") {
+        addLogMessage("status", "✅ Scan completed successfully!");
+      } else if (data.status === "FAILED") {
+        addLogMessage("error", "❌ Scan failed");
+      }
+    } catch (err) {
+      console.error("Error fetching scan state:", err);
+      addLogMessage("warning", "⚠️ Failed to restore scan state");
+    }
   }
 
   async function startScan(e) {
@@ -162,52 +230,77 @@ export default function Scanners() {
     if (!scanId) return;
 
     const wsUrl = `${WS_ROOT}/ws/scans/${scanId}/`;
+    shouldReconnectRef.current = true;
 
-    // close old socket if any
-    if (wsRef.current) {
-      try {
-        wsRef.current.close();
-      } catch {}
-      wsRef.current = null;
-    }
-
-    const ws = new WebSocket(wsUrl);
-    wsRef.current = ws;
-
-    ws.onopen = () => {
-      console.log("WS OPEN:", wsUrl);
-    };
-
-    ws.onmessage = (ev) => {
-      let msg;
-      try {
-        msg = JSON.parse(ev.data);
-      } catch {
-        return;
+    const connectWebSocket = () => {
+      // close old socket if any
+      if (wsRef.current) {
+        try {
+          wsRef.current.close();
+        } catch {}
+        wsRef.current = null;
       }
 
-      console.log("WS MSG:", msg.type, msg);
+      const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
 
-      if (msg.type === "connected") {
-        addLogMessage("info", "WebSocket connected to scan", scanId);
-        return;
-      }
+      ws.onopen = () => {
+        console.log("WS OPEN:", wsUrl);
+        
+        // Fetch current scan state when connecting/reconnecting
+        if (status === "RUNNING") {
+          fetchScanState(scanId);
+        }
+      };
 
-      if (msg.type === "scan_status") {
-        if (msg.status) {
-          setStatus(msg.status);
-          if (msg.status === "COMPLETED") {
-            addLogMessage("status", "✅ Scan completed successfully!");
-          } else if (msg.status === "FAILED") {
-            addLogMessage("error", "❌ Scan failed");
-          } else {
-            addLogMessage("status", `Scan status: ${msg.status}`);
+      ws.onmessage = (ev) => {
+        let msg;
+        try {
+          msg = JSON.parse(ev.data);
+        } catch {
+          return;
+        }
+
+        console.log("WS MSG:", msg.type, msg);
+
+        if (msg.type === "connected") {
+          addLogMessage("info", "✅ WebSocket connected - listening for scan updates");
+          return;
+        }
+
+        if (msg.type === "scan_status") {
+          if (msg.status) {
+            setStatus(msg.status);
+            if (msg.status === "COMPLETED") {
+              addLogMessage("status", "✅ Scan completed successfully!");
+              shouldReconnectRef.current = false; // Stop reconnecting once scan completes
+              localStorage.removeItem("activeScan"); // Clear saved scan
+            } else if (msg.status === "FAILED") {
+              addLogMessage("error", "❌ Scan failed");
+              shouldReconnectRef.current = false; // Stop reconnecting on failure
+              localStorage.removeItem("activeScan");
+            } else {
+              addLogMessage("status", `Scan status: ${msg.status}`);
+            }
           }
+          if (msg.error) {
+            setError(msg.error);
+            addLogMessage("error", `Error: ${msg.error}`);
+          }
+          return;
         }
-        if (msg.error) {
-          setError(msg.error);
-          addLogMessage("error", `Error: ${msg.error}`);
-        }
+
+      // Scan progress logs from Go scanner
+      if (msg.type === "scan_log") {
+        const logMessage = msg.message || "";
+        const logLevel = msg.level || "info"; // info, success, warning, error
+        
+        // Map log level to appropriate message type for styling
+        const messageType = logLevel === "error" ? "error" : 
+                          logLevel === "warning" ? "warning" :
+                          logLevel === "success" ? "status" : "info";
+        
+        addLogMessage(messageType, logMessage);
         return;
       }
 
@@ -245,7 +338,7 @@ export default function Scanners() {
         }
         setCurrentPhase("Endpoint Discovery");
         
-        // Log each endpoint individually
+        // Log each endpoint individually with detailed info
         items.forEach(item => {
           const statusCode = item?.status_code || "N/A";
           const statusClass = statusCode >= 200 && statusCode < 300 ? "success" : 
@@ -253,7 +346,14 @@ export default function Scanners() {
           addLogMessage(
             "endpoint",
             `${item?.url}`,
-            { statusCode, title: item?.title, class: statusClass }
+            { 
+              statusCode, 
+              title: item?.title, 
+              class: statusClass,
+              contentLength: item?.content_length,
+              fingerprints: item?.fingerprints,
+              server: item?.headers?.Server
+            }
           );
         });
         
@@ -341,21 +441,51 @@ export default function Scanners() {
       }
     };
 
-    ws.onerror = (e) => {
-      console.log("WS ERROR:", e);
-      setError("WebSocket error. Check Django Channels + WS_ROOT.");
+      ws.onerror = (e) => {
+        console.log("WS ERROR:", e);
+        addLogMessage("warning", "⚠️ WebSocket connection issue - will automatically reconnect...");
+      };
+
+      ws.onclose = () => {
+        console.log("WS CLOSE");
+        
+        // Only reconnect if scan is still running and we haven't explicitly stopped
+        if (shouldReconnectRef.current && status === "RUNNING") {
+          addLogMessage("info", "🔄 Connection lost - reconnecting in 3 seconds...");
+          reconnectTimeoutRef.current = setTimeout(() => {
+            if (shouldReconnectRef.current && status === "RUNNING") {
+              console.log("Attempting to reconnect WebSocket...");
+              connectWebSocket();
+            }
+          }, 3000);
+        } else if (status !== "RUNNING") {
+          console.log("WebSocket closed - scan is not running");
+        }
+      };
     };
 
-    ws.onclose = () => {
-      console.log("WS CLOSE");
-    };
+    // Initial connection
+    connectWebSocket();
 
     return () => {
-      // Close WebSocket on unmount, but state is saved in localStorage
-      // so it will reconnect when user returns to the page
-      try {
-        ws.close();
-      } catch {}
+      // Prevent reconnection on cleanup
+      shouldReconnectRef.current = false;
+      
+      // Clear any pending reconnection
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+      
+      // Only close WebSocket if scan is completed or failed
+      // If scan is still running, keep it open for background updates
+      if (status === "COMPLETED" || status === "FAILED" || status === "IDLE") {
+        try {
+          if (wsRef.current) {
+            wsRef.current.close();
+            wsRef.current = null;
+          }
+        } catch {}
+      }
     };
   }, [scanId]);
 
@@ -574,8 +704,20 @@ export default function Scanners() {
                                 </span>
                               )}
                               {log.type === "endpoint" && (
-                                <span>
-                                  [HTTP {log.data.statusCode}] {log.data.title && `"${log.data.title}"`}
+                                <span className="flex flex-col gap-0.5">
+                                  <span>[HTTP {log.data.statusCode}] {log.data.title && `"${log.data.title}"`}</span>
+                                  {log.data.contentLength && (
+                                    <span className="text-gray-600">Size: {(log.data.contentLength / 1024).toFixed(1)} KB</span>
+                                  )}
+                                  {log.data.server && (
+                                    <span className="text-blue-500/70">Server: {log.data.server}</span>
+                                  )}
+                                  {log.data.fingerprints && log.data.fingerprints.length > 0 && (
+                                    <span className="text-purple-500/70">
+                                      🏷️ {log.data.fingerprints.slice(0, 3).join(", ")}
+                                      {log.data.fingerprints.length > 3 && ` +${log.data.fingerprints.length - 3} more`}
+                                    </span>
+                                  )}
                                 </span>
                               )}
                               {log.type === "port" && (

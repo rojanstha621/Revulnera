@@ -4,6 +4,7 @@ from .views import (
     IngestSubdomainsView, 
     IngestEndpointsView, 
     UpdateScanStatusView,
+    ScanLogView,
     UserScansListView,
     UserScanDetailView,
     IngestPortScanFindingsView,
@@ -16,6 +17,7 @@ urlpatterns = [
     path("scans/<int:scan_id>/ingest/subdomains/", IngestSubdomainsView.as_view()),
     path("scans/<int:scan_id>/ingest/endpoints/", IngestEndpointsView.as_view()),
     path("scans/<int:scan_id>/status/", UpdateScanStatusView.as_view()),
+    path("scans/<int:scan_id>/logs/", ScanLogView.as_view()),
     
     # Network analysis ingestion endpoints
     path("scans/<int:scan_id>/network/ports/ingest/", IngestPortScanFindingsView.as_view()),
