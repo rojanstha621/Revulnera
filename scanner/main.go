@@ -12,8 +12,8 @@ import (
 )
 
 func main() {
-	// Set up logging to both terminal and file
-	logFile, err := os.OpenFile("scanner.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	// Set up logging to both terminal and file (overwrite on each start)
+	logFile, err := os.OpenFile("scanner.log", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil {
 		log.Fatalf("failed to open log file: %v", err)
 	}
@@ -22,6 +22,7 @@ func main() {
 	// Create multi-writer to write to both stdout and file
 	multiWriter := io.MultiWriter(os.Stdout, logFile)
 	log.SetOutput(multiWriter)
+	log.SetFlags(log.Ldate | log.Ltime)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/jobs", jobHandler)

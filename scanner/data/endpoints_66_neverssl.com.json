@@ -1,0 +1,539 @@
+{
+  "scan_id": 66,
+  "target": "neverssl.com",
+  "endpoints": [
+    {
+      "url": "https://flxbmhnvckwrdtzs.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 252,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://brvtsdflnxhkzcmw.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://innersplendidbrightday.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://innermajesticgrandyawn.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://innersplendidbrightday.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 258,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://brightbeautifulsilversong.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://fdbhclmrkstnvwxz.neverssl.com/favicon.ico",
+      "status_code": 200,
+      "content_length": 124,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/vnd.microsoft.icon",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://mnlhrwxszdvbtckf.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://bdcfhkmlnsrwvtxz.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://fdbhclmrkstnvwxz.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://brightsilverlushplan.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://kbchfdmlnsrtwvxz.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://flxbmhnvckwrdtzs.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://fdbhclmrkstnvwxz.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 252,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://brvtsdflnxhkzcmw.neverssl.com/favicon.ico",
+      "status_code": 200,
+      "content_length": 124,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/vnd.microsoft.icon",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://kbchfdmlnsrtwvxz.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 252,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://neverssl.com/?ref=ajfriesen.com",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://majesticshiningtranscendentbirds.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://bdcfhkmlnsrwvtxz.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 252,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://majesticshiningtranscendentbirds.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 268,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://brightsilverlushplan.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 256,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://brightsilverlushplan.neverssl.com/favicon.ico",
+      "status_code": 200,
+      "content_length": 124,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/vnd.microsoft.icon",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://neverssl.com/?%0A",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://neverssl.com/?%22%2C",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://youngoldfreshlight.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://neverssl.com/?utm_campaign=Recomendo\u0026utm_medium=email\u0026utm_source=Revue+newsletter",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://silveruniquemajesticmorning.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://neverssl.com/favicon.ico",
+      "status_code": 200,
+      "content_length": 124,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/vnd.microsoft.icon",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://innermajesticgrandyawn.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 258,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://neverssl.com/?ref=producthunt",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://neverssl.com/?utm_medium=email\u0026utm_source=hackernewsletter\u0026utm_term=show_hn",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://neverssl.com/?dst",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://silveruniquemajesticmorning.neverssl.com/online?utm_medium=podcast\u0026utm_source=digitaliafm",
+      "status_code": 301,
+      "content_length": 309,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://youngoldfreshlight.neverssl.com/online",
+      "status_code": 301,
+      "content_length": 254,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://neverssl.com/index.html",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://youngwholeoldmelody.neverssl.com/",
+      "status_code": 200,
+      "content_length": 3961,
+      "title": "NeverSSL - Connecting ...",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://neverssl.com/online",
+      "status_code": 301,
+      "content_length": 235,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.4.62 ()"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.4.62"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-02-18T08:22:31.69383335Z"
+}
