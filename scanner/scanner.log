@@ -1,348 +1,346 @@
-2026/02/18 14:04:19 [recon] starting server on :8080
-2026/02/18 14:04:31 [scan] POST http://localhost:8000/api/recon/scans/66/status/ succeeded (200)
-2026/02/18 14:04:31 [scan] starting subdomain discovery with streaming
-2026/02/18 14:04:31 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:04:31 [recon] starting job: scan_id=66 target=neverssl.com
-2026/02/18 14:04:41 [recon] found 24 subdomains, starting concurrent probing
-2026/02/18 14:04:44 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:44 [scan] streamed subdomain: innermajesticgrandyawn.neverssl.com (alive=true)
-2026/02/18 14:04:46 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:46 [scan] streamed subdomain: flxbmhnvckwrdtzs.neverssl.com (alive=true)
-2026/02/18 14:04:48 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:48 [scan] streamed subdomain: kbchfdmlnsrtwvxz.neverssl.com (alive=true)
-2026/02/18 14:04:48 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:48 [scan] streamed subdomain: www.neverssl.com (alive=true)
-2026/02/18 14:04:48 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:48 [scan] streamed subdomain: youngoldfreshlight.neverssl.com (alive=true)
-2026/02/18 14:04:48 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:48 [scan] streamed subdomain: youngwholeoldmelody.neverssl.com (alive=true)
-2026/02/18 14:04:49 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:49 [scan] streamed subdomain: brightbeautifulsilversong.neverssl.com (alive=true)
-2026/02/18 14:04:51 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:51 [scan] streamed subdomain: funshininginnersunrise.neverssl.com (alive=false)
-2026/02/18 14:04:51 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:51 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:51 [scan] streamed subdomain: wholesilveryoungsecret.neverssl.com (alive=false)
-2026/02/18 14:04:51 [scan] streamed subdomain: shiningquietbrightyawn.neverssl.com (alive=false)
-2026/02/18 14:04:51 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:51 [scan] streamed subdomain: shinysplendidclearmelody.neverssl.com (alive=false)
-2026/02/18 14:04:52 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:52 [scan] streamed subdomain: brightsilverlushplan.neverssl.com (alive=true)
-2026/02/18 14:04:54 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:54 [scan] streamed subdomain: innersplendidbrightday.neverssl.com (alive=true)
-2026/02/18 14:04:54 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:54 [scan] streamed subdomain: fdbhclmrkstnvwxz.neverssl.com (alive=true)
-2026/02/18 14:04:55 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:55 [scan] streamed subdomain: bdcfhkmlnsrwvtxz.neverssl.com (alive=true)
-2026/02/18 14:04:56 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:56 [scan] streamed subdomain: lushquietbrightmagic.neverssl.com (alive=true)
-2026/02/18 14:04:58 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:58 [scan] streamed subdomain: quietlushsilversunset.neverssl.com (alive=false)
-2026/02/18 14:04:58 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:58 [scan] streamed subdomain: zmtwfvdrnscxbhlk.neverssl.com (alive=false)
-2026/02/18 14:04:58 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:04:58 [scan] streamed subdomain: serenewonderfulsoothinglight.neverssl.com (alive=false)
-2026/02/18 14:05:00 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:05:00 [scan] streamed subdomain: brvtsdflnxhkzcmw.neverssl.com (alive=true)
-2026/02/18 14:05:00 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:05:00 [scan] streamed subdomain: majesticshiningtranscendentbirds.neverssl.com (alive=true)
-2026/02/18 14:05:01 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:05:01 [scan] streamed subdomain: silveruniquemajesticmorning.neverssl.com (alive=true)
-2026/02/18 14:05:01 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:05:01 [scan] streamed subdomain: youngfreshshiningmorning.neverssl.com (alive=false)
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/subdomains/ succeeded (200)
-2026/02/18 14:05:03 [scan] streamed subdomain: mnlhrwxszdvbtckf.neverssl.com (alive=true)
-2026/02/18 14:05:03 [recon] probing complete: 16 alive out of 24 subdomains
-2026/02/18 14:05:03 [recon] saved 24 subdomains to data/scan_66_neverssl.com.json
-2026/02/18 14:05:03 [recon] job finished: scan_id=66 target=neverssl.com subdomains=24 alive=16
-2026/02/18 14:05:03 [scan] subdomain discovery complete: 24 total
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:03 [scan] starting endpoint discovery with streaming
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:03 [endpoints] loaded 24 subdomains from data/scan_66_neverssl.com.json
-2026/02/18 14:05:03 [endpoints] starting dynamic discovery for 16 alive hosts
-2026/02/18 14:05:03 [discovery] starting dynamic discovery for 16 hosts
-2026/02/18 14:05:03 [discovery] discovering URLs for flxbmhnvckwrdtzs.neverssl.com
-2026/02/18 14:05:03 [discovery] discovering URLs for www.neverssl.com
-2026/02/18 14:05:03 [discovery] discovering URLs for innermajesticgrandyawn.neverssl.com
-2026/02/18 14:05:03 [discovery] discovering URLs for kbchfdmlnsrtwvxz.neverssl.com
-2026/02/18 14:05:03 [discovery] discovering URLs for youngoldfreshlight.neverssl.com
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:03 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:04 [discovery] katana error for https://innermajesticgrandyawn.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:04 [discovery] katana error for https://kbchfdmlnsrtwvxz.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:04 [discovery] katana error for https://flxbmhnvckwrdtzs.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:04 [discovery] katana error for https://www.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:04 [discovery] katana error for https://youngoldfreshlight.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:04 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:04 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:04 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:04 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:04 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [discovery] gau found 55 URLs for www.neverssl.com
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [discovery] JS analysis handled by katana for www.neverssl.com
-2026/02/18 14:05:26 [discovery] discovering URLs for youngwholeoldmelody.neverssl.com
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [discovery] gau found 2 URLs for innermajesticgrandyawn.neverssl.com
-2026/02/18 14:05:26 [discovery] gau found 3 URLs for flxbmhnvckwrdtzs.neverssl.com
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [discovery] JS analysis handled by katana for flxbmhnvckwrdtzs.neverssl.com
-2026/02/18 14:05:26 [discovery] discovering URLs for brightbeautifulsilversong.neverssl.com
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [discovery] JS analysis handled by katana for innermajesticgrandyawn.neverssl.com
-2026/02/18 14:05:26 [discovery] discovering URLs for brightsilverlushplan.neverssl.com
-2026/02/18 14:05:26 [discovery] katana error for https://youngwholeoldmelody.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [discovery] katana error for https://brightsilverlushplan.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:26 [discovery] katana error for https://brightbeautifulsilversong.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:26 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:28 [discovery] gau found 2 URLs for kbchfdmlnsrtwvxz.neverssl.com
-2026/02/18 14:05:28 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:28 [discovery] JS analysis handled by katana for kbchfdmlnsrtwvxz.neverssl.com
-2026/02/18 14:05:28 [discovery] discovering URLs for innersplendidbrightday.neverssl.com
-2026/02/18 14:05:28 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:28 [discovery] katana error for https://innersplendidbrightday.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:28 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:48 [discovery] gau found 1 URLs for brightbeautifulsilversong.neverssl.com
-2026/02/18 14:05:48 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:48 [discovery] JS analysis handled by katana for brightbeautifulsilversong.neverssl.com
-2026/02/18 14:05:48 [discovery] discovering URLs for fdbhclmrkstnvwxz.neverssl.com
-2026/02/18 14:05:48 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:48 [discovery] gau found 3 URLs for brightsilverlushplan.neverssl.com
-2026/02/18 14:05:48 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:48 [discovery] JS analysis handled by katana for brightsilverlushplan.neverssl.com
-2026/02/18 14:05:48 [discovery] discovering URLs for bdcfhkmlnsrwvtxz.neverssl.com
-2026/02/18 14:05:48 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:48 [discovery] katana error for https://fdbhclmrkstnvwxz.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:48 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:48 [discovery] katana error for https://bdcfhkmlnsrwvtxz.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:48 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:51 [discovery] gau found 1 URLs for youngwholeoldmelody.neverssl.com
-2026/02/18 14:05:51 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:51 [discovery] JS analysis handled by katana for youngwholeoldmelody.neverssl.com
-2026/02/18 14:05:51 [discovery] discovering URLs for lushquietbrightmagic.neverssl.com
-2026/02/18 14:05:51 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:51 [discovery] katana error for https://lushquietbrightmagic.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:51 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:51 [discovery] gau found 2 URLs for youngoldfreshlight.neverssl.com
-2026/02/18 14:05:51 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:51 [discovery] JS analysis handled by katana for youngoldfreshlight.neverssl.com
-2026/02/18 14:05:51 [discovery] discovering URLs for brvtsdflnxhkzcmw.neverssl.com
-2026/02/18 14:05:51 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:51 [discovery] katana error for https://brvtsdflnxhkzcmw.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:51 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:57 [discovery] gau found 2 URLs for innersplendidbrightday.neverssl.com
-2026/02/18 14:05:57 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:57 [discovery] JS analysis handled by katana for innersplendidbrightday.neverssl.com
-2026/02/18 14:05:57 [discovery] discovering URLs for majesticshiningtranscendentbirds.neverssl.com
-2026/02/18 14:05:57 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:05:57 [discovery] katana error for https://majesticshiningtranscendentbirds.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:05:57 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:13 [discovery] gau found 4 URLs for fdbhclmrkstnvwxz.neverssl.com
-2026/02/18 14:06:13 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:13 [discovery] JS analysis handled by katana for fdbhclmrkstnvwxz.neverssl.com
-2026/02/18 14:06:13 [discovery] discovering URLs for silveruniquemajesticmorning.neverssl.com
-2026/02/18 14:06:13 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:14 [discovery] katana error for https://silveruniquemajesticmorning.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:06:14 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:14 [discovery] gau found 0 URLs for lushquietbrightmagic.neverssl.com
-2026/02/18 14:06:14 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:14 [discovery] JS analysis handled by katana for lushquietbrightmagic.neverssl.com
-2026/02/18 14:06:14 [discovery] discovering URLs for mnlhrwxszdvbtckf.neverssl.com
-2026/02/18 14:06:14 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:14 [discovery] katana error for https://mnlhrwxszdvbtckf.neverssl.com: exit status 2 (stderr: )
-2026/02/18 14:06:14 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:14 [discovery] gau found 3 URLs for brvtsdflnxhkzcmw.neverssl.com
-2026/02/18 14:06:14 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:14 [discovery] JS analysis handled by katana for brvtsdflnxhkzcmw.neverssl.com
-2026/02/18 14:06:18 [discovery] gau found 2 URLs for bdcfhkmlnsrwvtxz.neverssl.com
-2026/02/18 14:06:18 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:18 [discovery] JS analysis handled by katana for bdcfhkmlnsrwvtxz.neverssl.com
-2026/02/18 14:06:31 [discovery] gau found 2 URLs for majesticshiningtranscendentbirds.neverssl.com
-2026/02/18 14:06:31 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:31 [discovery] JS analysis handled by katana for majesticshiningtranscendentbirds.neverssl.com
-2026/02/18 14:06:36 [discovery] gau found 1 URLs for mnlhrwxszdvbtckf.neverssl.com
-2026/02/18 14:06:36 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:36 [discovery] JS analysis handled by katana for mnlhrwxszdvbtckf.neverssl.com
-2026/02/18 14:06:41 [discovery] gau found 2 URLs for silveruniquemajesticmorning.neverssl.com
-2026/02/18 14:06:41 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:41 [discovery] JS analysis handled by katana for silveruniquemajesticmorning.neverssl.com
-2026/02/18 14:06:41 [discovery] collected 85 raw URLs, normalizing and deduplicating
-2026/02/18 14:06:41 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:41 [discovery] final URL count: 85
-2026/02/18 14:06:41 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:06:41 [endpoints] discovered 85 unique URLs, starting probing
-2026/02/18 14:06:41 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://flxbmhnvckwrdtzs.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://brvtsdflnxhkzcmw.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://innersplendidbrightday.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://innermajesticgrandyawn.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://innersplendidbrightday.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://brightbeautifulsilversong.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://fdbhclmrkstnvwxz.neverssl.com/favicon.ico (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://mnlhrwxszdvbtckf.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://bdcfhkmlnsrwvtxz.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://fdbhclmrkstnvwxz.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://brightsilverlushplan.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://kbchfdmlnsrtwvxz.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://flxbmhnvckwrdtzs.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://fdbhclmrkstnvwxz.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://brvtsdflnxhkzcmw.neverssl.com/favicon.ico (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://kbchfdmlnsrtwvxz.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://neverssl.com/?ref=ajfriesen.com (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://majesticshiningtranscendentbirds.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://bdcfhkmlnsrwvtxz.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://majesticshiningtranscendentbirds.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://brightsilverlushplan.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://brightsilverlushplan.neverssl.com/favicon.ico (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://neverssl.com/?%0A (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://neverssl.com/?%22%2C (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://youngoldfreshlight.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://neverssl.com/?utm_campaign=Recomendo&utm_medium=email&utm_source=Revue+newsletter (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://silveruniquemajesticmorning.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://neverssl.com/favicon.ico (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://innermajesticgrandyawn.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://neverssl.com/?ref=producthunt (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://neverssl.com/?utm_medium=email&utm_source=hackernewsletter&utm_term=show_hn (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://neverssl.com/?dst (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://silveruniquemajesticmorning.neverssl.com/online?utm_medium=podcast&utm_source=digitaliafm (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: https://youngoldfreshlight.neverssl.com/online (status=301)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://neverssl.com/index.html (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://youngwholeoldmelody.neverssl.com/ (status=200)
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/ingest/endpoints/ succeeded (200)
-2026/02/18 14:07:31 [scan] streamed endpoint: http://neverssl.com/online (status=301)
-2026/02/18 14:07:31 [endpoints] httpx found 38 results
-2026/02/18 14:07:31 [endpoints] probing complete: 38 endpoints responding
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:07:31 [scan] endpoint discovery complete: 38 total
-2026/02/18 14:07:31 [network] starting network analysis for scan 66
-2026/02/18 14:07:31 [network] analyzing 16 hosts
-2026/02/18 14:07:31 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:07:31 [network] analyzing host: innermajesticgrandyawn.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: flxbmhnvckwrdtzs.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: kbchfdmlnsrtwvxz.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: brightsilverlushplan.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: innersplendidbrightday.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: fdbhclmrkstnvwxz.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: www.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: youngoldfreshlight.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: youngwholeoldmelody.neverssl.com
-2026/02/18 14:07:31 [network] analyzing host: brightbeautifulsilversong.neverssl.com
-2026/02/18 14:07:54 [network] found 1 open ports on youngwholeoldmelody.neverssl.com
-2026/02/18 14:07:54 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:07:55 [network] found 1 open ports on innermajesticgrandyawn.neverssl.com
-2026/02/18 14:07:55 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:07:56 [network] found 1 open ports on brightsilverlushplan.neverssl.com
-2026/02/18 14:07:56 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:07:56 [network] found 1 open ports on youngoldfreshlight.neverssl.com
-2026/02/18 14:07:56 [network] found 1 open ports on fdbhclmrkstnvwxz.neverssl.com
-2026/02/18 14:07:56 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:07:56 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:07:57 [network] TLS check for youngwholeoldmelody.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:07:57 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:07:58 [network] TLS check for innermajesticgrandyawn.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:07:58 [network] found 1 open ports on www.neverssl.com
-2026/02/18 14:07:58 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:07:58 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:07:59 [network] TLS check for brightsilverlushplan.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:07:59 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:07:59 [network] TLS check for youngoldfreshlight.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:07:59 [network] TLS check for fdbhclmrkstnvwxz.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:07:59 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:07:59 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:08:01 [network] TLS check for www.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:08:01 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:08:30 [network] found 1 open ports on innersplendidbrightday.neverssl.com
-2026/02/18 14:08:30 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:08:33 [network] found 2 open ports on flxbmhnvckwrdtzs.neverssl.com
-2026/02/18 14:08:33 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:08:33 [network] TLS check for innersplendidbrightday.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:08:33 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:08:33 [network] found 1 open ports on brightbeautifulsilversong.neverssl.com
-2026/02/18 14:08:33 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:08:34 [network] found 1 open ports on kbchfdmlnsrtwvxz.neverssl.com
-2026/02/18 14:08:34 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:08:36 [network] TLS check for flxbmhnvckwrdtzs.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:08:36 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:08:37 [network] TLS check for brightbeautifulsilversong.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:08:37 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:08:37 [network] TLS check for kbchfdmlnsrtwvxz.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:08:37 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:08:51 [network] analyzing host: bdcfhkmlnsrwvtxz.neverssl.com
-2026/02/18 14:08:54 [network] analyzing host: lushquietbrightmagic.neverssl.com
-2026/02/18 14:08:58 [network] analyzing host: brvtsdflnxhkzcmw.neverssl.com
-2026/02/18 14:08:59 [network] analyzing host: majesticshiningtranscendentbirds.neverssl.com
-2026/02/18 14:09:01 [network] analyzing host: silveruniquemajesticmorning.neverssl.com
-2026/02/18 14:09:02 [network] analyzing host: mnlhrwxszdvbtckf.neverssl.com
-2026/02/18 14:09:29 [network] found 2 open ports on mnlhrwxszdvbtckf.neverssl.com
-2026/02/18 14:09:29 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:09:32 [network] found 1 open ports on silveruniquemajesticmorning.neverssl.com
-2026/02/18 14:09:32 [network] TLS check for mnlhrwxszdvbtckf.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:09:32 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:09:32 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:09:35 [network] TLS check for silveruniquemajesticmorning.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:09:35 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:09:38 [network] found 2 open ports on brvtsdflnxhkzcmw.neverssl.com
-2026/02/18 14:09:38 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:09:41 [network] TLS check for brvtsdflnxhkzcmw.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:09:41 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:09:44 [network] found 1 open ports on bdcfhkmlnsrwvtxz.neverssl.com
-2026/02/18 14:09:44 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:09:47 [network] TLS check for bdcfhkmlnsrwvtxz.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:09:47 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:09:57 [network] found 1 open ports on majesticshiningtranscendentbirds.neverssl.com
-2026/02/18 14:09:57 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:09:57 [network] found 1 open ports on lushquietbrightmagic.neverssl.com
-2026/02/18 14:09:57 [scan] POST http://localhost:8000/api/recon/scans/66/network/ports/ingest/ succeeded (200)
-2026/02/18 14:10:00 [network] TLS check for majesticshiningtranscendentbirds.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:10:00 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:10:00 [network] TLS check for lushquietbrightmagic.neverssl.com: HTTPS=true, issues=0
-2026/02/18 14:10:00 [scan] POST http://localhost:8000/api/recon/scans/66/network/tls/ingest/ succeeded (200)
-2026/02/18 14:10:57 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
-2026/02/18 14:10:57 [scan] POST http://localhost:8000/api/recon/scans/66/status/ succeeded (200)
-2026/02/18 14:10:57 [scan] POST http://localhost:8000/api/recon/scans/66/logs/ succeeded (200)
+2026/02/18 15:12:33 [recon] starting server on :8080
+2026/02/18 15:12:36 [scan] POST http://localhost:8000/api/recon/scans/70/status/ succeeded (200)
+2026/02/18 15:12:36 [scan] starting subdomain discovery with streaming
+2026/02/18 15:12:36 [scan] POST http://localhost:8000/api/recon/scans/70/logs/ succeeded (200)
+2026/02/18 15:12:36 [recon] starting job: scan_id=70 target=neverssl.com
+2026/02/18 15:13:08 [recon] found 24 subdomains, starting concurrent probing
+2026/02/18 15:13:10 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:10 [scan] streamed subdomain: youngwholeoldmelody.neverssl.com (alive=true)
+2026/02/18 15:13:11 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:11 [scan] streamed subdomain: serenewonderfulsoothinglight.neverssl.com (alive=true)
+2026/02/18 15:13:11 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:11 [scan] streamed subdomain: flxbmhnvckwrdtzs.neverssl.com (alive=true)
+2026/02/18 15:13:13 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:13 [scan] streamed subdomain: youngfreshshiningmorning.neverssl.com (alive=true)
+2026/02/18 15:13:13 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:13 [scan] streamed subdomain: majesticshiningtranscendentbirds.neverssl.com (alive=true)
+2026/02/18 15:13:16 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:16 [scan] streamed subdomain: quietlushsilversunset.neverssl.com (alive=true)
+2026/02/18 15:13:17 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:17 [scan] streamed subdomain: shiningquietbrightyawn.neverssl.com (alive=true)
+2026/02/18 15:13:17 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:17 [scan] streamed subdomain: brightbeautifulsilversong.neverssl.com (alive=true)
+2026/02/18 15:13:18 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:18 [scan] streamed subdomain: brvtsdflnxhkzcmw.neverssl.com (alive=true)
+2026/02/18 15:13:18 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:18 [scan] streamed subdomain: brightsilverlushplan.neverssl.com (alive=false)
+2026/02/18 15:13:18 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:18 [scan] streamed subdomain: bdcfhkmlnsrwvtxz.neverssl.com (alive=true)
+2026/02/18 15:13:20 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:20 [scan] streamed subdomain: www.neverssl.com (alive=false)
+2026/02/18 15:13:21 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:21 [scan] streamed subdomain: innermajesticgrandyawn.neverssl.com (alive=false)
+2026/02/18 15:13:22 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:22 [scan] streamed subdomain: innersplendidbrightday.neverssl.com (alive=true)
+2026/02/18 15:13:22 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:22 [scan] streamed subdomain: shinysplendidclearmelody.neverssl.com (alive=true)
+2026/02/18 15:13:23 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:23 [scan] streamed subdomain: zmtwfvdrnscxbhlk.neverssl.com (alive=false)
+2026/02/18 15:13:24 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:24 [scan] streamed subdomain: lushquietbrightmagic.neverssl.com (alive=true)
+2026/02/18 15:13:24 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:24 [scan] streamed subdomain: mnlhrwxszdvbtckf.neverssl.com (alive=true)
+2026/02/18 15:13:24 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:24 [scan] streamed subdomain: wholesilveryoungsecret.neverssl.com (alive=true)
+2026/02/18 15:13:24 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:24 [scan] streamed subdomain: kbchfdmlnsrtwvxz.neverssl.com (alive=true)
+2026/02/18 15:13:25 [scan] cancelled scan 70
+2026/02/18 15:13:25 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:25 [scan] streamed subdomain: youngoldfreshlight.neverssl.com (alive=true)
+2026/02/18 15:13:26 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:26 [scan] streamed subdomain: funshininginnersunrise.neverssl.com (alive=true)
+2026/02/18 15:13:26 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:26 [scan] streamed subdomain: fdbhclmrkstnvwxz.neverssl.com (alive=true)
+2026/02/18 15:13:27 [scan] POST http://localhost:8000/api/recon/scans/70/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:27 [scan] streamed subdomain: silveruniquemajesticmorning.neverssl.com (alive=false)
+2026/02/18 15:13:27 [recon] probing complete: 19 alive out of 24 subdomains
+2026/02/18 15:13:27 [recon] saved 24 subdomains to data/user_1/scan_70_neverssl.com.json
+2026/02/18 15:13:27 [recon] job finished: scan_id=70 target=neverssl.com subdomains=24 alive=19
+2026/02/18 15:13:27 [scan] subdomain discovery complete: 24 total
+2026/02/18 15:13:27 [scan] POST http://localhost:8000/api/recon/scans/70/logs/ succeeded (200)
+2026/02/18 15:13:27 [scan] scan 70 cancelled before endpoint discovery
+2026/02/18 15:13:27 [scan] POST http://localhost:8000/api/recon/scans/70/status/ returned 400: {"detail":"invalid status"}
+2026/02/18 15:13:27 [scan] POST http://localhost:8000/api/recon/scans/70/logs/ succeeded (200)
+2026/02/18 15:13:43 [scan] POST http://localhost:8000/api/recon/scans/71/status/ succeeded (200)
+2026/02/18 15:13:43 [scan] starting subdomain discovery with streaming
+2026/02/18 15:13:43 [scan] POST http://localhost:8000/api/recon/scans/71/logs/ succeeded (200)
+2026/02/18 15:13:43 [recon] starting job: scan_id=71 target=neverssl.com
+2026/02/18 15:13:51 [recon] found 15 subdomains, starting concurrent probing
+2026/02/18 15:13:53 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:53 [scan] streamed subdomain: www.neverssl.com (alive=true)
+2026/02/18 15:13:57 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:57 [scan] streamed subdomain: shinysplendidclearmelody.neverssl.com (alive=true)
+2026/02/18 15:13:58 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:58 [scan] streamed subdomain: quietlushsilversunset.neverssl.com (alive=true)
+2026/02/18 15:13:59 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:13:59 [scan] streamed subdomain: youngfreshshiningmorning.neverssl.com (alive=true)
+2026/02/18 15:14:00 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:00 [scan] streamed subdomain: shiningquietbrightyawn.neverssl.com (alive=true)
+2026/02/18 15:14:01 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:01 [scan] streamed subdomain: brightsilverlushplan.neverssl.com (alive=true)
+2026/02/18 15:14:01 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:01 [scan] streamed subdomain: silveruniquemajesticmorning.neverssl.com (alive=true)
+2026/02/18 15:14:01 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:01 [scan] streamed subdomain: majesticshiningtranscendentbirds.neverssl.com (alive=true)
+2026/02/18 15:14:01 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:01 [scan] streamed subdomain: innermajesticgrandyawn.neverssl.com (alive=true)
+2026/02/18 15:14:01 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:01 [scan] streamed subdomain: funshininginnersunrise.neverssl.com (alive=false)
+2026/02/18 15:14:01 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:01 [scan] streamed subdomain: serenewonderfulsoothinglight.neverssl.com (alive=false)
+2026/02/18 15:14:01 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:01 [scan] streamed subdomain: flxbmhnvckwrdtzs.neverssl.com (alive=false)
+2026/02/18 15:14:06 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:06 [scan] streamed subdomain: fdbhclmrkstnvwxz.neverssl.com (alive=true)
+2026/02/18 15:14:06 [scan] cancelled scan 71
+2026/02/18 15:14:07 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:07 [scan] streamed subdomain: brvtsdflnxhkzcmw.neverssl.com (alive=false)
+2026/02/18 15:14:07 [scan] POST http://localhost:8000/api/recon/scans/71/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:07 [scan] streamed subdomain: wholesilveryoungsecret.neverssl.com (alive=true)
+2026/02/18 15:14:07 [recon] probing complete: 11 alive out of 15 subdomains
+2026/02/18 15:14:07 [recon] saved 15 subdomains to data/user_1/scan_71_neverssl.com.json
+2026/02/18 15:14:07 [recon] job finished: scan_id=71 target=neverssl.com subdomains=15 alive=11
+2026/02/18 15:14:07 [scan] subdomain discovery complete: 15 total
+2026/02/18 15:14:07 [scan] POST http://localhost:8000/api/recon/scans/71/logs/ succeeded (200)
+2026/02/18 15:14:07 [scan] scan 71 cancelled before endpoint discovery
+2026/02/18 15:14:07 [scan] POST http://localhost:8000/api/recon/scans/71/status/ returned 400: {"detail":"invalid status"}
+2026/02/18 15:14:07 [scan] POST http://localhost:8000/api/recon/scans/71/logs/ succeeded (200)
+2026/02/18 15:14:15 [scan] POST http://localhost:8000/api/recon/scans/72/status/ succeeded (200)
+2026/02/18 15:14:15 [scan] starting subdomain discovery with streaming
+2026/02/18 15:14:15 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:15 [recon] starting job: scan_id=72 target=hackerone.com
+2026/02/18 15:14:28 [recon] found 16 subdomains, starting concurrent probing
+2026/02/18 15:14:28 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:28 [scan] streamed subdomain: links.hackerone.com (alive=false)
+2026/02/18 15:14:28 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:28 [scan] streamed subdomain: go.hackerone.com (alive=false)
+2026/02/18 15:14:28 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:28 [scan] streamed subdomain: websockets.hackerone.com (alive=false)
+2026/02/18 15:14:28 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:28 [scan] streamed subdomain: events.hackerone.com (alive=false)
+2026/02/18 15:14:28 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:28 [scan] streamed subdomain: info.hackerone.com (alive=false)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: b.ns.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: design.hackerone.com (alive=false)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: a.ns.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: www.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: mta-sts.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: gslink.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: mta-sts.managed.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: mta-sts.forwarding.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: support.hackerone.com (alive=true)
+2026/02/18 15:14:29 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:29 [scan] streamed subdomain: api.hackerone.com (alive=true)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/subdomains/ succeeded (200)
+2026/02/18 15:14:30 [scan] streamed subdomain: docs.hackerone.com (alive=true)
+2026/02/18 15:14:30 [recon] probing complete: 10 alive out of 16 subdomains
+2026/02/18 15:14:30 [recon] saved 16 subdomains to data/user_1/scan_72_hackerone.com.json
+2026/02/18 15:14:30 [recon] job finished: scan_id=72 target=hackerone.com subdomains=16 alive=10
+2026/02/18 15:14:30 [scan] subdomain discovery complete: 16 total
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] starting endpoint discovery with streaming
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [endpoints] loaded 16 subdomains from data/user_1/scan_72_hackerone.com.json
+2026/02/18 15:14:30 [endpoints] starting dynamic discovery for 10 alive hosts
+2026/02/18 15:14:30 [discovery] starting dynamic discovery for 10 hosts
+2026/02/18 15:14:30 [discovery] discovering URLs for b.ns.hackerone.com
+2026/02/18 15:14:30 [discovery] discovering URLs for a.ns.hackerone.com
+2026/02/18 15:14:30 [discovery] discovering URLs for www.hackerone.com
+2026/02/18 15:14:30 [discovery] discovering URLs for mta-sts.hackerone.com
+2026/02/18 15:14:30 [discovery] discovering URLs for gslink.hackerone.com
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [discovery] katana error for https://a.ns.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:14:30 [discovery] katana error for https://b.ns.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:14:30 [discovery] katana error for https://www.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:14:30 [discovery] katana error for https://gslink.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [discovery] katana error for https://mta-sts.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:30 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:53 [discovery] gau found 15 URLs for mta-sts.hackerone.com
+2026/02/18 15:14:53 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:53 [discovery] JS analysis handled by katana for mta-sts.hackerone.com
+2026/02/18 15:14:53 [discovery] discovering URLs for mta-sts.managed.hackerone.com
+2026/02/18 15:14:53 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:53 [discovery] katana error for https://mta-sts.managed.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:14:53 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:14:53 [scan] cancelled scan 72
+2026/02/18 15:14:55 [scan] POST http://localhost:8000/api/recon/scans/73/status/ succeeded (200)
+2026/02/18 15:14:55 [scan] starting subdomain discovery with streaming
+2026/02/18 15:14:55 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:14:55 [recon] starting job: scan_id=73 target=hackerone.com
+2026/02/18 15:15:02 [discovery] gau found 1 URLs for a.ns.hackerone.com
+2026/02/18 15:15:02 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:15:02 [discovery] JS analysis handled by katana for a.ns.hackerone.com
+2026/02/18 15:15:02 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:15:09 [recon] found 16 subdomains, starting concurrent probing
+2026/02/18 15:15:09 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:09 [scan] streamed subdomain: links.hackerone.com (alive=false)
+2026/02/18 15:15:09 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:09 [scan] streamed subdomain: go.hackerone.com (alive=false)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: a.ns.hackerone.com (alive=true)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: mta-sts.managed.hackerone.com (alive=true)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: b.ns.hackerone.com (alive=true)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: websockets.hackerone.com (alive=false)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: mta-sts.hackerone.com (alive=true)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: events.hackerone.com (alive=false)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: design.hackerone.com (alive=false)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: mta-sts.forwarding.hackerone.com (alive=true)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: info.hackerone.com (alive=false)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: www.hackerone.com (alive=true)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: api.hackerone.com (alive=true)
+2026/02/18 15:15:10 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:10 [scan] streamed subdomain: support.hackerone.com (alive=true)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:11 [scan] streamed subdomain: docs.hackerone.com (alive=true)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/subdomains/ succeeded (200)
+2026/02/18 15:15:11 [scan] streamed subdomain: gslink.hackerone.com (alive=true)
+2026/02/18 15:15:11 [recon] probing complete: 10 alive out of 16 subdomains
+2026/02/18 15:15:11 [recon] saved 16 subdomains to data/user_1/scan_73_hackerone.com.json
+2026/02/18 15:15:11 [recon] job finished: scan_id=73 target=hackerone.com subdomains=16 alive=10
+2026/02/18 15:15:11 [scan] subdomain discovery complete: 16 total
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] starting endpoint discovery with streaming
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [endpoints] loaded 16 subdomains from data/user_1/scan_73_hackerone.com.json
+2026/02/18 15:15:11 [endpoints] starting dynamic discovery for 10 alive hosts
+2026/02/18 15:15:11 [discovery] starting dynamic discovery for 10 hosts
+2026/02/18 15:15:11 [discovery] discovering URLs for mta-sts.managed.hackerone.com
+2026/02/18 15:15:11 [discovery] discovering URLs for mta-sts.hackerone.com
+2026/02/18 15:15:11 [discovery] discovering URLs for a.ns.hackerone.com
+2026/02/18 15:15:11 [discovery] discovering URLs for mta-sts.forwarding.hackerone.com
+2026/02/18 15:15:11 [discovery] discovering URLs for b.ns.hackerone.com
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [discovery] katana error for https://mta-sts.managed.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:15:11 [discovery] katana error for https://mta-sts.forwarding.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:15:11 [discovery] katana error for https://mta-sts.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:15:11 [discovery] katana error for https://a.ns.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:15:11 [discovery] katana error for https://b.ns.hackerone.com: exit status 2 (stderr: )
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:11 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:16 [discovery] gau found 3 URLs for gslink.hackerone.com
+2026/02/18 15:15:16 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:16 [discovery] JS analysis handled by katana for gslink.hackerone.com
+2026/02/18 15:15:16 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:15:18 [discovery] gau found 1 URLs for b.ns.hackerone.com
+2026/02/18 15:15:18 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:18 [discovery] JS analysis handled by katana for b.ns.hackerone.com
+2026/02/18 15:15:18 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:15:24 [discovery] gau found 15 URLs for mta-sts.managed.hackerone.com
+2026/02/18 15:15:24 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:24 [discovery] JS analysis handled by katana for mta-sts.managed.hackerone.com
+2026/02/18 15:15:24 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:15:30 [discovery] gau error for www.hackerone.com: signal: killed (stderr: time="2026-02-18T15:14:30+05:45" level=warning msg="error reading config: Config file /home/aaila/.gau.toml not found, using default config"
+)
+2026/02/18 15:15:30 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:30 [discovery] JS analysis handled by katana for www.hackerone.com
+2026/02/18 15:15:30 [discovery] collected 35 raw URLs, normalizing and deduplicating
+2026/02/18 15:15:30 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:30 [discovery] final URL count: 35
+2026/02/18 15:15:30 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:30 [endpoints] discovered 35 unique URLs, starting probing
+2026/02/18 15:15:30 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:34 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/endpoints/ succeeded (200)
+2026/02/18 15:15:34 [scan] streamed endpoint: http://a.ns.hackerone.com/ (status=301)
+2026/02/18 15:15:34 [scan] POST http://localhost:8000/api/recon/scans/72/ingest/endpoints/ succeeded (200)
+2026/02/18 15:15:34 [scan] streamed endpoint: http://b.ns.hackerone.com/ (status=301)
+2026/02/18 15:15:34 [endpoints] httpx found 2 results
+2026/02/18 15:15:34 [endpoints] probing complete: 2 endpoints responding
+2026/02/18 15:15:34 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:34 [scan] endpoint discovery complete: 2 total
+2026/02/18 15:15:34 [network] starting network analysis for scan 72
+2026/02/18 15:15:34 [scan] scan 72 cancelled before network analysis
+2026/02/18 15:15:34 [scan] POST http://localhost:8000/api/recon/scans/72/status/ returned 400: {"detail":"invalid status"}
+2026/02/18 15:15:34 [scan] POST http://localhost:8000/api/recon/scans/72/logs/ succeeded (200)
+2026/02/18 15:15:45 [scan] cancelled scan 73
+2026/02/18 15:15:46 [discovery] gau found 15 URLs for mta-sts.hackerone.com
+2026/02/18 15:15:46 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:46 [discovery] JS analysis handled by katana for mta-sts.hackerone.com
+2026/02/18 15:15:46 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:15:56 [discovery] gau found 1 URLs for b.ns.hackerone.com
+2026/02/18 15:15:56 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:56 [discovery] JS analysis handled by katana for b.ns.hackerone.com
+2026/02/18 15:15:56 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:15:58 [discovery] gau found 15 URLs for mta-sts.managed.hackerone.com
+2026/02/18 15:15:58 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:15:58 [discovery] JS analysis handled by katana for mta-sts.managed.hackerone.com
+2026/02/18 15:15:58 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:16:02 [discovery] gau found 4 URLs for mta-sts.forwarding.hackerone.com
+2026/02/18 15:16:02 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:16:02 [discovery] JS analysis handled by katana for mta-sts.forwarding.hackerone.com
+2026/02/18 15:16:02 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:16:03 [scan] POST http://localhost:8000/api/recon/scans/74/status/ succeeded (200)
+2026/02/18 15:16:03 [scan] starting subdomain discovery with streaming
+2026/02/18 15:16:03 [scan] POST http://localhost:8000/api/recon/scans/74/logs/ succeeded (200)
+2026/02/18 15:16:03 [recon] starting job: scan_id=74 target=localhost:3000
+2026/02/18 15:16:10 [discovery] gau found 1 URLs for a.ns.hackerone.com
+2026/02/18 15:16:10 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:16:10 [discovery] JS analysis handled by katana for a.ns.hackerone.com
+2026/02/18 15:16:10 [discovery] worker cancelled, stopping discovery
+2026/02/18 15:16:10 [discovery] collected 36 raw URLs, normalizing and deduplicating
+2026/02/18 15:16:10 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:16:10 [discovery] final URL count: 36
+2026/02/18 15:16:10 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:16:10 [endpoints] discovered 36 unique URLs, starting probing
+2026/02/18 15:16:10 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:16:14 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/endpoints/ succeeded (200)
+2026/02/18 15:16:14 [scan] streamed endpoint: http://a.ns.hackerone.com/ (status=301)
+2026/02/18 15:16:14 [scan] POST http://localhost:8000/api/recon/scans/73/ingest/endpoints/ succeeded (200)
+2026/02/18 15:16:14 [scan] streamed endpoint: http://b.ns.hackerone.com/ (status=301)
+2026/02/18 15:16:14 [endpoints] httpx found 2 results
+2026/02/18 15:16:14 [endpoints] probing complete: 2 endpoints responding
+2026/02/18 15:16:14 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:16:14 [scan] endpoint discovery complete: 2 total
+2026/02/18 15:16:14 [network] starting network analysis for scan 73
+2026/02/18 15:16:14 [scan] scan 73 cancelled before network analysis
+2026/02/18 15:16:14 [scan] POST http://localhost:8000/api/recon/scans/73/status/ returned 400: {"detail":"invalid status"}
+2026/02/18 15:16:14 [scan] POST http://localhost:8000/api/recon/scans/73/logs/ succeeded (200)
+2026/02/18 15:16:18 [recon] found 0 subdomains, starting concurrent probing
+2026/02/18 15:16:18 [recon] probing complete: 0 alive out of 0 subdomains
+2026/02/18 15:16:18 [recon] saved 0 subdomains to data/user_1/scan_74_localhost_3000.json
+2026/02/18 15:16:18 [recon] job finished: scan_id=74 target=localhost:3000 subdomains=0 alive=0
+2026/02/18 15:16:18 [scan] subdomain discovery complete: 0 total
+2026/02/18 15:16:18 [scan] POST http://localhost:8000/api/recon/scans/74/logs/ succeeded (200)
+2026/02/18 15:16:18 [scan] starting endpoint discovery with streaming
+2026/02/18 15:16:18 [scan] POST http://localhost:8000/api/recon/scans/74/logs/ succeeded (200)
+2026/02/18 15:16:18 [endpoints] loaded 0 subdomains from data/user_1/scan_74_localhost_3000.json
+2026/02/18 15:16:18 [endpoints] no alive hosts found, skipping endpoint discovery
+2026/02/18 15:16:18 [scan] endpoint discovery complete: 0 total
+2026/02/18 15:16:18 [network] starting network analysis for scan 74
+2026/02/18 15:16:18 [network] no alive hosts found, skipping network analysis
+2026/02/18 15:16:18 [scan] POST http://localhost:8000/api/recon/scans/74/logs/ succeeded (200)
+2026/02/18 15:16:18 [scan] POST http://localhost:8000/api/recon/scans/74/status/ succeeded (200)
+2026/02/18 15:16:18 [scan] POST http://localhost:8000/api/recon/scans/74/logs/ succeeded (200)

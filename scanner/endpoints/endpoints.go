@@ -3,6 +3,7 @@ package endpoints
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
@@ -56,14 +57,14 @@ type EndpointResult struct {
 // 4) probe discovered endpoints
 // 5) domain + endpoint fingerprinting
 // 6) save results
-func DiscoverEndpointsFromScan(scanID int64, target string) ([]EndpointResult, error) {
-	return DiscoverEndpointsFromScanWithCallback(scanID, target, nil)
+func DiscoverEndpointsFromScan(ctx context.Context, userID int64, scanID int64, target string) ([]EndpointResult, error) {
+	return DiscoverEndpointsFromScanWithCallback(ctx, userID, scanID, target, nil)
 }
 
 // DiscoverEndpointsFromScanWithCallback allows streaming results via callback
 // Use SetLogCallback to enable progress log messages during discovery
-func DiscoverEndpointsFromScanWithCallback(scanID int64, target string, callback func(EndpointResult)) ([]EndpointResult, error) {
-	subdomains, scanFile, err := recon.LoadSubdomainsForScan(scanID, target)
+func DiscoverEndpointsFromScanWithCallback(ctx context.Context, userID int64, scanID int64, target string, callback func(EndpointResult)) ([]EndpointResult, error) {
+	subdomains, scanFile, err := recon.LoadSubdomainsForScan(userID, scanID, target)
 	if err != nil {
 		return nil, fmt.Errorf("load subdomains: %w", err)
 	}
@@ -84,13 +85,21 @@ func DiscoverEndpointsFromScanWithCallback(scanID int64, target string, callback
 
 	log.Printf("[endpoints] starting dynamic discovery for %d alive hosts", len(aliveHosts))
 
+	// Check for cancellation before starting discovery
+	select {
+	case <-ctx.Done():
+		log.Printf("[endpoints] discovery cancelled before starting")
+		return []EndpointResult{}, ctx.Err()
+	default:
+	}
+
 	// Dynamic endpoint discovery using gau, katana, and JS analysis
 	discoveryOpts := DefaultDiscoveryOptions()
 	discoveryOpts.Workers = getEnvIntOrDefault("ENDPOINT_DISCOVERY_WORKERS", 5)
 	discoveryOpts.KatanaDepth = getEnvIntOrDefault("KATANA_DEPTH", 2)
 	discoveryOpts.MaxURLsPerHost = getEnvIntOrDefault("MAX_URLS_PER_HOST", 500)
 
-	urls := DiscoverURLsFromHosts(aliveHosts, discoveryOpts)
+	urls := DiscoverURLsFromHosts(ctx, aliveHosts, discoveryOpts)
 
 	if len(urls) == 0 {
 		log.Printf("[endpoints] no URLs discovered, falling back to basic paths")

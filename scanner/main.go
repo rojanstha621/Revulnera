@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"log"
@@ -28,6 +29,7 @@ func main() {
 	mux.HandleFunc("/jobs", jobHandler)
 	mux.HandleFunc("/endpoints", endpointsHandler)
 	mux.HandleFunc("/scan", scanHandler)
+	mux.HandleFunc("/cancel", cancelScanHandler)
 
 	addr := ":8080"
 	if v := os.Getenv("RECON_HTTP_ADDR"); v != "" {
@@ -77,6 +79,7 @@ func endpointsHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		ScanID int64  `json:"scan_id"`
 		Target string `json:"target"`
+		UserID int64  `json:"user_id"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -84,7 +87,7 @@ func endpointsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	endpoints, err := endpointspkg.DiscoverEndpointsFromScan(req.ScanID, req.Target)
+	endpoints, err := endpointspkg.DiscoverEndpointsFromScan(context.Background(), req.UserID, req.ScanID, req.Target)
 	if err != nil {
 		log.Printf("[endpoints] discovery failed: %v", err)
 		http.Error(w, "endpoint discovery failed", http.StatusInternalServerError)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -15,9 +16,16 @@ import (
 	reconpkg "recon/recon"
 )
 
+// Track active scans with their cancel functions
+var (
+	activeScans   = make(map[int64]context.CancelFunc)
+	activeScansMu sync.RWMutex
+)
+
 type ScanRequest struct {
 	ScanID      int64  `json:"scan_id"`
 	Target      string `json:"target"`
+	UserID      int64  `json:"user_id"`      // User ID for file organization
 	BackendBase string `json:"backend_base"` // e.g. http://localhost:8000
 	AuthHeader  string `json:"auth_header"`  // pass through (dev)
 }
@@ -33,8 +41,22 @@ func scanHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Create cancellable context for this scan
+	ctx, cancel := context.WithCancel(context.Background())
+
+	// Store cancel function
+	activeScansMu.Lock()
+	activeScans[req.ScanID] = cancel
+	activeScansMu.Unlock()
+
 	go func() {
-		runFullScan(req)
+		defer func() {
+			// Remove from active scans when done
+			activeScansMu.Lock()
+			delete(activeScans, req.ScanID)
+			activeScansMu.Unlock()
+		}()
+		runFullScan(ctx, req)
 	}()
 
 	w.Header().Set("Content-Type", "application/json")
@@ -45,7 +67,47 @@ func scanHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func runFullScan(req ScanRequest) {
+func cancelScanHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		ScanID int64 `json:"scan_id"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "invalid json", http.StatusBadRequest)
+		return
+	}
+
+	// Look up and call cancel function
+	activeScansMu.RLock()
+	cancel, exists := activeScans[req.ScanID]
+	activeScansMu.RUnlock()
+
+	if !exists {
+		// Scan not running or already completed
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"ok":      false,
+			"message": "scan not found or already completed",
+		})
+		return
+	}
+
+	// Cancel the scan
+	cancel()
+	log.Printf("[scan] cancelled scan %d", req.ScanID)
+
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"ok":      true,
+		"message": "scan cancelled",
+	})
+}
+
+func runFullScan(ctx context.Context, req ScanRequest) {
 	statusURL := fmt.Sprintf("%s/api/recon/scans/%d/status/", req.BackendBase, req.ScanID)
 	subIngest := fmt.Sprintf("%s/api/recon/scans/%d/ingest/subdomains/", req.BackendBase, req.ScanID)
 	epIngest := fmt.Sprintf("%s/api/recon/scans/%d/ingest/endpoints/", req.BackendBase, req.ScanID)
@@ -60,6 +122,16 @@ func runFullScan(req ScanRequest) {
 	log.Printf("[scan] starting subdomain discovery with streaming")
 	postLog(req.AuthHeader, logURL, fmt.Sprintf("🔍 Starting subdomain enumeration for %s...", req.Target), "info")
 
+	// Check for cancellation
+	select {
+	case <-ctx.Done():
+		log.Printf("[scan] scan %d cancelled before subdomain enumeration", req.ScanID)
+		postStatus(req.AuthHeader, statusURL, "CANCELLED", "Scan cancelled by user")
+		postLog(req.AuthHeader, logURL, "❌ Scan cancelled by user", "warning")
+		return
+	default:
+	}
+
 	// Create streaming callback for immediate updates
 	subdomainCallback := func(sub reconpkg.SubdomainResult) {
 		// Send immediately to backend (single item)
@@ -72,6 +144,7 @@ func runFullScan(req ScanRequest) {
 	subs, err := reconpkg.HandleJob(reconpkg.Job{
 		ScanID:   req.ScanID,
 		Target:   req.Target,
+		UserID:   req.UserID,
 		Callback: subdomainCallback,
 	})
 	if err != nil {
@@ -88,6 +161,16 @@ func runFullScan(req ScanRequest) {
 		}
 	}
 	postLog(req.AuthHeader, logURL, fmt.Sprintf("✅ Subdomain enumeration complete: found %d subdomains (%d alive)", len(subs), aliveCount), "success")
+
+	// Check for cancellation before endpoints
+	select {
+	case <-ctx.Done():
+		log.Printf("[scan] scan %d cancelled before endpoint discovery", req.ScanID)
+		postStatus(req.AuthHeader, statusURL, "CANCELLED", "Scan cancelled by user")
+		postLog(req.AuthHeader, logURL, "❌ Scan cancelled by user", "warning")
+		return
+	default:
+	}
 
 	// 2) Endpoints with real-time streaming
 	log.Printf("[scan] starting endpoint discovery with streaming")
@@ -110,8 +193,15 @@ func runFullScan(req ScanRequest) {
 		log.Printf("[scan] streamed endpoint: %s (status=%d)", ep.URL, ep.StatusCode)
 	}
 
-	eps, err := endpointspkg.DiscoverEndpointsFromScanWithCallback(req.ScanID, req.Target, endpointCallback)
+	eps, err := endpointspkg.DiscoverEndpointsFromScanWithCallback(ctx, req.UserID, req.ScanID, req.Target, endpointCallback)
 	if err != nil {
+		// Check if error is due to cancellation
+		if err == context.Canceled {
+			log.Printf("[scan] scan %d cancelled during endpoint discovery", req.ScanID)
+			postStatus(req.AuthHeader, statusURL, "CANCELLED", "Scan cancelled by user")
+			postLog(req.AuthHeader, logURL, "❌ Scan cancelled by user", "warning")
+			return
+		}
 		postStatus(req.AuthHeader, statusURL, "FAILED", err.Error())
 		postLog(req.AuthHeader, logURL, fmt.Sprintf("❌ Endpoint discovery failed: %v", err), "error")
 		return
@@ -135,11 +225,32 @@ func runFullScan(req ScanRequest) {
 		log.Printf("[network] no alive hosts found, skipping network analysis")
 		postLog(req.AuthHeader, logURL, "⚠️ No alive hosts found, skipping network analysis", "warning")
 	} else {
+		// Check for cancellation before network analysis
+		select {
+		case <-ctx.Done():
+			log.Printf("[scan] scan %d cancelled before network analysis", req.ScanID)
+			postStatus(req.AuthHeader, statusURL, "CANCELLED", "Scan cancelled by user")
+			postLog(req.AuthHeader, logURL, "❌ Scan cancelled by user", "warning")
+			return
+		default:
+		}
+
 		log.Printf("[network] analyzing %d hosts", len(hosts))
 		postLog(req.AuthHeader, logURL, fmt.Sprintf("🔬 Starting network analysis for %d hosts...", len(hosts)), "info")
 
-		// Run network analysis concurrently with worker pool
-		runNetworkAnalysis(hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest)
+		// Run network analysis concurrently with worker pool (pass context for cancellation)
+		runNetworkAnalysis(ctx, hosts, req.AuthHeader, portIngest, tlsIngest, dirIngest)
+
+		// Check if cancelled during network analysis
+		select {
+		case <-ctx.Done():
+			log.Printf("[scan] scan %d cancelled during network analysis", req.ScanID)
+			postStatus(req.AuthHeader, statusURL, "CANCELLED", "Scan cancelled by user")
+			postLog(req.AuthHeader, logURL, "❌ Scan cancelled by user", "warning")
+			return
+		default:
+		}
+
 		postLog(req.AuthHeader, logURL, fmt.Sprintf("✅ Network analysis complete for %d hosts", len(hosts)), "success")
 	}
 
@@ -147,7 +258,7 @@ func runFullScan(req ScanRequest) {
 	postLog(req.AuthHeader, logURL, "🎉 Scan completed successfully!", "success")
 }
 
-func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {
+func runNetworkAnalysis(ctx context.Context, hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {
 	workers := 10
 	jobs := make(chan string, len(hosts))
 	var wg sync.WaitGroup
@@ -158,6 +269,13 @@ func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIn
 		go func() {
 			defer wg.Done()
 			for host := range jobs {
+				// Check for cancellation before processing each host
+				select {
+				case <-ctx.Done():
+					log.Printf("[network] worker cancelled, stopping analysis")
+					return
+				default:
+				}
 				analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest)
 			}
 		}()
@@ -165,7 +283,14 @@ func runNetworkAnalysis(hosts []string, authHeader, portIngest, tlsIngest, dirIn
 
 	// Send jobs
 	for _, host := range hosts {
-		jobs <- host
+		select {
+		case <-ctx.Done():
+			log.Printf("[network] context cancelled, stopping job distribution")
+			close(jobs)
+			wg.Wait()
+			return
+		case jobs <- host:
+		}
 	}
 	close(jobs)
 

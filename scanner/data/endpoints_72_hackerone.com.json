@@ -1,0 +1,35 @@
+{
+  "scan_id": 72,
+  "target": "hackerone.com",
+  "endpoints": [
+    {
+      "url": "http://a.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-02-18T09:30:34.899982878Z"
+}

@@ -59,7 +59,7 @@ func DefaultDiscoveryOptions() *DiscoveryOptions {
 
 // DiscoverURLsFromHosts performs dynamic endpoint discovery for given hosts
 // Returns deduplicated, normalized URLs ready for probing
-func DiscoverURLsFromHosts(hosts []string, opts *DiscoveryOptions) []string {
+func DiscoverURLsFromHosts(ctx context.Context, hosts []string, opts *DiscoveryOptions) []string {
 	if opts == nil {
 		opts = DefaultDiscoveryOptions()
 	}
@@ -76,6 +76,13 @@ func DiscoverURLsFromHosts(hosts []string, opts *DiscoveryOptions) []string {
 		go func() {
 			defer wg.Done()
 			for host := range jobs {
+				// Check for cancellation
+				select {
+				case <-ctx.Done():
+					log.Printf("[discovery] worker cancelled, stopping discovery")
+					return
+				default:
+				}
 				discoverURLsForHost(host, opts, urlChan)
 			}
 		}()
@@ -92,9 +99,18 @@ func DiscoverURLsFromHosts(hosts []string, opts *DiscoveryOptions) []string {
 		}
 	}()
 
-	// Send jobs
+	// Send jobs with cancellation check
 	for _, host := range hosts {
-		jobs <- host
+		select {
+		case <-ctx.Done():
+			log.Printf("[discovery] context cancelled, stopping job distribution")
+			close(jobs)
+			wg.Wait()
+			close(urlChan)
+			collectWg.Wait()
+			return allURLs
+		case jobs <- host:
+		}
 	}
 	close(jobs)
 

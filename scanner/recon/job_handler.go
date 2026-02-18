@@ -17,6 +17,7 @@ import (
 type Job struct {
 	ScanID   int64                 `json:"scan_id"`
 	Target   string                `json:"target"`
+	UserID   int64                 `json:"user_id"` // User ID for file organization
 	Workers  int                   `json:"workers"` // Optional: number of concurrent workers
 	Callback func(SubdomainResult) `json:"-"`       // Optional: callback for streaming results
 }
@@ -29,15 +30,19 @@ type SubdomainResult struct {
 	ErrorMsg string   `json:"error_msg"` // Error details if any
 }
 
-// ScanFilePath returns the JSON path for a given scan_id + target.
-func ScanFilePath(scanID int64, target string) string {
+// ScanFilePath returns the JSON path for a given user_id + scan_id + target.
+// Organized as data/user_<user_id>/scan_<scan_id>_<target>.json
+func ScanFilePath(userID int64, scanID int64, target string) string {
 	dataDir := "data"
+
+	// Create user-specific subdirectory
+	userDir := filepath.Join(dataDir, fmt.Sprintf("user_%d", userID))
 
 	safeTarget := strings.ReplaceAll(target, "/", "_")
 	safeTarget = strings.ReplaceAll(safeTarget, ":", "_")
 
 	filename := fmt.Sprintf("scan_%d_%s.json", scanID, safeTarget)
-	return filepath.Join(dataDir, filename)
+	return filepath.Join(userDir, filename)
 }
 
 // HandleJob: enum + liveness + save to file.
@@ -127,14 +132,17 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 	return results, nil
 }
 
-// SaveSubdomainsToFile writes the results as JSON to data/scan_<id>_<target>.json
+// SaveSubdomainsToFile writes the results as JSON to data/user_<user_id>/scan_<id>_<target>.json
 func SaveSubdomainsToFile(job Job, subs []SubdomainResult) (string, error) {
 	dataDir := "data"
-	if err := os.MkdirAll(dataDir, 0o755); err != nil {
-		return "", fmt.Errorf("creating data dir: %w", err)
+	userDir := filepath.Join(dataDir, fmt.Sprintf("user_%d", job.UserID))
+
+	// Create user-specific directory if it doesn't exist
+	if err := os.MkdirAll(userDir, 0o755); err != nil {
+		return "", fmt.Errorf("creating user dir: %w", err)
 	}
 
-	path := ScanFilePath(job.ScanID, job.Target)
+	path := ScanFilePath(job.UserID, job.ScanID, job.Target)
 
 	payload := struct {
 		ScanID     int64             `json:"scan_id"`
@@ -186,9 +194,9 @@ func LoadSubdomainsFromFile(path string) ([]SubdomainResult, error) {
 	return payload.Subdomains, nil
 }
 
-// LoadSubdomainsForScan uses scan_id + target to compute the file path.
-func LoadSubdomainsForScan(scanID int64, target string) ([]SubdomainResult, string, error) {
-	path := ScanFilePath(scanID, target)
+// LoadSubdomainsForScan uses user_id + scan_id + target to compute the file path.
+func LoadSubdomainsForScan(userID int64, scanID int64, target string) ([]SubdomainResult, string, error) {
+	path := ScanFilePath(userID, scanID, target)
 	subs, err := LoadSubdomainsFromFile(path)
 	if err != nil {
 		return nil, "", err
