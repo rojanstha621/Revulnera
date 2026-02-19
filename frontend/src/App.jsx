@@ -17,7 +17,6 @@ import Register from "./pages/Register";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import Scanners from "./pages/Scanners";
-import Logs from "./pages/Logs";
 import Reports from "./pages/Reports";
 import AllScans from "./pages/AllScans";
 import ScanDetail from "./pages/ScanDetail";
@@ -94,14 +93,6 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <ScanDetail />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/logs"
-          element={
-            <ProtectedRoute>
-              <Logs />
             </ProtectedRoute>
           }
         />

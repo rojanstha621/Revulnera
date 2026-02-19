@@ -14,7 +14,6 @@ export default function Navbar() {
     { name: "Dashboard", href: "/", icon: Home },
     { name: "Scanners", href: "/scanners", icon: Zap },
     { name: "Scans", href: "/scans", icon: Shield },
-    { name: "Logs", href: "/logs", icon: Shield },
     { name: "Reports", href: "/reports", icon: Shield },
   ];
 

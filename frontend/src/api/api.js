@@ -140,3 +140,14 @@ export async function getUserScans() {
 export async function getUserScanDetail(scanId) {
   return getJSON(`/api/recon/user/scans/${scanId}/`);
 }
+
+/* =========================
+   Report API functions
+========================= */
+export async function getReportsSummary(dateRange = "all") {
+  return getJSON(`/api/recon/reports/scans/?range=${dateRange}`);
+}
+
+export async function generateScanReport(scanId) {
+  return getJSON(`/api/recon/reports/scans/${scanId}/`);
+}

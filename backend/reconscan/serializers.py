@@ -19,7 +19,7 @@ class EndpointSerializer(serializers.ModelSerializer):
 class PortScanFindingSerializer(serializers.ModelSerializer):
     class Meta:
         model = PortScanFinding
-        fields = ["host", "port", "protocol", "state", "service", "product", "version", "banner"]
+        fields = ["host", "ip", "port", "protocol", "state", "service", "product", "version", "banner", "risk_tags"]
 
 class TLSScanResultSerializer(serializers.ModelSerializer):
     class Meta:

@@ -11,6 +11,8 @@ from .views import (
     IngestPortScanFindingsView,
     IngestTLSResultView,
     IngestDirectoryFindingsView,
+    GenerateScanReportView,
+    UserReportsSummaryView,
 )
 
 urlpatterns = [
@@ -29,4 +31,8 @@ urlpatterns = [
     # User scan endpoints
     path("user/scans/", UserScansListView.as_view(), name="user-scans"),
     path("user/scans/<int:scan_id>/", UserScanDetailView.as_view(), name="user-scan-detail"),
+    
+    # Report generation endpoints
+    path("reports/scans/", UserReportsSummaryView.as_view(), name="user-reports-summary"),
+    path("reports/scans/<int:scan_id>/", GenerateScanReportView.as_view(), name="generate-scan-report"),
 ]

@@ -45,14 +45,6 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="/logs"
-                className="text-gray-400 hover:text-purple-400 transition"
-              >
-                Logs
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/reports"
                 className="text-gray-400 hover:text-purple-400 transition"
               >

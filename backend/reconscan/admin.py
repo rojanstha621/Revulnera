@@ -75,11 +75,11 @@ class EndpointAdmin(admin.ModelAdmin):
 
 @admin.register(PortScanFinding)
 class PortScanFindingAdmin(admin.ModelAdmin):
-    list_display = ("id", "scan", "host", "port", "protocol", "state", "service", "product", "version", "created_at")
+    list_display = ("id", "scan", "host", "ip", "port", "protocol", "state", "service", "product", "version", "created_at")
     list_filter = ("state", "protocol", "service", "created_at")
-    search_fields = ("host", "service", "product", "banner")
+    search_fields = ("host", "ip", "service", "product", "banner")
     raw_id_fields = ("scan",)
-    readonly_fields = ("created_at",)
+    readonly_fields = ("created_at", "risk_tags")
     date_hierarchy = "created_at"
 
 
