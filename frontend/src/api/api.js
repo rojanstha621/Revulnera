@@ -151,3 +151,37 @@ export async function getReportsSummary(dateRange = "all") {
 export async function generateScanReport(scanId) {
   return getJSON(`/api/recon/reports/scans/${scanId}/`);
 }
+
+/* =========================
+   Vulnerability Detection API functions
+========================= */
+export async function getVulnerabilityScans() {
+  return getJSON("/api/vulnerability-detection/scans/");
+}
+
+export async function getVulnerabilityScanDetail(scanId) {
+  return getJSON(`/api/vulnerability-detection/scans/${scanId}/`);
+}
+
+export async function createVulnerabilityScan(data) {
+  return postJSON("/api/vulnerability-detection/scans/", data);
+}
+
+export async function executeVulnerabilityScan(scanId) {
+  return postJSON(`/api/vulnerability-detection/scans/${scanId}/execute/`);
+}
+
+export async function getVulnerabilityFindings(scanId = null) {
+  const path = scanId 
+    ? `/api/vulnerability-detection/findings/?vulnerability_scan=${scanId}`
+    : "/api/vulnerability-detection/findings/";
+  return getJSON(path);
+}
+
+export async function getVulnerabilityLogs(scanId = null) {
+  const path = scanId
+    ? `/api/vulnerability-detection/logs/?vulnerability_scan=${scanId}`
+    : "/api/vulnerability-detection/logs/";
+  return getJSON(path);
+}
+

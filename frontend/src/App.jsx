@@ -26,6 +26,8 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
+import VulnerabilityScans from "./pages/VulnerabilityScans";
+import VulnerabilityScanDetail from "./pages/VulnerabilityScanDetail";
 
 // Admin pages
 import AdminDashboard from "./pages/AdminDashboard";
@@ -101,6 +103,22 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/vulnerability-scans"
+          element={
+            <ProtectedRoute>
+              <VulnerabilityScans />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/vulnerability-scans/:scanId"
+          element={
+            <ProtectedRoute>
+              <VulnerabilityScanDetail />
             </ProtectedRoute>
           }
         />
