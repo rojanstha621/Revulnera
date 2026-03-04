@@ -1,0 +1,110 @@
+# Python
+*.py[cod]
+*$py.class
+*.so
+.Python
+__pycache__/
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+*.pot
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+ENV/
+env/
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+media/
+staticfiles/
+local_settings.py
+*.log
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# React/Vite
+dist/
+dist-ssr/
+*.local
+.vite/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+go.work
+scanner_bin
+resume.cfg
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# OS
+Thumbs.db
+.DS_Store
+*.zone.identifier
+*:Zone.Identifier
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Database backups
+*.sql
+*.dump
+*.backup
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Docker
+.dockerignore
+
+# Coverage reports
+coverage/
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Distribution / packaging
+*.whl
