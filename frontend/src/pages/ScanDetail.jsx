@@ -150,13 +150,25 @@ export default function ScanDetail() {
     <div className="space-y-8">
       {/* Header */}
       <div className="space-y-4 animate-slide-up">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          Back to Dashboard
-        </button>
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Back to Dashboard
+          </button>
+          {scan.status === "COMPLETED" && (
+            <Link
+              to="/vulnerability-scans"
+              state={{ reconScanId: scan.id, reconScanTarget: scan.target }}
+              className="btn-primary flex items-center gap-2"
+            >
+              <Shield className="w-4 h-4" />
+              Run Vulnerability Scan
+            </Link>
+          )}
+        </div>
         <div>
           <h1 className="text-5xl font-bold text-gradient">{scan.target}</h1>
           <p className="text-gray-400 mt-2">Detailed reconnaissance scan results</p>

@@ -28,4 +28,5 @@ urlpatterns = [
     path("auth/", include("accounts.urls")),
     path("api/recon/", include("reconscan.urls")),
     path("api/recon/", include("reconscan.admin_urls")),
+    path("api/vulnerability-detection/", include("vulnerability_detection.urls")),
 ]
