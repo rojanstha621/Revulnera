@@ -17,8 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "full_name", "role", "is_active", "date_joined", "profile"]
-        read_only_fields = ["id", "email", "role", "is_active", "date_joined"]
+        fields = ["id", "email", "full_name", "role", "is_active", "is_staff", "can_run_vulnerability_scans", "date_joined", "profile"]
+        read_only_fields = ["id", "email", "role", "is_active", "is_staff", "can_run_vulnerability_scans", "date_joined"]
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop("profile", None)

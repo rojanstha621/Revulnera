@@ -41,23 +41,15 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
-        # If a user with this email already exists, handle accordingly
+        # Check if user with this email already exists
         email = request.data.get("email")
         if email:
             existing = User.objects.filter(email=email).first()
             if existing:
-                if existing.is_active:
-                    return api_error("Email already registered", code=status.HTTP_400_BAD_REQUEST)
-                # existing but not active -> resend verification and return a successful message
-                send_verification_email(request, existing)
-                return Response({"detail": "Account exists but not verified. Verification email resent."}, status=status.HTTP_200_OK)
+                return api_error("Email already registered", code=status.HTTP_400_BAD_REQUEST)
 
-        # Default: create new user and send verification
+        # Create new user (no email verification needed)
         return super().create(request, *args, **kwargs)
-
-    def perform_create(self, serializer):
-        user = serializer.save()
-        send_verification_email(self.request, user)
 
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -144,6 +136,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['full_name'] = user.full_name
         token['role'] = user.role
         token['is_staff'] = user.is_staff
+        token['can_run_vulnerability_scans'] = user.can_run_vulnerability_scans
         return token
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -158,9 +151,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return api_error("Invalid credentials", code=status.HTTP_401_UNAUTHORIZED)
 
         user = getattr(serializer, "user", None)
-        if user and not user.is_active:
-            return api_error("Account not verified", code=status.HTTP_401_UNAUTHORIZED)
-
+        
         # update IP
         if user:
             ip = request.META.get("REMOTE_ADDR")

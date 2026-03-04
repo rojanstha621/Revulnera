@@ -33,9 +33,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(max_length=30, choices=ROLE_CHOICES, default="user")
 
     # verification gating
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)  # No email verification needed
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
+    
+    # vulnerability scanning approval
+    can_run_vulnerability_scans = models.BooleanField(
+        default=False,
+        help_text="User needs admin approval to run vulnerability scans"
+    )
 
     # audit
     last_login_ip = models.GenericIPAddressField(null=True, blank=True)

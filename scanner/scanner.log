@@ -1,1 +1,350 @@
-2026/03/04 12:45:48 [recon] starting server on :8080
+2026/03/04 13:04:48 [recon] starting server on :8080
+2026/03/04 13:42:54 [scan] POST http://localhost:8000/api/recon/scans/79/status/ succeeded (200)
+2026/03/04 13:42:54 [scan] starting subdomain discovery with streaming
+2026/03/04 13:42:55 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:42:55 [recon] starting job: scan_id=79 target=neverssl.com
+2026/03/04 13:42:56 [recon] found 24 subdomains, starting concurrent probing
+2026/03/04 13:42:58 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:42:58 [scan] streamed subdomain: serenewonderfulsoothinglight.neverssl.com (alive=true)
+2026/03/04 13:42:59 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:42:59 [scan] streamed subdomain: wholesilveryoungsecret.neverssl.com (alive=true)
+2026/03/04 13:42:59 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:42:59 [scan] streamed subdomain: flxbmhnvckwrdtzs.neverssl.com (alive=true)
+2026/03/04 13:43:01 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:01 [scan] streamed subdomain: lushquietbrightmagic.neverssl.com (alive=true)
+2026/03/04 13:43:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:03 [scan] streamed subdomain: innersplendidbrightday.neverssl.com (alive=true)
+2026/03/04 13:43:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:04 [scan] streamed subdomain: bdcfhkmlnsrwvtxz.neverssl.com (alive=true)
+2026/03/04 13:43:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:04 [scan] streamed subdomain: mnlhrwxszdvbtckf.neverssl.com (alive=true)
+2026/03/04 13:43:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:04 [scan] streamed subdomain: shinysplendidclearmelody.neverssl.com (alive=true)
+2026/03/04 13:43:05 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:05 [scan] streamed subdomain: silveruniquemajesticmorning.neverssl.com (alive=true)
+2026/03/04 13:43:05 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:05 [scan] streamed subdomain: fdbhclmrkstnvwxz.neverssl.com (alive=true)
+2026/03/04 13:43:06 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:06 [scan] streamed subdomain: innermajesticgrandyawn.neverssl.com (alive=false)
+2026/03/04 13:43:07 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:07 [scan] streamed subdomain: youngoldfreshlight.neverssl.com (alive=true)
+2026/03/04 13:43:08 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:08 [scan] streamed subdomain: brvtsdflnxhkzcmw.neverssl.com (alive=true)
+2026/03/04 13:43:09 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:09 [scan] streamed subdomain: kbchfdmlnsrtwvxz.neverssl.com (alive=true)
+2026/03/04 13:43:09 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:09 [scan] streamed subdomain: youngwholeoldmelody.neverssl.com (alive=false)
+2026/03/04 13:43:09 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:09 [scan] streamed subdomain: quietlushsilversunset.neverssl.com (alive=true)
+2026/03/04 13:43:10 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:10 [scan] streamed subdomain: shiningquietbrightyawn.neverssl.com (alive=true)
+2026/03/04 13:43:11 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:11 [scan] streamed subdomain: brightsilverlushplan.neverssl.com (alive=false)
+2026/03/04 13:43:11 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:11 [scan] streamed subdomain: zmtwfvdrnscxbhlk.neverssl.com (alive=true)
+2026/03/04 13:43:12 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:12 [scan] streamed subdomain: youngfreshshiningmorning.neverssl.com (alive=true)
+2026/03/04 13:43:15 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:15 [scan] streamed subdomain: www.neverssl.com (alive=false)
+2026/03/04 13:43:16 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:16 [scan] streamed subdomain: majesticshiningtranscendentbirds.neverssl.com (alive=true)
+2026/03/04 13:43:16 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:16 [scan] streamed subdomain: funshininginnersunrise.neverssl.com (alive=true)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/subdomains/ succeeded (200)
+2026/03/04 13:43:19 [scan] streamed subdomain: brightbeautifulsilversong.neverssl.com (alive=false)
+2026/03/04 13:43:19 [recon] probing complete: 19 alive out of 24 subdomains
+2026/03/04 13:43:19 [recon] saved 24 subdomains to data/user_3/scan_79_neverssl.com.json
+2026/03/04 13:43:19 [recon] job finished: scan_id=79 target=neverssl.com subdomains=24 alive=19
+2026/03/04 13:43:19 [scan] subdomain discovery complete: 24 total
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] starting endpoint discovery with streaming
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [endpoints] loaded 24 subdomains from data/user_3/scan_79_neverssl.com.json
+2026/03/04 13:43:19 [endpoints] starting dynamic discovery for 19 alive hosts
+2026/03/04 13:43:19 [discovery] starting dynamic discovery for 19 hosts
+2026/03/04 13:43:19 [discovery] discovering URLs for serenewonderfulsoothinglight.neverssl.com
+2026/03/04 13:43:19 [discovery] discovering URLs for wholesilveryoungsecret.neverssl.com
+2026/03/04 13:43:19 [discovery] discovering URLs for innersplendidbrightday.neverssl.com
+2026/03/04 13:43:19 [discovery] discovering URLs for flxbmhnvckwrdtzs.neverssl.com
+2026/03/04 13:43:19 [discovery] discovering URLs for lushquietbrightmagic.neverssl.com
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [discovery] katana error for https://innersplendidbrightday.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:19 [discovery] katana error for https://serenewonderfulsoothinglight.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:19 [discovery] katana error for https://lushquietbrightmagic.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:19 [discovery] katana error for https://flxbmhnvckwrdtzs.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:19 [discovery] katana error for https://wholesilveryoungsecret.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:44 [discovery] gau found 2 URLs for innersplendidbrightday.neverssl.com
+2026/03/04 13:43:44 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:44 [discovery] JS analysis handled by katana for innersplendidbrightday.neverssl.com
+2026/03/04 13:43:44 [discovery] discovering URLs for bdcfhkmlnsrwvtxz.neverssl.com
+2026/03/04 13:43:44 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:44 [discovery] katana error for https://bdcfhkmlnsrwvtxz.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:44 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:46 [discovery] gau found 2 URLs for wholesilveryoungsecret.neverssl.com
+2026/03/04 13:43:46 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:46 [discovery] JS analysis handled by katana for wholesilveryoungsecret.neverssl.com
+2026/03/04 13:43:46 [discovery] discovering URLs for mnlhrwxszdvbtckf.neverssl.com
+2026/03/04 13:43:46 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:46 [discovery] katana error for https://mnlhrwxszdvbtckf.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:46 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:48 [discovery] gau found 1 URLs for serenewonderfulsoothinglight.neverssl.com
+2026/03/04 13:43:48 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:48 [discovery] JS analysis handled by katana for serenewonderfulsoothinglight.neverssl.com
+2026/03/04 13:43:48 [discovery] discovering URLs for shinysplendidclearmelody.neverssl.com
+2026/03/04 13:43:48 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:48 [discovery] katana error for https://shinysplendidclearmelody.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:48 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:53 [discovery] gau found 3 URLs for flxbmhnvckwrdtzs.neverssl.com
+2026/03/04 13:43:53 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:53 [discovery] JS analysis handled by katana for flxbmhnvckwrdtzs.neverssl.com
+2026/03/04 13:43:53 [discovery] discovering URLs for silveruniquemajesticmorning.neverssl.com
+2026/03/04 13:43:53 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:43:53 [discovery] katana error for https://silveruniquemajesticmorning.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:43:53 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:05 [discovery] gau found 1 URLs for lushquietbrightmagic.neverssl.com
+2026/03/04 13:44:05 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:05 [discovery] JS analysis handled by katana for lushquietbrightmagic.neverssl.com
+2026/03/04 13:44:05 [discovery] discovering URLs for fdbhclmrkstnvwxz.neverssl.com
+2026/03/04 13:44:05 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:05 [discovery] katana error for https://fdbhclmrkstnvwxz.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:05 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:20 [discovery] gau found 4 URLs for fdbhclmrkstnvwxz.neverssl.com
+2026/03/04 13:44:20 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:20 [discovery] JS analysis handled by katana for fdbhclmrkstnvwxz.neverssl.com
+2026/03/04 13:44:20 [discovery] discovering URLs for youngoldfreshlight.neverssl.com
+2026/03/04 13:44:20 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:20 [discovery] katana error for https://youngoldfreshlight.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:20 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:22 [discovery] gau found 2 URLs for bdcfhkmlnsrwvtxz.neverssl.com
+2026/03/04 13:44:22 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:22 [discovery] JS analysis handled by katana for bdcfhkmlnsrwvtxz.neverssl.com
+2026/03/04 13:44:22 [discovery] discovering URLs for brvtsdflnxhkzcmw.neverssl.com
+2026/03/04 13:44:22 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:22 [discovery] katana error for https://brvtsdflnxhkzcmw.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:22 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:23 [discovery] gau found 1 URLs for mnlhrwxszdvbtckf.neverssl.com
+2026/03/04 13:44:23 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:23 [discovery] JS analysis handled by katana for mnlhrwxszdvbtckf.neverssl.com
+2026/03/04 13:44:23 [discovery] discovering URLs for kbchfdmlnsrtwvxz.neverssl.com
+2026/03/04 13:44:23 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:23 [discovery] katana error for https://kbchfdmlnsrtwvxz.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:23 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:28 [discovery] gau found 1 URLs for shinysplendidclearmelody.neverssl.com
+2026/03/04 13:44:28 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:28 [discovery] JS analysis handled by katana for shinysplendidclearmelody.neverssl.com
+2026/03/04 13:44:28 [discovery] discovering URLs for quietlushsilversunset.neverssl.com
+2026/03/04 13:44:28 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:28 [discovery] katana error for https://quietlushsilversunset.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:28 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:49 [discovery] gau found 2 URLs for silveruniquemajesticmorning.neverssl.com
+2026/03/04 13:44:49 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:49 [discovery] JS analysis handled by katana for silveruniquemajesticmorning.neverssl.com
+2026/03/04 13:44:49 [discovery] discovering URLs for shiningquietbrightyawn.neverssl.com
+2026/03/04 13:44:49 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:49 [discovery] katana error for https://shiningquietbrightyawn.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:49 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:50 [discovery] gau found 2 URLs for kbchfdmlnsrtwvxz.neverssl.com
+2026/03/04 13:44:50 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:50 [discovery] JS analysis handled by katana for kbchfdmlnsrtwvxz.neverssl.com
+2026/03/04 13:44:50 [discovery] discovering URLs for zmtwfvdrnscxbhlk.neverssl.com
+2026/03/04 13:44:50 [discovery] gau found 3 URLs for brvtsdflnxhkzcmw.neverssl.com
+2026/03/04 13:44:50 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:50 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:50 [discovery] JS analysis handled by katana for brvtsdflnxhkzcmw.neverssl.com
+2026/03/04 13:44:50 [discovery] discovering URLs for youngfreshshiningmorning.neverssl.com
+2026/03/04 13:44:50 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:50 [discovery] katana error for https://zmtwfvdrnscxbhlk.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:50 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:44:50 [discovery] katana error for https://youngfreshshiningmorning.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:44:50 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:18 [discovery] gau found 0 URLs for zmtwfvdrnscxbhlk.neverssl.com
+2026/03/04 13:45:18 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:18 [discovery] JS analysis handled by katana for zmtwfvdrnscxbhlk.neverssl.com
+2026/03/04 13:45:18 [discovery] discovering URLs for majesticshiningtranscendentbirds.neverssl.com
+2026/03/04 13:45:18 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:18 [discovery] katana error for https://majesticshiningtranscendentbirds.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:45:18 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:19 [discovery] gau found 1 URLs for shiningquietbrightyawn.neverssl.com
+2026/03/04 13:45:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:19 [discovery] JS analysis handled by katana for shiningquietbrightyawn.neverssl.com
+2026/03/04 13:45:19 [discovery] discovering URLs for funshininginnersunrise.neverssl.com
+2026/03/04 13:45:19 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:20 [discovery] katana error for https://funshininginnersunrise.neverssl.com: exit status 2 (stderr: )
+2026/03/04 13:45:20 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:20 [discovery] gau error for youngoldfreshlight.neverssl.com: signal: killed (stderr: time="2026-03-04T13:44:20+05:45" level=warning msg="error reading config: Config file /home/aaila/.gau.toml not found, using default config"
+)
+2026/03/04 13:45:20 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:20 [discovery] JS analysis handled by katana for youngoldfreshlight.neverssl.com
+2026/03/04 13:45:25 [discovery] gau found 1 URLs for youngfreshshiningmorning.neverssl.com
+2026/03/04 13:45:25 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:25 [discovery] JS analysis handled by katana for youngfreshshiningmorning.neverssl.com
+2026/03/04 13:45:25 [discovery] gau found 0 URLs for funshininginnersunrise.neverssl.com
+2026/03/04 13:45:25 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:25 [discovery] JS analysis handled by katana for funshininginnersunrise.neverssl.com
+2026/03/04 13:45:28 [discovery] gau error for quietlushsilversunset.neverssl.com: signal: killed (stderr: time="2026-03-04T13:44:28+05:45" level=warning msg="error reading config: Config file /home/aaila/.gau.toml not found, using default config"
+)
+2026/03/04 13:45:28 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:28 [discovery] JS analysis handled by katana for quietlushsilversunset.neverssl.com
+2026/03/04 13:45:34 [discovery] gau found 2 URLs for majesticshiningtranscendentbirds.neverssl.com
+2026/03/04 13:45:34 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:34 [discovery] JS analysis handled by katana for majesticshiningtranscendentbirds.neverssl.com
+2026/03/04 13:45:34 [discovery] collected 28 raw URLs, normalizing and deduplicating
+2026/03/04 13:45:34 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:34 [discovery] final URL count: 28
+2026/03/04 13:45:34 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:45:34 [endpoints] discovered 28 unique URLs, starting probing
+2026/03/04 13:45:34 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:46:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:03 [scan] streamed endpoint: https://flxbmhnvckwrdtzs.neverssl.com/online (status=301)
+2026/03/04 13:46:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:03 [scan] streamed endpoint: https://bdcfhkmlnsrwvtxz.neverssl.com/ (status=200)
+2026/03/04 13:46:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:03 [scan] streamed endpoint: https://serenewonderfulsoothinglight.neverssl.com/ (status=200)
+2026/03/04 13:46:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:03 [scan] streamed endpoint: https://shinysplendidclearmelody.neverssl.com/ (status=200)
+2026/03/04 13:46:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:03 [scan] streamed endpoint: https://fdbhclmrkstnvwxz.neverssl.com/ (status=200)
+2026/03/04 13:46:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:03 [scan] streamed endpoint: https://shiningquietbrightyawn.neverssl.com/ (status=200)
+2026/03/04 13:46:03 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:03 [scan] streamed endpoint: https://fdbhclmrkstnvwxz.neverssl.com/favicon.ico (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: https://kbchfdmlnsrtwvxz.neverssl.com/ (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: https://brvtsdflnxhkzcmw.neverssl.com/ (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: https://youngfreshshiningmorning.neverssl.com/online (status=301)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: https://silveruniquemajesticmorning.neverssl.com/ (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://flxbmhnvckwrdtzs.neverssl.com/ (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://lushquietbrightmagic.neverssl.com/online (status=301)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://majesticshiningtranscendentbirds.neverssl.com/online (status=301)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://innersplendidbrightday.neverssl.com/online (status=301)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://brvtsdflnxhkzcmw.neverssl.com/favicon.ico (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://mnlhrwxszdvbtckf.neverssl.com/ (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://innersplendidbrightday.neverssl.com/ (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://wholesilveryoungsecret.neverssl.com/ (status=200)
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/ingest/endpoints/ succeeded (200)
+2026/03/04 13:46:04 [scan] streamed endpoint: http://bdcfhkmlnsrwvtxz.neverssl.com/online (status=301)
+2026/03/04 13:46:04 [endpoints] httpx found 20 results
+2026/03/04 13:46:04 [endpoints] probing complete: 20 endpoints responding
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:46:04 [scan] endpoint discovery complete: 20 total
+2026/03/04 13:46:04 [network] starting network analysis for scan 79
+2026/03/04 13:46:04 [network] analyzing 19 hosts
+2026/03/04 13:46:04 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:46:04 [network] analyzing host: wholesilveryoungsecret.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: fdbhclmrkstnvwxz.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: serenewonderfulsoothinglight.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: flxbmhnvckwrdtzs.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: lushquietbrightmagic.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: bdcfhkmlnsrwvtxz.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: mnlhrwxszdvbtckf.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: innersplendidbrightday.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: shinysplendidclearmelody.neverssl.com
+2026/03/04 13:46:04 [network] analyzing host: silveruniquemajesticmorning.neverssl.com
+2026/03/04 13:46:26 [network] found 1 open ports on flxbmhnvckwrdtzs.neverssl.com
+2026/03/04 13:46:26 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:26 [network] found 1 open ports on lushquietbrightmagic.neverssl.com
+2026/03/04 13:46:26 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:27 [network] found 1 open ports on shinysplendidclearmelody.neverssl.com
+2026/03/04 13:46:27 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:27 [network] found 1 open ports on mnlhrwxszdvbtckf.neverssl.com
+2026/03/04 13:46:27 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:27 [network] found 1 open ports on fdbhclmrkstnvwxz.neverssl.com
+2026/03/04 13:46:27 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:29 [network] TLS check for flxbmhnvckwrdtzs.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:29 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:46:29 [network] TLS check for lushquietbrightmagic.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:29 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:46:30 [network] TLS check for shinysplendidclearmelody.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:30 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:46:30 [network] TLS check for mnlhrwxszdvbtckf.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:30 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:46:30 [network] TLS check for fdbhclmrkstnvwxz.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:30 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:46:33 [network] found 1 open ports on bdcfhkmlnsrwvtxz.neverssl.com
+2026/03/04 13:46:33 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:33 [network] found 1 open ports on serenewonderfulsoothinglight.neverssl.com
+2026/03/04 13:46:33 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:36 [network] TLS check for bdcfhkmlnsrwvtxz.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:36 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:46:37 [network] TLS check for serenewonderfulsoothinglight.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:37 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:46:56 [network] found 1 open ports on silveruniquemajesticmorning.neverssl.com
+2026/03/04 13:46:56 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:46:59 [network] TLS check for silveruniquemajesticmorning.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:46:59 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:47:04 [network] found 1 open ports on wholesilveryoungsecret.neverssl.com
+2026/03/04 13:47:04 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:47:05 [network] found 1 open ports on innersplendidbrightday.neverssl.com
+2026/03/04 13:47:05 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:47:07 [network] TLS check for wholesilveryoungsecret.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:47:07 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:47:08 [network] TLS check for innersplendidbrightday.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:47:08 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:47:24 [network] analyzing host: youngoldfreshlight.neverssl.com
+2026/03/04 13:47:30 [network] analyzing host: brvtsdflnxhkzcmw.neverssl.com
+2026/03/04 13:47:35 [network] analyzing host: kbchfdmlnsrtwvxz.neverssl.com
+2026/03/04 13:47:35 [network] analyzing host: quietlushsilversunset.neverssl.com
+2026/03/04 13:47:37 [network] analyzing host: shiningquietbrightyawn.neverssl.com
+2026/03/04 13:47:39 [network] analyzing host: zmtwfvdrnscxbhlk.neverssl.com
+2026/03/04 13:47:40 [network] analyzing host: youngfreshshiningmorning.neverssl.com
+2026/03/04 13:47:49 [network] found 1 open ports on youngoldfreshlight.neverssl.com
+2026/03/04 13:47:49 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:47:52 [network] found 1 open ports on brvtsdflnxhkzcmw.neverssl.com
+2026/03/04 13:47:52 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:47:52 [network] TLS check for youngoldfreshlight.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:47:52 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:47:55 [network] TLS check for brvtsdflnxhkzcmw.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:47:55 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:48:02 [network] found 1 open ports on youngfreshshiningmorning.neverssl.com
+2026/03/04 13:48:02 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:48:05 [network] analyzing host: majesticshiningtranscendentbirds.neverssl.com
+2026/03/04 13:48:06 [network] TLS check for youngfreshshiningmorning.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:48:06 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:48:10 [network] found 1 open ports on zmtwfvdrnscxbhlk.neverssl.com
+2026/03/04 13:48:10 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:48:12 [network] analyzing host: funshininginnersunrise.neverssl.com
+2026/03/04 13:48:13 [network] TLS check for zmtwfvdrnscxbhlk.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:48:13 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:48:30 [network] found 1 open ports on shiningquietbrightyawn.neverssl.com
+2026/03/04 13:48:30 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:48:33 [network] TLS check for shiningquietbrightyawn.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:48:33 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:48:35 [network] found 1 open ports on kbchfdmlnsrtwvxz.neverssl.com
+2026/03/04 13:48:35 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:48:35 [network] found 2 open ports on majesticshiningtranscendentbirds.neverssl.com
+2026/03/04 13:48:35 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:48:36 [network] found 1 open ports on quietlushsilversunset.neverssl.com
+2026/03/04 13:48:36 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:48:38 [network] TLS check for kbchfdmlnsrtwvxz.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:48:38 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:48:38 [network] TLS check for majesticshiningtranscendentbirds.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:48:38 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:48:39 [network] TLS check for quietlushsilversunset.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:48:39 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:48:43 [network] found 1 open ports on funshininginnersunrise.neverssl.com
+2026/03/04 13:48:43 [scan] POST http://localhost:8000/api/recon/scans/79/network/ports/ingest/ succeeded (200)
+2026/03/04 13:48:46 [network] TLS check for funshininginnersunrise.neverssl.com: HTTPS=true, issues=0
+2026/03/04 13:48:47 [scan] POST http://localhost:8000/api/recon/scans/79/network/tls/ingest/ succeeded (200)
+2026/03/04 13:49:45 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
+2026/03/04 13:49:46 [scan] POST http://localhost:8000/api/recon/scans/79/status/ succeeded (200)
+2026/03/04 13:49:46 [scan] POST http://localhost:8000/api/recon/scans/79/logs/ succeeded (200)
