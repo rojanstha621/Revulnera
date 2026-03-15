@@ -15,6 +15,9 @@ export default function Scanners() {
   const navigate = useNavigate();
   const [target, setTarget] = useState("");
   const [scanId, setScanId] = useState(null);
+  const [authHeaders, setAuthHeaders] = useState("");
+  const [authCookies, setAuthCookies] = useState("");
+  const [showAuthFields, setShowAuthFields] = useState(false);
 
   const [status, setStatus] = useState("IDLE");
   const [error, setError] = useState("");
@@ -220,10 +223,34 @@ export default function Scanners() {
     setScanId(null);
     resetLiveState();
 
+    // Prepare scan data
+    const scanData = { target: t };
+    
+    // Add auth if provided
+    if (authHeaders.trim()) {
+      try {
+        scanData.auth_headers = JSON.parse(authHeaders);
+      } catch (e) {
+        setError("Invalid JSON in Authentication Headers");
+        setStatus("IDLE");
+        return;
+      }
+    }
+    
+    if (authCookies.trim()) {
+      try {
+        scanData.auth_cookies = JSON.parse(authCookies);
+      } catch (e) {
+        setError("Invalid JSON in Authentication Cookies");
+        setStatus("IDLE");
+        return;
+      }
+    }
+
     // IMPORTANT:
     // Your api.js should use API_ROOT = "http://localhost:8000/api"
     // so this path must start with "/" and must NOT include "/api"
-    const res = await postJSON("/api/recon/scans/start/", { target: t }, token);
+    const res = await postJSON("/api/recon/scans/start/", scanData, token);
     console.log("START SCAN RES:", res);
 
     if (res?.detail) {
@@ -548,9 +575,57 @@ export default function Scanners() {
                 placeholder="example.com or 192.168.1.1"
                 className="input-premium w-full text-lg pl-12"
                 disabled={isScanning}
+                required
               />
             </div>
           </div>
+
+          {/* Authentication Toggle */}
+          <button
+            type="button"
+            onClick={() => setShowAuthFields(!showAuthFields)}
+            className="text-sm text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-2"
+            disabled={isScanning}
+          >
+            <Lock className="w-4 h-4" />
+            {showAuthFields ? 'Hide' : 'Add'} Authentication (Optional)
+          </button>
+
+          {showAuthFields && (
+            <div className="space-y-3 p-4 bg-black/20 rounded-lg border border-purple-500/20">
+              <div className="text-xs text-gray-400 mb-2">
+                💡 These credentials will be used for all vulnerability scans on this target
+              </div>
+              
+              <div>
+                <label className="text-xs font-semibold text-gray-300 block mb-1">
+                  Authentication Headers (JSON)
+                </label>
+                <textarea
+                  value={authHeaders}
+                  onChange={(e) => setAuthHeaders(e.target.value)}
+                  className="input-premium w-full font-mono text-xs"
+                  rows="2"
+                  placeholder='{"Authorization": "Bearer token..."}'
+                  disabled={isScanning}
+                />
+              </div>
+              
+              <div>
+                <label className="text-xs font-semibold text-gray-300 block mb-1">
+                  Authentication Cookies (JSON)
+                </label>
+                <textarea
+                  value={authCookies}
+                  onChange={(e) => setAuthCookies(e.target.value)}
+                  className="input-premium w-full font-mono text-xs"
+                  rows="2"
+                  placeholder='{"sessionid": "abc123"}'
+                  disabled={isScanning}
+                />
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-300 animate-slide-up">
