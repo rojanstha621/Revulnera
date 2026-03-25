@@ -62,7 +62,7 @@ export default function AdminScans() {
       case "FAILED":
         return "bg-red-900/40 text-red-300";
       case "PENDING":
-        return "bg-yellow-900/40 text-yellow-300";
+        return "bg-gray-900/40 text-gray-300";
       default:
         return "bg-gray-700/40 text-gray-300";
     }
@@ -89,7 +89,7 @@ export default function AdminScans() {
               placeholder="Search by target..."
               value={search}
               onChange={handleSearch}
-              className="w-full pl-10 pr-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+              className="w-full pl-10 pr-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-slate-500"
             />
           </div>
 
@@ -97,7 +97,7 @@ export default function AdminScans() {
           <select
             value={statusFilter}
             onChange={handleStatusChange}
-            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-slate-500"
           >
             <option value="">All Status</option>
             <option value="PENDING">Pending</option>
@@ -130,7 +130,7 @@ export default function AdminScans() {
               <tbody className="divide-y divide-gray-700/30">
                 {scans.map((scan) => (
                   <tr key={scan.id} className="hover:bg-gray-800/50 transition">
-                    <td className="px-6 py-4 text-sm text-purple-400 font-mono">#{scan.id}</td>
+                    <td className="px-6 py-4 text-sm text-slate-400 font-mono">#{scan.id}</td>
                     <td className="px-6 py-4 text-sm text-white font-medium">{scan.target}</td>
                     <td className="px-6 py-4 text-sm text-gray-300">{scan.created_by_email}</td>
                     <td className="px-6 py-4 text-sm">
@@ -146,7 +146,7 @@ export default function AdminScans() {
                     <td className="px-6 py-4 text-sm">
                       <Link
                         to={`/admin/scans/${scan.id}`}
-                        className="text-purple-400 hover:text-purple-300 transition"
+                        className="text-slate-400 hover:text-slate-300 transition"
                       >
                         Details
                       </Link>

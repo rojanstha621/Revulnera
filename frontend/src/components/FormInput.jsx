@@ -41,7 +41,7 @@ export default function FormInput({
               ? 'border-red-500/50 focus:border-red-500 focus:ring-2 focus:ring-red-500/30' 
               : success
                 ? 'border-green-500/50 focus:border-green-500 focus:ring-2 focus:ring-green-500/30'
-                : 'border-white/20 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30'
+                : 'border-white/20 focus:border-slate-500 focus:ring-2 focus:ring-slate-500/30'
             }
             backdrop-blur-sm hover:bg-white/10
           `}

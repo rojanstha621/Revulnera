@@ -116,7 +116,7 @@ export default function ScanDetail() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <Loader className="w-12 h-12 text-purple-500 animate-spin" />
+        <Loader className="w-12 h-12 text-slate-500 animate-spin" />
         <p className="text-gray-400">Loading scan details...</p>
       </div>
     );
@@ -127,7 +127,7 @@ export default function ScanDetail() {
       <div className="space-y-6">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+          className="flex items-center gap-2 text-slate-400 hover:text-slate-300 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
           Go Back
@@ -153,7 +153,7 @@ export default function ScanDetail() {
         <div className="flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+            className="flex items-center gap-2 text-slate-400 hover:text-slate-300 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Back to Dashboard
@@ -170,7 +170,7 @@ export default function ScanDetail() {
           )}
         </div>
         <div>
-          <h1 className="text-5xl font-bold text-gradient">{scan.target}</h1>
+          <h1 className="text-5xl font-bold text-cyan-300">{scan.target}</h1>
           <p className="text-gray-400 mt-2">Detailed reconnaissance scan results</p>
         </div>
       </div>
@@ -182,7 +182,7 @@ export default function ScanDetail() {
           <p className="text-2xl font-bold mt-1">
             <span className={
               scan.status === "COMPLETED" ? "text-green-400" : 
-              scan.status === "RUNNING" ? "text-yellow-400" :
+              scan.status === "RUNNING" ? "text-gray-400" :
               scan.status === "FAILED" ? "text-red-400" : "text-blue-400"
             }>
               {scan.status}
@@ -191,42 +191,42 @@ export default function ScanDetail() {
         </div>
         <div className="stat-card">
           <p className="text-gray-400 text-sm">Subdomains</p>
-          <p className="text-3xl font-bold text-purple-300">{scan.subdomain_count}</p>
-          <p className="text-xs text-purple-400 mt-1">Alive: {aliveCount}</p>
+          <p className="text-3xl font-bold text-slate-300">{scan.subdomain_count}</p>
+          <p className="text-xs text-slate-400 mt-1">Alive: {aliveCount}</p>
         </div>
         <div className="stat-card">
           <p className="text-gray-400 text-sm">Endpoints</p>
-          <p className="text-3xl font-bold text-pink-300">{scan.endpoint_count}</p>
-          <p className="text-xs text-pink-400 mt-1">Success: {successEndpoints}</p>
+          <p className="text-3xl font-bold text-gray-300">{scan.endpoint_count}</p>
+          <p className="text-xs text-gray-400 mt-1">Success: {successEndpoints}</p>
         </div>
         <div className="stat-card">
           <p className="text-gray-400 text-sm">Open Ports</p>
-          <p className="text-3xl font-bold text-cyan-300">{openPortsCount}</p>
-          <p className="text-xs text-cyan-400 mt-1">Found by Nmap</p>
+          <p className="text-3xl font-bold text-gray-300">{openPortsCount}</p>
+          <p className="text-xs text-gray-400 mt-1">Found by Nmap</p>
         </div>
       </div>
 
       {(tlsIssuesCount > 0 || dirIssuesCount > 0) && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-slide-up">
-          <div className="card bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-cyan-500/20">
+          <div className="card bg-slate-900/80 border-slate-700">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">TLS Issues</p>
-                <p className="text-2xl font-bold text-orange-300 mt-1">{tlsIssuesCount}</p>
+                <p className="text-2xl font-bold text-slate-300 mt-1">{tlsIssuesCount}</p>
               </div>
-              <Lock className="w-8 h-8 text-orange-400 opacity-50" />
+              <Lock className="w-8 h-8 text-slate-400 opacity-50" />
             </div>
           </div>
-          <div className="card bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/20">
+          <div className="card bg-slate-900/80 border-slate-700">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Directory Issues</p>
-                <p className="text-2xl font-bold text-pink-300 mt-1">{dirIssuesCount}</p>
+                <p className="text-2xl font-bold text-gray-300 mt-1">{dirIssuesCount}</p>
               </div>
-              <FolderOpen className="w-8 h-8 text-pink-400 opacity-50" />
+              <FolderOpen className="w-8 h-8 text-gray-400 opacity-50" />
             </div>
           </div>
-          <div className="card bg-gradient-to-br from-green-500/10 to-teal-500/10 border-green-500/20">
+          <div className="card bg-slate-900/80 border-green-500/30">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Total Findings</p>
@@ -258,7 +258,7 @@ export default function ScanDetail() {
           onClick={() => setActiveTab("subdomains")}
           className={`px-6 py-3 font-semibold transition-colors border-b-2 whitespace-nowrap ${
             activeTab === "subdomains"
-              ? "text-purple-400 border-purple-500"
+              ? "text-slate-400 border-slate-500"
               : "text-gray-400 hover:text-gray-300 border-transparent"
           }`}
         >
@@ -269,7 +269,7 @@ export default function ScanDetail() {
           onClick={() => setActiveTab("endpoints")}
           className={`px-6 py-3 font-semibold transition-colors border-b-2 whitespace-nowrap ${
             activeTab === "endpoints"
-              ? "text-pink-400 border-pink-500"
+              ? "text-gray-400 border-gray-500"
               : "text-gray-400 hover:text-gray-300 border-transparent"
           }`}
         >
@@ -280,7 +280,7 @@ export default function ScanDetail() {
           onClick={() => setActiveTab("ports")}
           className={`px-6 py-3 font-semibold transition-colors border-b-2 whitespace-nowrap ${
             activeTab === "ports"
-              ? "text-cyan-400 border-cyan-500"
+              ? "text-gray-400 border-gray-500"
               : "text-gray-400 hover:text-gray-300 border-transparent"
           }`}
         >
@@ -291,7 +291,7 @@ export default function ScanDetail() {
           onClick={() => setActiveTab("tls")}
           className={`px-6 py-3 font-semibold transition-colors border-b-2 whitespace-nowrap ${
             activeTab === "tls"
-              ? "text-orange-400 border-orange-500"
+              ? "text-slate-400 border-slate-500"
               : "text-gray-400 hover:text-gray-300 border-transparent"
           }`}
         >
@@ -324,7 +324,7 @@ export default function ScanDetail() {
                   placeholder="Search by domain or IP..."
                   value={subdomainFilter}
                   onChange={(e) => setSubdomainFilter(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 transition-colors"
+                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-slate-500/50 transition-colors"
                 />
                 {subdomainFilter && (
                   <button
@@ -340,8 +340,8 @@ export default function ScanDetail() {
                   onClick={() => setSubdomainStatusFilter("all")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     subdomainStatusFilter === "all"
-                      ? "bg-purple-500/20 text-purple-300 border border-purple-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-purple-500/30"
+                      ? "bg-slate-500/20 text-slate-300 border border-slate-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-slate-500/30"
                   }`}
                 >
                   All
@@ -388,7 +388,7 @@ export default function ScanDetail() {
                   getFilteredSubdomains().map((subdomain, idx) => (
                     <tr key={idx}>
                       <td>
-                        <code className="text-purple-300 font-mono text-xs">{subdomain.name}</code>
+                        <code className="text-slate-300 font-mono text-xs">{subdomain.name}</code>
                         {subdomain.error_msg && (
                           <div className="text-xs text-red-400 mt-1" title={subdomain.error_msg}>
                             ⚠ {subdomain.error_msg.substring(0, 50)}{subdomain.error_msg.length > 50 ? '...' : ''}
@@ -453,7 +453,7 @@ export default function ScanDetail() {
                   placeholder="Search by URL, title, or technology..."
                   value={endpointFilter}
                   onChange={(e) => setEndpointFilter(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-pink-500/50 transition-colors"
+                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gray-500/50 transition-colors"
                 />
                 {endpointFilter && (
                   <button
@@ -469,8 +469,8 @@ export default function ScanDetail() {
                   onClick={() => setEndpointStatusFilter("all")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     endpointStatusFilter === "all"
-                      ? "bg-pink-500/20 text-pink-300 border border-pink-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-pink-500/30"
+                      ? "bg-gray-500/20 text-gray-300 border border-gray-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-gray-500/30"
                   }`}
                 >
                   All
@@ -499,8 +499,8 @@ export default function ScanDetail() {
                   onClick={() => setEndpointStatusFilter("4xx")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     endpointStatusFilter === "4xx"
-                      ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-yellow-500/30"
+                      ? "bg-gray-500/20 text-gray-300 border border-gray-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-gray-500/30"
                   }`}
                 >
                   4xx
@@ -545,7 +545,7 @@ export default function ScanDetail() {
                           href={endpoint.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-purple-400 hover:text-purple-300 truncate font-medium flex items-center gap-2"
+                          className="text-slate-400 hover:text-slate-300 truncate font-medium flex items-center gap-2"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {endpoint.url}
@@ -609,7 +609,7 @@ export default function ScanDetail() {
                         {endpoint.headers && Object.keys(endpoint.headers).length > 0 && (
                           <div>
                             <div className="flex items-center gap-2 mb-3">
-                              <Server className="w-4 h-4 text-purple-400" />
+                              <Server className="w-4 h-4 text-slate-400" />
                               <h4 className="text-sm font-semibold text-gray-200">Response Headers</h4>
                             </div>
                             <div className="space-y-2">
@@ -658,13 +658,13 @@ export default function ScanDetail() {
                         {endpoint.evidence && Object.keys(endpoint.evidence).length > 0 && (
                           <div>
                             <div className="flex items-center gap-2 mb-3">
-                              <AlertTriangle className="w-4 h-4 text-yellow-400" />
+                              <AlertTriangle className="w-4 h-4 text-gray-400" />
                               <h4 className="text-sm font-semibold text-gray-200">Evidence</h4>
                             </div>
                             <div className="space-y-2">
                               {Object.entries(endpoint.evidence).map(([key, value]) => (
                                 <div key={key} className="text-xs">
-                                  <span className="text-yellow-400 font-mono">{key}:</span>
+                                  <span className="text-gray-400 font-mono">{key}:</span>
                                   <span className="text-gray-300 ml-2">{JSON.stringify(value)}</span>
                                 </div>
                               ))}
@@ -717,7 +717,7 @@ export default function ScanDetail() {
                   placeholder="Search by host, port, service, or product..."
                   value={portFilter}
                   onChange={(e) => setPortFilter(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-gray-500/50 transition-colors"
                 />
                 {portFilter && (
                   <button
@@ -733,8 +733,8 @@ export default function ScanDetail() {
                   onClick={() => setPortProtocolFilter("all")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     portProtocolFilter === "all"
-                      ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-cyan-500/30"
+                      ? "bg-gray-500/20 text-gray-300 border border-gray-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-gray-500/30"
                   }`}
                 >
                   All
@@ -753,8 +753,8 @@ export default function ScanDetail() {
                   onClick={() => setPortProtocolFilter("udp")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     portProtocolFilter === "udp"
-                      ? "bg-purple-500/20 text-purple-300 border border-purple-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-purple-500/30"
+                      ? "bg-slate-500/20 text-slate-300 border border-slate-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-slate-500/30"
                   }`}
                 >
                   UDP
@@ -782,12 +782,12 @@ export default function ScanDetail() {
                 {getFilteredPorts().length > 0 ? (
                   getFilteredPorts().map((finding, idx) => (
                     <tr key={idx}>
-                      <td className="text-cyan-300 font-mono text-xs">{finding.host}</td>
+                      <td className="text-gray-300 font-mono text-xs">{finding.host}</td>
                       <td>
                         <span className="badge-info">{finding.port}</span>
                       </td>
                       <td className="text-gray-400 text-xs uppercase">{finding.protocol}</td>
-                      <td className="text-purple-300 font-mono">{finding.service || "-"}</td>
+                      <td className="text-slate-300 font-mono">{finding.service || "-"}</td>
                       <td className="text-gray-300">{finding.product || "-"}</td>
                       <td className="text-gray-400 text-xs">{finding.version || "-"}</td>
                     </tr>
@@ -818,7 +818,7 @@ export default function ScanDetail() {
                   placeholder="Search by host..."
                   value={tlsFilter}
                   onChange={(e) => setTlsFilter(e.target.value)}
-                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500/50 transition-colors"
+                  className="w-full pl-10 pr-10 py-2 bg-black/40 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-slate-500/50 transition-colors"
                 />
                 {tlsFilter && (
                   <button
@@ -834,8 +834,8 @@ export default function ScanDetail() {
                   onClick={() => setTlsStatusFilter("all")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     tlsStatusFilter === "all"
-                      ? "bg-orange-500/20 text-orange-300 border border-orange-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-orange-500/30"
+                      ? "bg-slate-500/20 text-slate-300 border border-slate-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-slate-500/30"
                   }`}
                 >
                   All
@@ -854,8 +854,8 @@ export default function ScanDetail() {
                   onClick={() => setTlsStatusFilter("weak")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     tlsStatusFilter === "weak"
-                      ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-yellow-500/30"
+                      ? "bg-gray-500/20 text-gray-300 border border-gray-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-gray-500/30"
                   }`}
                 >
                   Weak Versions
@@ -893,7 +893,7 @@ export default function ScanDetail() {
                 {getFilteredTLS().length > 0 ? (
                   getFilteredTLS().map((result, idx) => (
                     <tr key={idx}>
-                      <td className="text-cyan-300 font-mono text-xs">{result.host}</td>
+                      <td className="text-gray-300 font-mono text-xs">{result.host}</td>
                       <td>
                         {result.has_https ? (
                           <span className="badge-success">Yes</span>
@@ -989,8 +989,8 @@ export default function ScanDetail() {
                   onClick={() => setDirectoryIssueFilter("exposed")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     directoryIssueFilter === "exposed"
-                      ? "bg-orange-500/20 text-orange-300 border border-orange-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-orange-500/30"
+                      ? "bg-slate-500/20 text-slate-300 border border-slate-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-slate-500/30"
                   }`}
                 >
                   Exposed
@@ -999,8 +999,8 @@ export default function ScanDetail() {
                   onClick={() => setDirectoryIssueFilter("admin")}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     directoryIssueFilter === "admin"
-                      ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/50"
-                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-yellow-500/30"
+                      ? "bg-gray-500/20 text-gray-300 border border-gray-500/50"
+                      : "bg-black/40 text-gray-400 border border-white/10 hover:border-gray-500/30"
                   }`}
                 >
                   Admin
@@ -1027,8 +1027,8 @@ export default function ScanDetail() {
                 {getFilteredDirectories().length > 0 ? (
                   getFilteredDirectories().map((finding, idx) => (
                     <tr key={idx}>
-                      <td className="text-cyan-300 font-mono text-xs">{finding.host}</td>
-                      <td className="text-purple-300 font-mono">{finding.path}</td>
+                      <td className="text-gray-300 font-mono text-xs">{finding.host}</td>
+                      <td className="text-slate-300 font-mono">{finding.path}</td>
                       <td>
                         <span className={
                           finding.status_code === 200 ? "badge-success" :

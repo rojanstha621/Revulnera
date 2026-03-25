@@ -1,0 +1,256 @@
+{
+  "scan_id": 85,
+  "target": "http://localhost:3000",
+  "endpoints": [
+    {
+      "url": "http://localhost:3000/public/fonts/roboto/RxZJdnzeo3R5zSexge8UUVtXRa8TVwTICgirnJhmVJw.woff2",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/img/apple-touch-icon.png",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/robots.txt",
+      "status_code": 200,
+      "content_length": 28,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/plain"
+      },
+      "fingerprints": null,
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/build/grafana.dark.898fe9e20a782b4232fe.css",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/img/fav32.png",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/build/vendors~app.898fe9e20a782b4232fe.js",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/login",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/build/runtime.898fe9e20a782b4232fe.js",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/build/angular~app.898fe9e20a782b4232fe.js",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/user/login",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/build/moment~app.898fe9e20a782b4232fe.js",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/build/app.898fe9e20a782b4232fe.js",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/2016/7/27/headlines/sanders_supporters_walk_out_stage_sit_in_to_protest_nomination?utm_campaign=3459c5b216-Daily_Digest\u0026utm_medium=email\u0026utm_source=Democracy+Now%21\u0026utm_term=0_fa2346a853-3459c5b216-190288189",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/assets/index.js",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://localhost:3000/public/img/grafana_mask_icon.svg",
+      "status_code": 200,
+      "content_length": 75055,
+      "title": "OWASP Juice Shop",
+      "headers": {
+        "Content-Type": "text/html"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Onsen UI",
+        "Osano:3.1.0",
+        "cdnjs",
+        "jQuery:2.2.4"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-03-15T03:01:01.317403083Z"
+}

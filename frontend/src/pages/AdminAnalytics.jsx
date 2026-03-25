@@ -45,7 +45,7 @@ export default function AdminAnalytics() {
         <select
           value={period}
           onChange={(e) => setPeriod(e.target.value)}
-          className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+          className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-slate-500"
         >
           <option value="7">Last 7 Days</option>
           <option value="30">Last 30 Days</option>
@@ -65,7 +65,7 @@ export default function AdminAnalytics() {
                   <p className="text-gray-400 text-sm">Total Scans</p>
                   <p className="text-3xl font-bold text-white mt-2">{analytics.scan_metrics.total_scans}</p>
                 </div>
-                <TrendingUp className="w-8 h-8 text-purple-400 opacity-20" />
+                <TrendingUp className="w-8 h-8 text-slate-400 opacity-20" />
               </div>
             </div>
 
@@ -107,7 +107,7 @@ export default function AdminAnalytics() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center pb-4 border-b border-gray-700/30">
                   <span className="text-gray-300">Endpoints</span>
-                  <span className="text-2xl font-bold text-orange-400">
+                  <span className="text-2xl font-bold text-slate-400">
                     {analytics.average_findings.endpoints_per_scan}
                   </span>
                 </div>
@@ -127,12 +127,12 @@ export default function AdminAnalytics() {
                 {analytics.most_active_users.map((user, idx) => (
                   <div key={idx} className="flex items-center justify-between pb-3 border-b border-gray-700/30 last:border-0">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 rounded-full bg-purple-900/40 flex items-center justify-center">
-                        <Users className="w-4 h-4 text-purple-400" />
+                      <div className="w-8 h-8 rounded-full bg-slate-900/40 flex items-center justify-center">
+                        <Users className="w-4 h-4 text-slate-400" />
                       </div>
                       <span className="text-gray-300 truncate">{user.email}</span>
                     </div>
-                    <span className="font-semibold text-purple-400">{user.scans}</span>
+                    <span className="font-semibold text-slate-400">{user.scans}</span>
                   </div>
                 ))}
               </div>
@@ -159,14 +159,14 @@ export default function AdminAnalytics() {
                       : 0;
                     return (
                       <tr key={idx} className="hover:bg-gray-700/20 transition">
-                        <td className="px-4 py-3 text-purple-400 font-semibold">#{idx + 1}</td>
+                        <td className="px-4 py-3 text-slate-400 font-semibold">#{idx + 1}</td>
                         <td className="px-4 py-3 text-white">{target.target}</td>
                         <td className="px-4 py-3 text-gray-300 font-semibold">{target.count}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center space-x-2">
                             <div className="w-24 h-2 bg-gray-700/50 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-purple-600 to-purple-400"
+                                className="h-full bg-slate-500"
                                 style={{ width: `${percentage}%` }}
                               ></div>
                             </div>
@@ -196,7 +196,7 @@ export default function AdminAnalytics() {
                       <span className="text-gray-400 text-sm w-24">{date}</span>
                       <div className="flex-1 h-8 bg-gray-700/30 rounded-lg overflow-hidden relative">
                         <div
-                          className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg transition-all"
+                          className="h-full bg-cyan-500 rounded-lg transition-all"
                           style={{ width: `${percentage}%` }}
                         ></div>
                       </div>

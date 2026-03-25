@@ -41,7 +41,7 @@ export default function AdminUserDetail() {
       <div className="space-y-4">
         <button
           onClick={() => navigate("/admin/users")}
-          className="flex items-center space-x-2 text-purple-400 hover:text-purple-300"
+          className="flex items-center space-x-2 text-slate-400 hover:text-slate-300"
         >
           <ArrowLeft className="w-5 h-5" />
           Back to Users
@@ -59,7 +59,7 @@ export default function AdminUserDetail() {
       {/* Back Button */}
       <button
         onClick={() => navigate("/admin/users")}
-        className="flex items-center space-x-2 text-purple-400 hover:text-purple-300 transition"
+        className="flex items-center space-x-2 text-slate-400 hover:text-slate-300 transition"
       >
         <ArrowLeft className="w-5 h-5" />
         Back to Users
@@ -128,7 +128,7 @@ export default function AdminUserDetail() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-gray-900/50 rounded p-4">
             <p className="text-gray-400 text-sm mb-2">Total Scans</p>
-            <p className="text-3xl font-bold text-purple-400">{stats?.total_scans}</p>
+            <p className="text-3xl font-bold text-slate-400">{stats?.total_scans}</p>
           </div>
           <div className="bg-gray-900/50 rounded p-4">
             <p className="text-gray-400 text-sm mb-2">Total Subdomains</p>
@@ -136,7 +136,7 @@ export default function AdminUserDetail() {
           </div>
           <div className="bg-gray-900/50 rounded p-4">
             <p className="text-gray-400 text-sm mb-2">Total Endpoints</p>
-            <p className="text-3xl font-bold text-orange-400">{stats?.total_endpoints}</p>
+            <p className="text-3xl font-bold text-slate-400">{stats?.total_endpoints}</p>
           </div>
           <div className="bg-gray-900/50 rounded p-4">
             <p className="text-gray-400 text-sm mb-2">Scans by Status</p>

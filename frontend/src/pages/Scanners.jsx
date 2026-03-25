@@ -548,7 +548,7 @@ export default function Scanners() {
     <div className="space-y-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="space-y-4 animate-slide-up">
-        <h1 className="text-5xl font-bold text-gradient">Reconnaissance Scanner</h1>
+        <h1 className="text-5xl font-bold text-cyan-300 tracking-tight">Reconnaissance Scanner</h1>
         <p className="text-gray-400 text-lg">
           Advanced security reconnaissance with real-time vulnerability detection
         </p>
@@ -584,7 +584,7 @@ export default function Scanners() {
           <button
             type="button"
             onClick={() => setShowAuthFields(!showAuthFields)}
-            className="text-sm text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-2"
+            className="text-sm text-slate-400 hover:text-slate-300 transition-colors flex items-center gap-2"
             disabled={isScanning}
           >
             <Lock className="w-4 h-4" />
@@ -592,7 +592,7 @@ export default function Scanners() {
           </button>
 
           {showAuthFields && (
-            <div className="space-y-3 p-4 bg-black/20 rounded-lg border border-purple-500/20">
+            <div className="space-y-3 p-4 bg-black/20 rounded-lg border border-slate-500/20">
               <div className="text-xs text-gray-400 mb-2">
                 💡 These credentials will be used for all vulnerability scans on this target
               </div>
@@ -724,8 +724,8 @@ export default function Scanners() {
                     switch (log.type) {
                       case "subdomain":
                         return log.data?.alive 
-                          ? "text-purple-300 border-l-purple-500" 
-                          : "text-purple-400/50 border-l-purple-700";
+                          ? "text-slate-300 border-l-slate-500" 
+                          : "text-slate-400/50 border-l-slate-700";
                       case "endpoint":
                         return log.data?.class === "success"
                           ? "text-green-300 border-l-green-500"
@@ -733,13 +733,13 @@ export default function Scanners() {
                           ? "text-red-300 border-l-red-500"
                           : "text-blue-300 border-l-blue-500";
                       case "port":
-                        return "text-cyan-300 border-l-cyan-500";
+                        return "text-gray-300 border-l-gray-500";
                       case "tls":
                         return "text-blue-300 border-l-blue-500";
                       case "tls-warning":
-                        return "text-orange-300 border-l-orange-500";
+                        return "text-slate-300 border-l-slate-500";
                       case "directory":
-                        return "text-yellow-300 border-l-yellow-500";
+                        return "text-gray-300 border-l-gray-500";
                       case "vulnerability":
                         return "text-red-300 border-l-red-500";
                       case "status":
@@ -806,7 +806,7 @@ export default function Scanners() {
                                     <span className="text-blue-500/70">Server: {log.data.server}</span>
                                   )}
                                   {log.data.fingerprints && log.data.fingerprints.length > 0 && (
-                                    <span className="text-purple-500/70">
+                                    <span className="text-slate-500/70">
                                       🏷️ {log.data.fingerprints.slice(0, 3).join(", ")}
                                       {log.data.fingerprints.length > 3 && ` +${log.data.fingerprints.length - 3} more`}
                                     </span>
@@ -864,21 +864,21 @@ export default function Scanners() {
           <div className="order-2">
             <div className="mb-4">
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Radar className="w-6 h-6 text-purple-400" />
+                <Radar className="w-6 h-6 text-slate-400" />
                 Scan Status
               </h2>
             </div>
             
-            <div className="card bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-blue-900/20 border-purple-500/30">
+            <div className="card bg-slate-900/85 border-slate-700">
               <div className="flex flex-col items-center justify-center py-12 space-y-8">
                 {/* Radar Animation */}
                 <div className="relative">
                   {/* Outer rings */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-64 h-64 rounded-full border-2 border-purple-500/20 animate-pulse"></div>
+                    <div className="w-64 h-64 rounded-full border-2 border-slate-500/20 animate-pulse"></div>
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-48 h-48 rounded-full border-2 border-pink-500/20 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                    <div className="w-48 h-48 rounded-full border-2 border-gray-500/20 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-32 h-32 rounded-full border-2 border-blue-500/20 animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -887,12 +887,12 @@ export default function Scanners() {
                   {/* Rotating radar beam */}
                   <div className="relative w-64 h-64 flex items-center justify-center">
                     <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s' }}>
-                      <div className="h-full w-1 bg-gradient-to-t from-transparent via-purple-500 to-transparent mx-auto"></div>
+                      <div className="h-full w-1 bg-slate-500/70 mx-auto"></div>
                     </div>
                     
                     {/* Center icon */}
-                    <div className="relative z-10 bg-gray-900 rounded-full p-6 border-2 border-purple-500 shadow-lg shadow-purple-500/50">
-                      <Radar className="w-12 h-12 text-purple-400 animate-pulse" />
+                    <div className="relative z-10 bg-gray-900 rounded-full p-6 border-2 border-slate-500 shadow-lg shadow-slate-500/50">
+                      <Radar className="w-12 h-12 text-slate-400 animate-pulse" />
                     </div>
                   </div>
                 </div>
@@ -920,7 +920,7 @@ export default function Scanners() {
                           <div
                             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
                               isActive
-                                ? 'bg-purple-500 shadow-lg shadow-purple-500/50 scale-110'
+                                ? 'bg-slate-500 shadow-lg shadow-slate-500/50 scale-110'
                                 : isPast
                                 ? 'bg-green-500/50'
                                 : 'bg-gray-700/50'
@@ -929,7 +929,7 @@ export default function Scanners() {
                             <Icon className="w-6 h-6 text-white" />
                           </div>
                           <p className={`text-[10px] mt-2 text-center ${
-                            isActive ? 'text-purple-300 font-semibold' : 'text-gray-500'
+                            isActive ? 'text-slate-300 font-semibold' : 'text-gray-500'
                           }`}>
                             {phase.name}
                           </p>
@@ -997,8 +997,8 @@ export default function Scanners() {
                   switch (log.type) {
                     case "subdomain":
                       return log.data?.alive 
-                        ? "text-purple-300 border-l-purple-500" 
-                        : "text-purple-400/50 border-l-purple-700";
+                        ? "text-slate-300 border-l-slate-500" 
+                        : "text-slate-400/50 border-l-slate-700";
                     case "endpoint":
                       return log.data?.class === "success"
                         ? "text-green-300 border-l-green-500"
@@ -1006,13 +1006,13 @@ export default function Scanners() {
                         ? "text-red-300 border-l-red-500"
                         : "text-blue-300 border-l-blue-500";
                     case "port":
-                      return "text-cyan-300 border-l-cyan-500";
+                      return "text-gray-300 border-l-gray-500";
                     case "tls":
                       return "text-blue-300 border-l-blue-500";
                     case "tls-warning":
-                      return "text-orange-300 border-l-orange-500";
+                      return "text-slate-300 border-l-slate-500";
                     case "directory":
-                      return "text-yellow-300 border-l-yellow-500";
+                      return "text-gray-300 border-l-gray-500";
                     case "vulnerability":
                       return "text-red-300 border-l-red-500";
                     case "status":
@@ -1113,7 +1113,7 @@ export default function Scanners() {
         <div className="animate-slide-up">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Activity className="w-6 h-6 text-purple-400" />
+              <Activity className="w-6 h-6 text-slate-400" />
               Live Metrics
             </h2>
             <div className="flex items-center gap-2">
@@ -1124,7 +1124,7 @@ export default function Scanners() {
               {scanId && (
                 <button
                   onClick={() => navigate(`/scan/${scanId}`)}
-                  className="ml-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"
+                  className="ml-4 px-4 py-2 bg-slate-600 hover:bg-slate-700 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"
                 >
                   View Details
                   <ChevronRight className="w-4 h-4" />
@@ -1135,81 +1135,81 @@ export default function Scanners() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {/* Subdomains */}
-            <div className="stat-card bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 group hover:border-purple-400/40 transition-all">
+            <div className="stat-card bg-slate-900/80 border-slate-700 group hover:border-slate-600 transition-all">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-gray-400 text-sm font-medium">Subdomains</p>
-                  <p className="text-3xl font-bold text-purple-300 mt-2">
+                  <p className="text-3xl font-bold text-slate-300 mt-2">
                     {metrics.subdomains}
                   </p>
-                  <p className="text-xs text-purple-400 mt-1 flex items-center gap-1">
+                  <p className="text-xs text-slate-400 mt-1 flex items-center gap-1">
                     <Check className="w-3 h-3" />
                     {metrics.aliveSubdomains} alive
                   </p>
                 </div>
-                <Shield className="w-10 h-10 text-purple-500/30 group-hover:text-purple-400/50 transition-colors" />
+                <Shield className="w-10 h-10 text-slate-500/30 group-hover:text-slate-400/50 transition-colors" />
               </div>
             </div>
 
             {/* Endpoints */}
-            <div className="stat-card bg-gradient-to-br from-pink-500/10 to-pink-600/5 border-pink-500/20 group hover:border-pink-400/40 transition-all">
+            <div className="stat-card bg-slate-900/80 border-slate-700 group hover:border-slate-600 transition-all">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-gray-400 text-sm font-medium">Endpoints</p>
-                  <p className="text-3xl font-bold text-pink-300 mt-2">
+                  <p className="text-3xl font-bold text-gray-300 mt-2">
                     {metrics.endpoints}
                   </p>
-                  <p className="text-xs text-pink-400 mt-1 flex items-center gap-1">
+                  <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
                     <TrendingUp className="w-3 h-3" />
                     Mapped
                   </p>
                 </div>
-                <Globe className="w-10 h-10 text-pink-500/30 group-hover:text-pink-400/50 transition-colors" />
+                <Globe className="w-10 h-10 text-gray-500/30 group-hover:text-gray-400/50 transition-colors" />
               </div>
             </div>
 
             {/* Open Ports */}
-            <div className="stat-card bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 border-cyan-500/20 group hover:border-cyan-400/40 transition-all">
+            <div className="stat-card bg-slate-900/80 border-slate-700 group hover:border-slate-600 transition-all">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-gray-400 text-sm font-medium">Open Ports</p>
-                  <p className="text-3xl font-bold text-cyan-300 mt-2">
+                  <p className="text-3xl font-bold text-gray-300 mt-2">
                     {metrics.ports}
                   </p>
-                  <p className="text-xs text-cyan-400 mt-1 flex items-center gap-1">
+                  <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
                     <Network className="w-3 h-3" />
                     Discovered
                   </p>
                 </div>
-                <Network className="w-10 h-10 text-cyan-500/30 group-hover:text-cyan-400/50 transition-colors" />
+                <Network className="w-10 h-10 text-gray-500/30 group-hover:text-gray-400/50 transition-colors" />
               </div>
             </div>
 
             {/* TLS Issues */}
-            <div className="stat-card bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20">
+            <div className="stat-card bg-slate-900/80 border-slate-700">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-gray-400 text-sm font-medium">TLS Issues</p>
-                  <p className="text-3xl font-bold text-orange-300 mt-2">
+                  <p className="text-3xl font-bold text-slate-300 mt-2">
                     {metrics.tlsIssues}
                   </p>
-                  <p className="text-xs text-orange-400 mt-1">Weak protocols</p>
+                  <p className="text-xs text-slate-400 mt-1">Weak protocols</p>
                 </div>
-                <Lock className="w-8 h-8 text-orange-500/30" />
+                <Lock className="w-8 h-8 text-slate-500/30" />
               </div>
             </div>
 
             {/* Directory Issues */}
-            <div className="stat-card bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
+            <div className="stat-card bg-slate-900/80 border-slate-700">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-gray-400 text-sm font-medium">Directory Issues</p>
-                  <p className="text-3xl font-bold text-yellow-300 mt-2">
+                  <p className="text-3xl font-bold text-gray-300 mt-2">
                     {metrics.directoryIssues}
                   </p>
-                  <p className="text-xs text-yellow-400 mt-1">Exposed paths</p>
+                  <p className="text-xs text-gray-400 mt-1">Exposed paths</p>
                 </div>
-                <FolderOpen className="w-8 h-8 text-yellow-500/30" />
+                <FolderOpen className="w-8 h-8 text-gray-500/30" />
               </div>
             </div>
 
@@ -1217,7 +1217,7 @@ export default function Scanners() {
             <div className="stat-card col-span-2">
               <div>
                 <p className="text-gray-400 text-sm font-medium mb-2">Scan ID</p>
-                <p className="text-lg font-mono text-purple-300 break-all">{scanId}</p>
+                <p className="text-lg font-mono text-slate-300 break-all">{scanId}</p>
               </div>
             </div>
           </div>
@@ -1226,7 +1226,7 @@ export default function Scanners() {
 
       {/* Completion Message */}
       {scanId && status === "COMPLETED" && (
-        <div className="card animate-slide-up bg-gradient-to-r from-green-900/20 to-blue-900/20 border-green-500/30">
+        <div className="card animate-slide-up bg-slate-900/85 border-green-500/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="bg-green-500/20 rounded-full p-3">
@@ -1252,7 +1252,7 @@ export default function Scanners() {
 
       {/* Failed Message */}
       {scanId && status === "FAILED" && (
-        <div className="card animate-slide-up bg-gradient-to-r from-red-900/20 to-orange-900/20 border-red-500/30">
+        <div className="card animate-slide-up bg-slate-900/85 border-red-500/30">
           <div className="flex items-center gap-4">
             <div className="bg-red-500/20 rounded-full p-3">
               <AlertTriangle className="w-8 h-8 text-red-400" />

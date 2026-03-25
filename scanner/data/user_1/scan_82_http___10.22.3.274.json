@@ -1,0 +1,14 @@
+{
+  "scan_id": 82,
+  "target": "http://10.22.3.274",
+  "subdomains": [
+    {
+      "name": "10.22.3.274",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup 10.22.3.274: no such host"
+    }
+  ],
+  "saved_at": "2026-03-15T02:42:00.707880337Z"
+}

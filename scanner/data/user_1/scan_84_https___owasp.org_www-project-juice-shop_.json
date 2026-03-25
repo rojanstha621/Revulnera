@@ -1,0 +1,719 @@
+{
+  "scan_id": 84,
+  "target": "https://owasp.org/www-project-juice-shop/",
+  "subdomains": [
+    {
+      "name": "tempcali.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup tempcali.owasp.org: no such host"
+    },
+    {
+      "name": "owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "members.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "name-virt-host.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "devsecops.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "new-wiki.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup new-wiki.owasp.org: no such host"
+    },
+    {
+      "name": "policy.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "securitychampions.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "scs.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "ot.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "cheesemonkey.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup cheesemonkey.owasp.org: no such host"
+    },
+    {
+      "name": "support.docs.owasp.org",
+      "ip": "18.172.78.93",
+      "ips": [
+        "18.172.78.93",
+        "18.172.78.102",
+        "18.172.78.99",
+        "18.172.78.109"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "mu.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup mu.owasp.org: no such host"
+    },
+    {
+      "name": "crlabs.secureflag.owasp.org",
+      "ip": "13.227.249.85",
+      "ips": [
+        "13.227.249.85",
+        "13.227.249.125",
+        "13.227.249.55",
+        "13.227.249.28"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "genai.owasp.org",
+      "ip": "192.0.78.146",
+      "ips": [
+        "192.0.78.146",
+        "192.0.78.252"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "support.owasp.org",
+      "ip": "18.66.57.10",
+      "ips": [
+        "18.66.57.10",
+        "18.66.57.3",
+        "18.66.57.100",
+        "18.66.57.86"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "contact.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "asvs.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "secureflag.owasp.org",
+      "ip": "13.227.249.55",
+      "ips": [
+        "13.227.249.55",
+        "13.227.249.85",
+        "13.227.249.28",
+        "13.227.249.125"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "scvs.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "brainbreak.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "aivss.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "training.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "devguide.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "tsd.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup tsd.owasp.org: no such host"
+    },
+    {
+      "name": "mas.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "discourse.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup discourse.owasp.org: no such host"
+    },
+    {
+      "name": "dsomm.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup dsomm.owasp.org: i/o timeout"
+    },
+    {
+      "name": "copi.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "www.ocms.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.ocms.owasp.org: no such host"
+    },
+    {
+      "name": "llm.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "board.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "top10proactive.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "20thanniversary.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "mail.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "www.projectsummit.owasp.org",
+      "ip": "103.169.142.0",
+      "ips": [
+        "103.169.142.0"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "nest.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "aos.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "www.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "update-wiki.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup update-wiki.owasp.org: no such host"
+    },
+    {
+      "name": "haroldtest.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup haroldtest.owasp.org: no such host"
+    },
+    {
+      "name": "wiki.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "calltobattle.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "owaspla.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "austin.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "ocms.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "talk.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup talk.owasp.org: no such host"
+    },
+    {
+      "name": "dev.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "cheatsheetseries.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "docs.owasp.org",
+      "ip": "104.16.254.120",
+      "ips": [
+        "104.16.254.120",
+        "104.16.253.120",
+        "2606:4700::6810:fe78",
+        "2606:4700::6810:fd78"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "lightning.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "videos.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "registration.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup registration.owasp.org: no such host"
+    },
+    {
+      "name": "www2.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "dsandbox.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup dsandbox.owasp.org: no such host"
+    },
+    {
+      "name": "securecodingdojo.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "www.lists.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.lists.owasp.org: no such host"
+    },
+    {
+      "name": "projectsummit.owasp.org",
+      "ip": "103.169.142.0",
+      "ips": [
+        "103.169.142.0"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "sl.owasp.org",
+      "ip": "104.20.44.163",
+      "ips": [
+        "104.20.44.163",
+        "172.66.157.115",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "cloud.owasp.org",
+      "ip": "157.245.12.71",
+      "ips": [
+        "157.245.12.71",
+        "2604:a880:800:10::dbb:a001"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "prodsec.owasp.org",
+      "ip": "64.29.17.1",
+      "ips": [
+        "64.29.17.1",
+        "216.198.79.1"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "kerala.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::ac42:9d73",
+        "2606:4700:10::6814:2ca3"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "giving.owasp.org",
+      "ip": "52.33.193.40",
+      "ips": [
+        "52.33.193.40",
+        "52.26.142.246"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "cornucopia.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "blt.owasp.org",
+      "ip": "172.66.157.115",
+      "ips": [
+        "172.66.157.115",
+        "104.20.44.163",
+        "2606:4700:10::6814:2ca3",
+        "2606:4700:10::ac42:9d73"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "lists.owasp.org",
+      "ip": "174.138.70.208",
+      "ips": [
+        "174.138.70.208"
+      ],
+      "alive": false,
+      "error_msg": "HTTP check failed: Get \"http://lists.owasp.org\": dial tcp 174.138.70.208:80: connect: connection refused"
+    },
+    {
+      "name": "gapps.owasp.org",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup gapps.owasp.org: i/o timeout"
+    }
+  ],
+  "saved_at": "2026-03-15T02:45:47.370810325Z"
+}

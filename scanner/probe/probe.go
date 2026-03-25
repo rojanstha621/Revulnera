@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/url"
 	"os/exec"
 	"strings"
 	"sync"
@@ -56,14 +57,15 @@ func CheckHostWithOptions(host string, opts *ProbeOptions) HostCheck {
 	}
 
 	host = strings.TrimSpace(host)
+	requestHost, dnsHost := normalizeProbeTarget(host)
 	res := HostCheck{
-		Host:  host,
+		Host:  requestHost,
 		IPs:   []string{},
 		Alive: false,
 	}
 
 	// First resolve DNS to get all IPs
-	ips, dnsErr := resolveAllIPs(host, opts.DNSTimeout)
+	ips, dnsErr := resolveAllIPs(dnsHost, opts.DNSTimeout)
 	res.IPs = ips
 	if dnsErr != nil {
 		res.ErrorMsg = fmt.Sprintf("DNS resolution failed: %v", dnsErr)
@@ -77,7 +79,7 @@ func CheckHostWithOptions(host string, opts *ProbeOptions) HostCheck {
 
 	// Try httpx first if enabled
 	if opts.UseHttpx {
-		alive, httpxErr := checkWithHttpx(host, opts.HttpxBinary, opts.HttpxTimeout)
+		alive, httpxErr := checkWithHttpx(requestHost, opts.HttpxBinary, opts.HttpxTimeout)
 		if alive {
 			res.Alive = true
 			return res
@@ -92,7 +94,7 @@ func CheckHostWithOptions(host string, opts *ProbeOptions) HostCheck {
 	}
 
 	// Fallback to native Go HTTP client
-	alive, httpErr := checkWithNativeHTTP(host, opts.HTTPTimeout)
+	alive, httpErr := checkWithNativeHTTP(requestHost, opts.HTTPTimeout)
 	res.Alive = alive
 	if !alive && httpErr != nil {
 		if res.ErrorMsg != "" {
@@ -102,6 +104,31 @@ func CheckHostWithOptions(host string, opts *ProbeOptions) HostCheck {
 	}
 
 	return res
+}
+
+func normalizeProbeTarget(raw string) (requestHost string, dnsHost string) {
+	target := strings.TrimSpace(raw)
+	if target == "" {
+		return "", ""
+	}
+
+	if strings.Contains(target, "://") {
+		if parsed, err := url.Parse(target); err == nil {
+			target = parsed.Host
+		}
+	} else if strings.Contains(target, "/") {
+		// Handle cases like localhost:3000/path without a scheme.
+		target = strings.SplitN(target, "/", 2)[0]
+	}
+
+	target = strings.Trim(target, "[]")
+	hostOnly := target
+	if h, _, err := net.SplitHostPort(target); err == nil {
+		hostOnly = h
+	}
+	hostOnly = strings.Trim(hostOnly, "[]")
+
+	return target, hostOnly
 }
 
 // ProbeHosts probes multiple hosts concurrently using a worker pool.
@@ -201,14 +228,15 @@ func checkWithNativeHTTP(host string, timeout time.Duration) (bool, error) {
 		url := scheme + host
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-		cancel()
 
 		if err != nil {
+			cancel()
 			lastErr = err
 			continue
 		}
 
 		resp, err := client.Do(req)
+		cancel()
 		if err != nil {
 			lastErr = err
 			continue

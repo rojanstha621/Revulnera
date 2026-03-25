@@ -1,0 +1,16 @@
+{
+  "scan_id": 83,
+  "target": "http://10.22.3.247:3000",
+  "subdomains": [
+    {
+      "name": "10.22.3.247:3000",
+      "ip": "10.22.3.247",
+      "ips": [
+        "10.22.3.247"
+      ],
+      "alive": false,
+      "error_msg": "httpx check failed: httpx error: signal: killed (stderr: ); HTTP check failed: Get \"http://10.22.3.247:3000\": context deadline exceeded"
+    }
+  ],
+  "saved_at": "2026-03-15T02:42:23.11638305Z"
+}

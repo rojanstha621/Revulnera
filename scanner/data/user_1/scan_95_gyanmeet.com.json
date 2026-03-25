@@ -1,0 +1,14 @@
+{
+  "scan_id": 95,
+  "target": "gyanmeet.com",
+  "subdomains": [
+    {
+      "name": "gyanmeet.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup gyanmeet.com: Temporary failure in name resolution"
+    }
+  ],
+  "saved_at": "2026-03-24T07:48:52.614015561Z"
+}

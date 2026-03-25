@@ -4,8 +4,8 @@ import React from "react";
 const colorMap = {
   blue: "bg-blue-900/20 text-blue-400 border-blue-700/30",
   green: "bg-green-900/20 text-green-400 border-green-700/30",
-  purple: "bg-purple-900/20 text-purple-400 border-purple-700/30",
-  orange: "bg-orange-900/20 text-orange-400 border-orange-700/30",
+  purple: "bg-slate-900/20 text-slate-400 border-slate-700/30",
+  orange: "bg-slate-900/20 text-slate-400 border-slate-700/30",
   red: "bg-red-900/20 text-red-400 border-red-700/30",
 };
 

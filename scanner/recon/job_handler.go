@@ -1,9 +1,12 @@
 package recon
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"log"
+	"net"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -50,17 +53,52 @@ func ScanFilePath(userID int64, scanID int64, target string) string {
 func HandleJob(job Job) ([]SubdomainResult, error) {
 	log.Printf("[recon] starting job: scan_id=%d target=%s", job.ScanID, job.Target)
 
-	// Enumerate subdomains
-	subdomains, err := enum.EnumerateSubdomains(job.Target, &enum.SubfinderOptions{
-		BinaryPath: "subfinder",
-		Timeout:    120 * time.Second,
-	})
-	if err != nil {
-		log.Printf("[recon] subfinder error for %s: %v", job.Target, err)
-		return nil, err
+	enumDomain, directProbeHost := normalizeTargetForRecon(job.Target)
+
+	// Start with a direct probe target so local/single-host scans still work
+	// even when subdomain enumeration is not applicable.
+	hostCandidates := make([]string, 0)
+	if directProbeHost != "" {
+		hostCandidates = append(hostCandidates, directProbeHost)
 	}
 
-	log.Printf("[recon] found %d subdomains, starting concurrent probing", len(subdomains))
+	// Enumerate subdomains only for public domain targets.
+	if enumDomain != "" {
+		subdomains, err := enum.EnumerateSubdomains(enumDomain, &enum.SubfinderOptions{
+			BinaryPath: "subfinder",
+			Timeout:    120 * time.Second,
+		})
+		if err != nil {
+			log.Printf("[recon] subfinder error for %s: %v", enumDomain, err)
+			return nil, err
+		}
+		hostCandidates = append(hostCandidates, subdomains...)
+	} else {
+		fallbackHosts := enumerateLocalFallbackHosts(directProbeHost)
+		hostCandidates = append(hostCandidates, fallbackHosts...)
+		log.Printf("[recon] subfinder skipped for local/IP target: %s (fallback hosts=%d)", job.Target, len(fallbackHosts))
+	}
+
+	// Deduplicate while preserving order.
+	seen := make(map[string]struct{}, len(hostCandidates))
+	subdomains := make([]string, 0, len(hostCandidates))
+	for _, h := range hostCandidates {
+		h = strings.TrimSpace(strings.ToLower(h))
+		if h == "" {
+			continue
+		}
+		if _, exists := seen[h]; exists {
+			continue
+		}
+		seen[h] = struct{}{}
+		subdomains = append(subdomains, h)
+	}
+
+	if len(subdomains) == 0 {
+		return nil, fmt.Errorf("no valid hosts derived from target: %s", job.Target)
+	}
+
+	log.Printf("[recon] prepared %d hosts, starting concurrent probing", len(subdomains))
 
 	// Configure probe options
 	workers := 10
@@ -130,6 +168,172 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 		job.ScanID, job.Target, len(results), aliveCount)
 
 	return results, nil
+}
+
+func normalizeTargetForRecon(rawTarget string) (enumDomain string, probeHost string) {
+	target := strings.TrimSpace(rawTarget)
+	if target == "" {
+		return "", ""
+	}
+
+	parsed := parseTargetAsURL(target)
+	hostPort := strings.TrimSpace(parsed.Host)
+	if hostPort == "" {
+		hostPort = strings.TrimSpace(target)
+	}
+
+	// Remove path if user pasted target without scheme (e.g. localhost:3000/app).
+	if i := strings.Index(hostPort, "/"); i >= 0 {
+		hostPort = hostPort[:i]
+	}
+
+	probeHost = strings.ToLower(hostPort)
+	hostname := strings.ToLower(parsed.Hostname())
+	if hostname == "" {
+		hostname = probeHost
+		if h, _, err := net.SplitHostPort(probeHost); err == nil {
+			hostname = h
+		}
+	}
+
+	if hostname == "" || hostname == "localhost" || net.ParseIP(hostname) != nil {
+		return "", probeHost
+	}
+
+	// Subfinder expects a domain (no scheme/port/path).
+	return hostname, probeHost
+}
+
+func parseTargetAsURL(target string) *url.URL {
+	if strings.Contains(target, "://") {
+		if u, err := url.Parse(target); err == nil {
+			return u
+		}
+	}
+
+	// Handle bare host/host:port/path by giving url.Parse a scheme.
+	u, err := url.Parse("http://" + target)
+	if err != nil {
+		return &url.URL{}
+	}
+	return u
+}
+
+// enumerateLocalFallbackHosts generates additional host candidates for local targets
+// where subfinder is not applicable (e.g., localhost, *.localhost, host:port).
+func enumerateLocalFallbackHosts(probeHost string) []string {
+	hostOnly, port := splitHostAndPortLoose(strings.TrimSpace(strings.ToLower(probeHost)))
+	if hostOnly == "" {
+		return []string{}
+	}
+
+	// Start with the direct target host.
+	candidates := []string{hostOnly}
+
+	// Common local virtual-host naming patterns.
+	if hostOnly == "localhost" || strings.HasSuffix(hostOnly, ".localhost") {
+		candidates = append(candidates,
+			"www.localhost",
+			"api.localhost",
+			"admin.localhost",
+			"dev.localhost",
+			"test.localhost",
+			"staging.localhost",
+			"app.localhost",
+		)
+	}
+
+	// Add loopback aliases from /etc/hosts when available.
+	candidates = append(candidates, readLoopbackHostAliases()...)
+
+	seen := make(map[string]struct{}, len(candidates))
+	out := make([]string, 0, len(candidates))
+	for _, c := range candidates {
+		c = strings.TrimSpace(strings.ToLower(c))
+		if c == "" {
+			continue
+		}
+		if port != "" && !strings.Contains(c, ":") {
+			c = c + ":" + port
+		}
+		if _, exists := seen[c]; exists {
+			continue
+		}
+		seen[c] = struct{}{}
+		out = append(out, c)
+	}
+
+	// Ensure the original probe host is retained.
+	if probeHost != "" {
+		normalized := strings.TrimSpace(strings.ToLower(probeHost))
+		if _, exists := seen[normalized]; !exists {
+			out = append([]string{normalized}, out...)
+		}
+	}
+
+	return out
+}
+
+func splitHostAndPortLoose(input string) (host string, port string) {
+	if input == "" {
+		return "", ""
+	}
+
+	if strings.Contains(input, "://") {
+		if u, err := url.Parse(input); err == nil {
+			input = u.Host
+		}
+	}
+
+	if h, p, err := net.SplitHostPort(input); err == nil {
+		return strings.Trim(h, "[]"), p
+	}
+
+	// Handle cases like localhost:3000 without brackets.
+	if strings.Count(input, ":") == 1 {
+		parts := strings.SplitN(input, ":", 2)
+		if parts[0] != "" && parts[1] != "" {
+			return strings.Trim(parts[0], "[]"), parts[1]
+		}
+	}
+
+	return strings.Trim(input, "[]"), ""
+}
+
+func readLoopbackHostAliases() []string {
+	f, err := os.Open("/etc/hosts")
+	if err != nil {
+		return []string{}
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	aliases := make([]string, 0)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+
+		fields := strings.Fields(line)
+		if len(fields) < 2 {
+			continue
+		}
+
+		ip := fields[0]
+		if ip != "127.0.0.1" && ip != "::1" {
+			continue
+		}
+
+		for _, name := range fields[1:] {
+			if strings.HasPrefix(name, "#") {
+				break
+			}
+			aliases = append(aliases, name)
+		}
+	}
+
+	return aliases
 }
 
 // SaveSubdomainsToFile writes the results as JSON to data/user_<user_id>/scan_<id>_<target>.json

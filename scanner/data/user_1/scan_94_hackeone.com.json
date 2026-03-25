@@ -1,0 +1,14 @@
+{
+  "scan_id": 94,
+  "target": "hackeone.com",
+  "subdomains": [
+    {
+      "name": "hackeone.com",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup hackeone.com: Temporary failure in name resolution"
+    }
+  ],
+  "saved_at": "2026-03-24T07:48:17.055370271Z"
+}

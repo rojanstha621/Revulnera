@@ -81,7 +81,7 @@ export default function AdminUsers() {
               placeholder="Search by email or name..."
               value={search}
               onChange={handleSearch}
-              className="w-full pl-10 pr-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+              className="w-full pl-10 pr-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-slate-500"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function AdminUsers() {
           <select
             value={roleFilter}
             onChange={handleRoleChange}
-            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-slate-500"
           >
             <option value="">All Roles</option>
             <option value="admin">Admin</option>
@@ -101,7 +101,7 @@ export default function AdminUsers() {
           <select
             value={activeFilter}
             onChange={handleActiveChange}
-            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-slate-500"
           >
             <option value="">All Users</option>
             <option value="true">Active Only</option>
@@ -156,7 +156,7 @@ export default function AdminUsers() {
                     <td className="px-6 py-4 text-sm">
                       <Link
                         to={`/admin/users/${user.id}`}
-                        className="text-purple-400 hover:text-purple-300 transition"
+                        className="text-slate-400 hover:text-slate-300 transition"
                       >
                         View Details
                       </Link>

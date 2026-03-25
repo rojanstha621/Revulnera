@@ -41,7 +41,7 @@ export default function VerifyEmail() {
   }, [token]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-slate-900 to-slate-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
       <div className="card w-full max-w-md">
         <h2 className="text-2xl font-bold mb-2 text-white">Email verification</h2>
 
@@ -66,7 +66,7 @@ export default function VerifyEmail() {
             <p className="mt-3 text-sm text-red-400">{message}</p>
             <p className="mt-4 text-xs text-slate-300">
               You can{" "}
-              <Link to="/auth/login" className="text-purple-400 underline">
+              <Link to="/auth/login" className="text-slate-400 underline">
                 sign in
               </Link>{" "}
               or resend verification from the login page.

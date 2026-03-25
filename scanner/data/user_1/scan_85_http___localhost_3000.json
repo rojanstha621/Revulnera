@@ -1,0 +1,17 @@
+{
+  "scan_id": 85,
+  "target": "http://localhost:3000",
+  "subdomains": [
+    {
+      "name": "localhost:3000",
+      "ip": "::1",
+      "ips": [
+        "::1",
+        "127.0.0.1"
+      ],
+      "alive": true,
+      "error_msg": ""
+    }
+  ],
+  "saved_at": "2026-03-15T03:00:13.802332594Z"
+}

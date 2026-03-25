@@ -7,13 +7,13 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 border-t border-purple-600/40 mt-10">
+    <footer className="bg-slate-950 border-t border-slate-800 mt-10">
       <div className="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-10">
         {/* ABOUT */}
         <div>
           <div className="flex items-center space-x-2">
-            <Shield className="text-purple-400" />
-            <h2 className="text-lg font-semibold text-purple-400">
+            <Shield className="text-cyan-300" />
+            <h2 className="text-lg font-semibold text-cyan-300">
               Revulnera
             </h2>
           </div>
@@ -30,7 +30,7 @@ export default function Footer() {
             <li>
               <Link
                 to="/"
-                className="text-gray-400 hover:text-purple-400 transition"
+                className="text-gray-400 hover:text-cyan-300 transition"
               >
                 Dashboard
               </Link>
@@ -38,7 +38,7 @@ export default function Footer() {
             <li>
               <Link
                 to="/scanners"
-                className="text-gray-400 hover:text-purple-400 transition"
+                className="text-gray-400 hover:text-cyan-300 transition"
               >
                 Scanners
               </Link>
@@ -46,7 +46,7 @@ export default function Footer() {
             <li>
               <Link
                 to="/reports"
-                className="text-gray-400 hover:text-purple-400 transition"
+                className="text-gray-400 hover:text-cyan-300 transition"
               >
                 Reports
               </Link>
@@ -60,13 +60,13 @@ export default function Footer() {
           <div className="flex space-x-4">
             <a
               href="#"
-              className="p-2 rounded-lg bg-gray-800 hover:bg-purple-600/40"
+              className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800"
             >
               <Github className="text-gray-300" />
             </a>
             <a
               href="#"
-              className="p-2 rounded-lg bg-gray-800 hover:bg-purple-600/40"
+              className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800"
             >
               <Twitter className="text-gray-300" />
             </a>
@@ -74,7 +74,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="text-center py-5 text-gray-500 border-t border-purple-600/10">
+      <div className="text-center py-5 text-gray-500 border-t border-slate-800">
         © {year} Revulnera — All rights reserved.
       </div>
     </footer>

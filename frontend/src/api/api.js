@@ -171,6 +171,10 @@ export async function executeVulnerabilityScan(scanId) {
   return postJSON(`/api/vulnerability-detection/scans/${scanId}/execute/`);
 }
 
+export async function cancelVulnerabilityScan(scanId) {
+  return postJSON(`/api/vulnerability-detection/scans/${scanId}/cancel/`);
+}
+
 export async function getVulnerabilityFindings(scanId = null) {
   const path = scanId 
     ? `/api/vulnerability-detection/findings/?vulnerability_scan=${scanId}`
