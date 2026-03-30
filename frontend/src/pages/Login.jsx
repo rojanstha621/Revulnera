@@ -78,7 +78,7 @@ export default function Login() {
     err.toLowerCase().includes("not verified");
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-slate-900 to-slate-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
       <div className="card w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4 text-white">Sign in</h2>
         <p className="text-sm text-slate-300 mb-4">
@@ -95,7 +95,7 @@ export default function Login() {
               setForm((f) => ({ ...f, email: e.target.value }))
             }
             placeholder="Email"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-cyan-500/30"
           />
 
           <input
@@ -107,7 +107,7 @@ export default function Login() {
               setForm((f) => ({ ...f, password: e.target.value }))
             }
             placeholder="Password"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-cyan-500/30"
           />
 
           <button
@@ -134,10 +134,10 @@ export default function Login() {
         )}
 
         <div className="mt-4 flex items-center justify-between text-xs text-slate-300">
-          <Link to="/auth/register" className="text-purple-400 underline">
+          <Link to="/auth/register" className="text-cyan-300 underline">
             Create account
           </Link>
-          <Link to="/auth/forgot-password" className="text-purple-400 underline">
+          <Link to="/auth/forgot-password" className="text-cyan-300 underline">
             Forgot password?
           </Link>
         </div>

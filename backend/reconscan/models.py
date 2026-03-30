@@ -14,6 +14,19 @@ class Scan(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="scans")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    # Authentication credentials for vulnerability testing
+    # These will be inherited by all vulnerability scans on this target
+    auth_headers = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Authentication headers for vulnerability testing (e.g., Authorization: Bearer token)"
+    )
+    auth_cookies = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Authentication cookies for vulnerability testing (e.g., sessionid)"
+    )
 
 class Subdomain(models.Model):
     scan = models.ForeignKey(Scan, on_delete=models.CASCADE, related_name="subdomains")

@@ -18,7 +18,7 @@ export default function ConfirmDialog({
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-gray-900 border border-purple-500/30 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-slide-up">
+      <div className="bg-gray-900 border border-slate-500/30 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-slide-up">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">

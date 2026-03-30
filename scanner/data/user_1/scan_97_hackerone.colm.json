@@ -1,0 +1,14 @@
+{
+  "scan_id": 97,
+  "target": "hackerone.colm",
+  "subdomains": [
+    {
+      "name": "hackerone.colm",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup hackerone.colm: no such host"
+    }
+  ],
+  "saved_at": "2026-03-24T16:21:36.84139914Z"
+}

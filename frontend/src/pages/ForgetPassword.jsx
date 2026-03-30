@@ -38,7 +38,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-slate-900 to-slate-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
       <div className="card w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4 text-white">
           Forgot password
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-cyan-500/30"
           />
 
           <button
@@ -72,7 +72,7 @@ export default function ForgotPassword() {
 
         <p className="mt-4 text-xs text-slate-300">
           Remembered your password?{" "}
-          <Link to="/auth/login" className="text-purple-400 underline">
+          <Link to="/auth/login" className="text-slate-400 underline">
             Sign in
           </Link>
         </p>

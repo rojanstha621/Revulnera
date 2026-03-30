@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { 
   FileText, Calendar, Download, AlertTriangle, CheckCircle, 
-  XCircle, Shield, Globe, Lock, FolderOpen, Server, Activity 
+  Shield, Globe, Lock, Server, Activity 
 } from "lucide-react";
 import { getReportsSummary, generateScanReport } from "../api/api";
 
@@ -14,7 +14,6 @@ export default function Reports() {
   const [report, setReport] = useState(null);
   const [reportLoading, setReportLoading] = useState(false);
   const [downloadStatus, setDownloadStatus] = useState(null); // null, 'downloading', 'success', 'error'
-  const [beginnerMode, setBeginnerMode] = useState(false); // Toggle for beginner-friendly explanations
 
   useEffect(() => {
     loadScans();
@@ -228,53 +227,182 @@ export default function Reports() {
   const getSeverityColor = (severity) => {
     switch (severity) {
       case "critical": return "text-red-400 bg-red-500/20 border-red-500/30";
-      case "high": return "text-orange-400 bg-orange-500/20 border-orange-500/30";
-      case "medium": return "text-yellow-400 bg-yellow-500/20 border-yellow-500/30";
+      case "high": return "text-slate-400 bg-slate-500/20 border-slate-500/30";
+      case "medium": return "text-gray-400 bg-gray-500/20 border-gray-500/30";
       case "low": return "text-blue-400 bg-blue-500/20 border-blue-500/30";
       default: return "text-gray-400 bg-gray-500/20 border-gray-500/30";
     }
   };
 
-  // Beginner-friendly explanations
-  const getBeginnerExplanation = (type, detail) => {
-    const explanations = {
-      "Open High-Risk Port": `This means a door (port) on the server is open that hackers commonly target. It's like leaving a window unlocked in your house.`,
-      "Weak TLS": `The security lock (encryption) protecting data transfer is old and weak. Modern hackers can break it. Like using an old padlock that's easy to pick.`,
-      "Exposed Admin Panel": `The website's control panel (where admins log in) is publicly visible. This is like having your house's alarm system controls on the front porch.`,
-      "Directory Listing": `The website shows all its files and folders publicly. Like leaving your filing cabinet open for anyone to browse through.`,
-      "Sensitive File Exposed": `Important files (like configuration or backup files) are accessible to anyone. Like leaving your diary on a public bench.`,
-      "HTTP Only (No HTTPS)": `The website doesn't use encryption, so anyone can read the data being sent. Like sending a postcard instead of a sealed letter.`,
-    };
-
-    // Try to match the finding type
-    for (const [key, explanation] of Object.entries(explanations)) {
-      if (type && type.includes(key)) return explanation;
-      if (detail && detail.includes(key)) return explanation;
+  const normalizeSeverity = (severity) => {
+    const value = String(severity || "").toLowerCase();
+    if (["critical", "high", "medium", "low"].includes(value)) {
+      return value;
     }
-
-    // Default explanation
-    if (detail && detail.toLowerCase().includes('port')) {
-      return 'An entry point to the server is open. Some are normal, others might be risky if not properly secured.';
-    }
-    
-    return 'This is a security concern that should be reviewed by a technical team member.';
+    return "low";
   };
 
-  const getSeverityExplanation = (severity) => {
-    const explanations = {
-      critical: "🚨 URGENT: This is a serious security risk that could lead to your system being hacked. Fix immediately!",
-      high: "⚠️ IMPORTANT: This is a significant security weakness that should be fixed soon to prevent attacks.",
-      medium: "⚡ MODERATE: This is a security concern that should be addressed to improve your defenses.",
-      low: "ℹ️ MINOR: This is a small issue that's good to fix but not immediately critical.",
+  const getRiskScore = (reportData) => {
+    const findings = reportData?.critical_findings || [];
+    const severityWeights = { critical: 25, high: 15, medium: 8, low: 3 };
+
+    const findingRisk = findings.reduce((sum, finding) => {
+      return sum + (severityWeights[normalizeSeverity(finding.severity)] || 0);
+    }, 0);
+
+    const exposureRisk =
+      (reportData?.summary?.high_risk_ports || 0) * 5 +
+      (reportData?.summary?.tls_issues || 0) * 3 +
+      (reportData?.summary?.directory_issues || 0) * 4;
+
+    return Math.min(100, findingRisk + exposureRisk);
+  };
+
+  const getRiskLabel = (score) => {
+    if (score >= 75) return "Critical";
+    if (score >= 50) return "High";
+    if (score >= 25) return "Medium";
+    return "Low";
+  };
+
+  const getRiskLabelColor = (label) => {
+    if (label === "Critical") return "text-red-400";
+    if (label === "High") return "text-slate-400";
+    if (label === "Medium") return "text-gray-400";
+    return "text-blue-400";
+  };
+
+  const getSeverityBreakdown = (reportData) => {
+    const counts = { critical: 0, high: 0, medium: 0, low: 0 };
+    (reportData?.critical_findings || []).forEach((finding) => {
+      counts[normalizeSeverity(finding.severity)] += 1;
+    });
+    return counts;
+  };
+
+  const getTopRiskHosts = (reportData) => {
+    const hostMap = {};
+    const severityScores = { critical: 4, high: 3, medium: 2, low: 1 };
+
+    (reportData?.critical_findings || []).forEach((finding) => {
+      const host = finding.host || "unknown";
+      if (!hostMap[host]) {
+        hostMap[host] = { host, findings: 0, maxSeverityScore: 0 };
+      }
+      hostMap[host].findings += 1;
+      hostMap[host].maxSeverityScore = Math.max(
+        hostMap[host].maxSeverityScore,
+        severityScores[normalizeSeverity(finding.severity)] || 1
+      );
+    });
+
+    return Object.values(hostMap)
+      .sort((a, b) => {
+        if (b.maxSeverityScore !== a.maxSeverityScore) {
+          return b.maxSeverityScore - a.maxSeverityScore;
+        }
+        return b.findings - a.findings;
+      })
+      .slice(0, 5);
+  };
+
+  const getScannerCoverage = (reportData) => {
+    const details = reportData?.detailed_results || {};
+
+    return [
+      {
+        key: "subdomains",
+        label: "Subdomain Discovery",
+        description: "Finds internet-facing assets related to your target.",
+        value: details.subdomains?.length || 0,
+      },
+      {
+        key: "endpoints",
+        label: "Endpoint Mapping",
+        description: "Maps pages and API routes that users or attackers can reach.",
+        value: details.endpoints?.length || 0,
+      },
+      {
+        key: "ports",
+        label: "Port & Service Scan",
+        description: "Checks network doors and service banners exposed to the internet.",
+        value: details.port_findings?.length || 0,
+      },
+      {
+        key: "tls",
+        label: "TLS/SSL Inspection",
+        description: "Validates encryption versions, certificates, and protocol weaknesses.",
+        value: details.tls_results?.length || 0,
+      },
+      {
+        key: "directories",
+        label: "Directory Exposure Check",
+        description: "Finds sensitive paths, open listings, and accidental leaks.",
+        value: details.directory_findings?.length || 0,
+      },
+    ];
+  };
+
+  const getEndpointOverview = (reportData) => {
+    const endpoints = reportData?.detailed_results?.endpoints || [];
+    const overview = {
+      total: endpoints.length,
+      healthy: 0,
+      redirects: 0,
+      clientErrors: 0,
+      serverErrors: 0,
+      authRelated: 0,
+      adminRelated: 0,
     };
-    return explanations[severity] || "This requires attention from security experts.";
+
+    endpoints.forEach((endpoint) => {
+      const statusCode = Number(endpoint.status_code) || 0;
+      const url = String(endpoint.url || "").toLowerCase();
+
+      if (statusCode >= 200 && statusCode < 300) overview.healthy += 1;
+      else if (statusCode >= 300 && statusCode < 400) overview.redirects += 1;
+      else if (statusCode >= 400 && statusCode < 500) overview.clientErrors += 1;
+      else if (statusCode >= 500) overview.serverErrors += 1;
+
+      if (/(login|signin|auth|token|oauth)/.test(url)) overview.authRelated += 1;
+      if (/(admin|dashboard|manage|panel)/.test(url)) overview.adminRelated += 1;
+    });
+
+    return overview;
+  };
+
+  const getActionPlan = (reportData) => {
+    const actions = [];
+    const summary = reportData?.summary || {};
+    const severity = getSeverityBreakdown(reportData);
+
+    if (severity.critical > 0) {
+      actions.push("Contain critical findings first, especially exposed secrets and high-impact hosts.");
+    }
+    if (summary.high_risk_ports > 0) {
+      actions.push("Close unnecessary high-risk ports and restrict access to trusted IPs only.");
+    }
+    if (summary.tls_issues > 0) {
+      actions.push("Disable weak TLS versions and renew or replace any weak/expired certificates.");
+    }
+    if (summary.directory_issues > 0) {
+      actions.push("Block public access to sensitive directories and disable directory listing.");
+    }
+    if ((reportData?.detailed_results?.endpoints || []).length > 0) {
+      actions.push("Review high-value endpoints (admin/auth) and enforce strict authentication and rate limits.");
+    }
+    if (actions.length === 0) {
+      actions.push("No urgent issues found. Keep regular scans and patching cadence to maintain posture.");
+    }
+
+    return actions.slice(0, 5);
   };
 
   return (
     <div className="space-y-8">
       {/* Header */}
       <div className="space-y-3 animate-slide-up">
-        <h1 className="text-4xl font-bold text-gradient">Reports & Analytics</h1>
+        <h1 className="text-4xl font-bold text-cyan-300">Reports & Analytics</h1>
         <p className="text-gray-400 mt-2">Generate comprehensive security assessment reports</p>
       </div>
 
@@ -292,8 +420,8 @@ export default function Reports() {
               onClick={() => setDateRange(option.value)}
               className={`p-4 rounded-lg border-2 transition-all ${
                 dateRange === option.value
-                  ? "bg-purple-600/30 border-purple-500 text-purple-300"
-                  : "bg-white/5 border-white/10 text-gray-300 hover:border-purple-500/50"
+                  ? "bg-slate-600/30 border-slate-500 text-slate-300"
+                  : "bg-white/5 border-white/10 text-gray-300 hover:border-slate-500/50"
               }`}
             >
               <Calendar className="w-5 h-5 mx-auto mb-2" />
@@ -317,19 +445,19 @@ export default function Reports() {
                 key={scan.id}
                 className={`p-4 rounded-lg border transition-all ${
                   selectedScan === scan.id
-                    ? "bg-purple-500/20 border-purple-500"
-                    : "bg-white/5 border-white/10 hover:border-purple-500/50"
+                    ? "bg-slate-500/20 border-slate-500"
+                    : "bg-white/5 border-white/10 hover:border-slate-500/50"
                 }`}
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <FileText className="w-5 h-5 text-purple-400" />
+                      <FileText className="w-5 h-5 text-slate-400" />
                       <h3 className="text-lg font-semibold text-white">{scan.target}</h3>
                       <span className={`px-2 py-1 rounded text-xs ${
                         scan.status === "COMPLETED" ? "bg-green-500/20 text-green-400" :
                         scan.status === "FAILED" ? "bg-red-500/20 text-red-400" :
-                        "bg-yellow-500/20 text-yellow-400"
+                        "bg-gray-500/20 text-gray-400"
                       }`}>
                         {scan.status}
                       </span>
@@ -379,7 +507,7 @@ export default function Reports() {
       {/* Report Display */}
       {reportLoading && (
         <div id="report-display" className="card animate-slide-up text-center py-12">
-          <Activity className="w-12 h-12 text-purple-400 mx-auto mb-4 animate-spin" />
+          <Activity className="w-12 h-12 text-slate-400 mx-auto mb-4 animate-spin" />
           <p className="text-gray-400">Generating report...</p>
         </div>
       )}
@@ -387,53 +515,19 @@ export default function Reports() {
       {report && !reportLoading && (
         <div id="report-display" className="space-y-6 animate-slide-up">
           {/* Report Header */}
-          <div className="card bg-gradient-to-br from-purple-500/20 to-pink-500/20">
-            {/* Beginner Mode Toggle */}
-            <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/10">
-              <div className="flex items-center gap-3">
-                <Shield className="w-5 h-5 text-purple-400" />
-                <span className="text-white font-medium">View Mode:</span>
-              </div>
-              <div className="flex items-center gap-2 bg-gray-800/50 rounded-full p-1">
-                <button
-                  onClick={() => setBeginnerMode(false)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    !beginnerMode 
-                      ? 'bg-purple-600 text-white shadow-lg' 
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  Technical
-                </button>
-                <button
-                  onClick={() => setBeginnerMode(true)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    beginnerMode 
-                      ? 'bg-green-600 text-white shadow-lg' 
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  Beginner-Friendly
-                </button>
-              </div>
-            </div>
-
+          <div className="card bg-slate-900/90 border-slate-700">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">
-                  Security Assessment Report
+                  Vulnerability Scanner Report
                 </h2>
                 <p className="text-gray-300">Target: {report.scan_info.target}</p>
                 <p className="text-gray-400 text-sm">
                   Generated: {new Date(report.scan_info.updated_at).toLocaleString()}
                 </p>
-                {beginnerMode && (
-                  <div className="mt-3 p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
-                    <p className="text-green-400 text-sm">
-                      📚 <strong>Beginner Mode:</strong> Technical terms are explained in simple language. 
-                    </p>
-                  </div>
-                )}
+                <p className="text-gray-500 text-sm mt-2">
+                  Easy view: this report explains what was scanned, what was found, and what to fix first.
+                </p>
               </div>
               <div className="flex flex-col gap-3">
                 {downloadStatus && (
@@ -495,47 +589,32 @@ export default function Reports() {
                   {report.summary.total_subdomains}
                 </div>
                 <div className="text-xs text-gray-400">
-                  {beginnerMode ? "Web Addresses Found" : "Subdomains"}
+                  Subdomains Discovered
                 </div>
                 <div className="text-xs text-green-400 mt-1">
-                  {report.summary.alive_subdomains} {beginnerMode ? "active" : "alive"}
+                  {report.summary.alive_subdomains} alive
                 </div>
-                {beginnerMode && (
-                  <div className="text-xs text-gray-500 mt-1">
-                    (like blog.site.com, mail.site.com)
-                  </div>
-                )}
               </div>
               <div className="bg-white/5 rounded-lg p-4">
-                <Server className="w-6 h-6 text-purple-400 mb-2" />
+                <Server className="w-6 h-6 text-slate-400 mb-2" />
                 <div className="text-2xl font-bold text-white">
                   {report.summary.total_endpoints}
                 </div>
                 <div className="text-xs text-gray-400">
-                  {beginnerMode ? "Pages & APIs" : "Endpoints"}
+                  Endpoints Mapped
                 </div>
-                {beginnerMode && (
-                  <div className="text-xs text-gray-500 mt-1">
-                    (individual web pages and services)
-                  </div>
-                )}
               </div>
               <div className="bg-white/5 rounded-lg p-4">
-                <Lock className="w-6 h-6 text-yellow-400 mb-2" />
+                <Lock className="w-6 h-6 text-gray-400 mb-2" />
                 <div className="text-2xl font-bold text-white">
                   {report.summary.total_open_ports}
                 </div>
                 <div className="text-xs text-gray-400">
-                  {beginnerMode ? "Open Entry Points" : "Open Ports"}
+                  Open Ports
                 </div>
-                <div className="text-xs text-orange-400 mt-1">
-                  {report.summary.high_risk_ports} {beginnerMode ? "risky" : "high-risk"}
+                <div className="text-xs text-slate-400 mt-1">
+                  {report.summary.high_risk_ports} high-risk
                 </div>
-                {beginnerMode && (
-                  <div className="text-xs text-gray-500 mt-1">
-                    (doors through which services communicate)
-                  </div>
-                )}
               </div>
               <div className="bg-white/5 rounded-lg p-4">
                 <AlertTriangle className="w-6 h-6 text-red-400 mb-2" />
@@ -543,14 +622,105 @@ export default function Reports() {
                   {report.summary.critical_findings_count}
                 </div>
                 <div className="text-xs text-gray-400">
-                  {beginnerMode ? "Security Issues" : "Critical Findings"}
+                  Critical + High Findings
                 </div>
-                {beginnerMode && (
-                  <div className="text-xs text-gray-500 mt-1">
-                    (problems that need attention)
-                  </div>
-                )}
               </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Risk Score</p>
+                <p className="text-3xl font-bold text-white">{getRiskScore(report)}/100</p>
+                <p className={`text-sm mt-1 font-semibold ${getRiskLabelColor(getRiskLabel(getRiskScore(report)))}`}>
+                  {getRiskLabel(getRiskScore(report))} Risk
+                </p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">Finding Breakdown</p>
+                {Object.entries(getSeverityBreakdown(report)).map(([level, count]) => (
+                  <div key={level} className="flex items-center justify-between text-sm text-gray-300">
+                    <span className="capitalize">{level}</span>
+                    <span>{count}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Scanner Confidence</p>
+                <p className="text-2xl font-bold text-white">
+                  {Math.min(100, Math.round((getScannerCoverage(report).filter((item) => item.value > 0).length / 5) * 100))}%
+                </p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Based on how many scanner modules returned data.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card">
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <Shield className="w-5 h-5 text-cyan-400" />
+              Scanner Coverage Snapshot
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {getScannerCoverage(report).map((item) => (
+                <div key={item.key} className="bg-white/5 border border-white/10 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-white">{item.label}</p>
+                  <p className="text-2xl font-bold text-cyan-300 mt-1">{item.value}</p>
+                  <p className="text-xs text-gray-400 mt-1">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="card">
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <Server className="w-5 h-5 text-slate-300" />
+              Attack Surface Overview
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400">Healthy (2xx)</p>
+                <p className="text-xl text-white font-bold">{getEndpointOverview(report).healthy}</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400">Redirects (3xx)</p>
+                <p className="text-xl text-white font-bold">{getEndpointOverview(report).redirects}</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400">Client Errors (4xx)</p>
+                <p className="text-xl text-white font-bold">{getEndpointOverview(report).clientErrors}</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400">Server Errors (5xx)</p>
+                <p className="text-xl text-white font-bold">{getEndpointOverview(report).serverErrors}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400">Authentication-Related Endpoints</p>
+                <p className="text-lg text-white font-semibold">{getEndpointOverview(report).authRelated}</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400">Admin/Management Endpoints</p>
+                <p className="text-lg text-white font-semibold">{getEndpointOverview(report).adminRelated}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card">
+            <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-slate-400" />
+              Priority Action Plan
+            </h3>
+            <div className="space-y-2">
+              {getActionPlan(report).map((action, index) => (
+                <div key={index} className="flex items-start gap-3 bg-white/5 rounded-lg p-3">
+                  <span className="w-6 h-6 flex items-center justify-center rounded-full bg-slate-500/30 text-slate-200 text-xs font-bold">
+                    {index + 1}
+                  </span>
+                  <p className="text-sm text-gray-200">{action}</p>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -559,16 +729,8 @@ export default function Reports() {
             <div className="card">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-400" />
-                {beginnerMode ? "🔍 Security Issues Found" : "Critical Findings"}
+                Critical Findings
               </h3>
-              {beginnerMode && (
-                <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                  <p className="text-blue-400 text-sm">
-                    💡 <strong>What is this?</strong> These are potential security weaknesses we found. 
-                    Think of them as unlocked doors or windows in your digital house that could let bad actors in.
-                  </p>
-                </div>
-              )}
               <div className="space-y-3">
                 {report.critical_findings.map((finding, idx) => (
                   <div
@@ -584,48 +746,31 @@ export default function Reports() {
                           <span className="text-gray-400">•</span>
                           <span className="text-sm text-gray-300">{finding.host}</span>
                         </div>
-                        
-                        {beginnerMode ? (
-                          <>
-                            {/* Beginner-friendly view */}
-                            <div className="space-y-3">
-                              <div className="bg-black/20 p-3 rounded-lg">
-                                <p className="text-xs text-gray-400 mb-1">Risk Level:</p>
-                                <p className="text-sm">{getSeverityExplanation(finding.severity)}</p>
-                              </div>
-                              
-                              <div className="bg-black/20 p-3 rounded-lg">
-                                <p className="text-xs text-gray-400 mb-1">What We Found:</p>
-                                <p className="text-sm">{finding.detail}</p>
-                              </div>
-                              
-                              <div className="bg-black/20 p-3 rounded-lg">
-                                <p className="text-xs text-gray-400 mb-1">What Does This Mean?</p>
-                                <p className="text-sm">{getBeginnerExplanation(finding.type, finding.detail)}</p>
-                              </div>
-                              
-                              <div className="bg-black/20 p-3 rounded-lg">
-                                <p className="text-xs text-gray-400 mb-1">💡 What Should You Do?</p>
-                                <p className="text-sm">
-                                  {finding.severity === 'critical' && 'Contact your IT team or security professional immediately. This needs urgent attention.'}
-                                  {finding.severity === 'high' && 'Schedule a fix with your technical team within the next few days.'}
-                                  {finding.severity === 'medium' && 'Add this to your security improvement list. Fix it within the next week or two.'}
-                                  {finding.severity === 'low' && 'Note this for future improvements. Not urgent, but good to address eventually.'}
-                                </p>
-                              </div>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            {/* Technical view */}
-                            <p className="text-sm">{finding.detail}</p>
-                            {finding.type && (
-                              <p className="text-xs text-gray-400 mt-1">Type: {finding.type}</p>
-                            )}
-                          </>
+                        <p className="text-sm">{finding.detail}</p>
+                        {finding.type && (
+                          <p className="text-xs text-gray-400 mt-1">Type: {finding.type}</p>
                         )}
                       </div>
                     </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {getTopRiskHosts(report).length > 0 && (
+            <div className="card">
+              <h3 className="text-xl font-semibold text-white mb-4">Most Exposed Hosts</h3>
+              <div className="space-y-2">
+                {getTopRiskHosts(report).map((item) => (
+                  <div key={item.host} className="flex items-center justify-between bg-white/5 rounded-lg p-3">
+                    <div>
+                      <p className="text-white font-medium">{item.host}</p>
+                      <p className="text-xs text-gray-400">Findings: {item.findings}</p>
+                    </div>
+                    <p className="text-xs px-2 py-1 rounded bg-red-500/20 text-red-300">
+                      Severity Score {item.maxSeverityScore}/4
+                    </p>
                   </div>
                 ))}
               </div>
@@ -637,14 +782,11 @@ export default function Reports() {
             <div className="card">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-blue-400" />
-                {beginnerMode ? "🛠️ Technologies Used" : "Detected Technologies"}
+                Detected Technologies
               </h3>
-              {beginnerMode && (
-                <p className="text-sm text-gray-400 mb-4">
-                  These are the software tools and frameworks your website is built with. 
-                  Like knowing what materials were used to build your house.
-                </p>
-              )}
+              <p className="text-sm text-gray-400 mb-4">
+                Technologies observed across discovered pages and endpoints.
+              </p>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(report.technology_stack).map(([tech, count]) => (
                   <span
@@ -662,28 +804,24 @@ export default function Reports() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="card">
               <h3 className="text-lg font-semibold text-white mb-3">
-                {beginnerMode ? "🔒 Encryption Issues" : "TLS/SSL Issues"}
+                TLS/SSL Issues
               </h3>
-              <div className="text-3xl font-bold text-yellow-400">
+              <div className="text-3xl font-bold text-gray-400">
                 {report.summary.tls_issues}
               </div>
               <p className="text-sm text-gray-400 mt-1">
-                {beginnerMode 
-                  ? "Problems with how your site encrypts data (like weak locks on your doors)" 
-                  : "Total TLS/SSL configuration issues detected"}
+                Total TLS/SSL configuration issues detected
               </p>
             </div>
             <div className="card">
               <h3 className="text-lg font-semibold text-white mb-3">
-                {beginnerMode ? "📁 Exposed Folders" : "Directory Issues"}
+                Directory Issues
               </h3>
-              <div className="text-3xl font-bold text-orange-400">
+              <div className="text-3xl font-bold text-slate-400">
                 {report.summary.directory_issues}
               </div>
               <p className="text-sm text-gray-400 mt-1">
-                {beginnerMode 
-                  ? "Folders showing their contents publicly (like leaving filing cabinets open)" 
-                  : "Directories with public listing enabled"}
+                Directories with public listing or sensitive exposure
               </p>
             </div>
           </div>
@@ -695,6 +833,40 @@ export default function Reports() {
 
 // Helper function to generate HTML report
 function generateHTMLReport(report) {
+  const findings = report.critical_findings || [];
+  const severityCounts = findings.reduce((acc, finding) => {
+    const sev = String(finding.severity || "low").toLowerCase();
+    if (!acc[sev]) acc[sev] = 0;
+    acc[sev] += 1;
+    return acc;
+  }, { critical: 0, high: 0, medium: 0, low: 0 });
+
+  const riskScore = Math.min(
+    100,
+    findings.reduce((sum, finding) => {
+      const sev = String(finding.severity || "low").toLowerCase();
+      if (sev === "critical") return sum + 25;
+      if (sev === "high") return sum + 15;
+      if (sev === "medium") return sum + 8;
+      return sum + 3;
+    }, 0) +
+      (report.summary.high_risk_ports || 0) * 5 +
+      (report.summary.tls_issues || 0) * 3 +
+      (report.summary.directory_issues || 0) * 4
+  );
+
+  const endpointOverview = (report.detailed_results?.endpoints || []).reduce(
+    (acc, endpoint) => {
+      const status = Number(endpoint.status_code) || 0;
+      if (status >= 200 && status < 300) acc.healthy += 1;
+      else if (status >= 300 && status < 400) acc.redirects += 1;
+      else if (status >= 400 && status < 500) acc.clientErrors += 1;
+      else if (status >= 500) acc.serverErrors += 1;
+      return acc;
+    },
+    { healthy: 0, redirects: 0, clientErrors: 0, serverErrors: 0 }
+  );
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -762,6 +934,16 @@ function generateHTMLReport(report) {
             </div>
         </div>
 
+          <h2>🧭 Risk Posture</h2>
+          <p><strong>Risk Score:</strong> ${riskScore}/100</p>
+          <p><strong>Severity Mix:</strong> Critical ${severityCounts.critical}, High ${severityCounts.high}, Medium ${severityCounts.medium}, Low ${severityCounts.low}</p>
+
+          <h2>🎯 Endpoint Health</h2>
+          <p><strong>2xx Healthy:</strong> ${endpointOverview.healthy}</p>
+          <p><strong>3xx Redirects:</strong> ${endpointOverview.redirects}</p>
+          <p><strong>4xx Client Errors:</strong> ${endpointOverview.clientErrors}</p>
+          <p><strong>5xx Server Errors:</strong> ${endpointOverview.serverErrors}</p>
+
         ${report.critical_findings && report.critical_findings.length > 0 ? `
         <h2>🚨 Critical Findings</h2>
         ${report.critical_findings.map(f => `
@@ -784,6 +966,7 @@ function generateHTMLReport(report) {
         <h2>🔐 Security Issues</h2>
         <p><strong>TLS/SSL Issues:</strong> ${report.summary.tls_issues}</p>
         <p><strong>Directory Issues:</strong> ${report.summary.directory_issues}</p>
+        <p><strong>High-Risk Open Ports:</strong> ${report.summary.high_risk_ports}</p>
 
         <div class="footer">
             <p><strong>Revulnera Security Scanner</strong></p>

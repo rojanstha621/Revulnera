@@ -46,7 +46,7 @@ export default function AdminDashboard() {
         </div>
         <button
           onClick={fetchDashboard}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white transition"
+          className="px-4 py-2 bg-slate-600 hover:bg-slate-700 rounded-lg text-white transition"
         >
           Refresh
         </button>
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center pb-3 border-b border-gray-700/30">
                   <span className="text-gray-300">New Users (7 Days)</span>
-                  <span className="font-semibold text-purple-400">{dashboard.users.new_7d}</span>
+                  <span className="font-semibold text-slate-400">{dashboard.users.new_7d}</span>
                 </div>
                 <div className="pt-3 space-y-2">
                   {Object.entries(dashboard.users.by_role || {}).map(([role, count]) => (
@@ -111,7 +111,7 @@ export default function AdminDashboard() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center pb-3 border-b border-gray-700/30">
                   <span className="text-gray-300">Scans (30 Days)</span>
-                  <span className="font-semibold text-purple-400">{dashboard.scans.scans_30d}</span>
+                  <span className="font-semibold text-slate-400">{dashboard.scans.scans_30d}</span>
                 </div>
                 <div className="pt-3 space-y-2">
                   {Object.entries(dashboard.scans.status_breakdown || {}).map(([status, count]) => (
@@ -124,7 +124,7 @@ export default function AdminDashboard() {
                 {dashboard.scans.avg_duration_seconds && (
                   <div className="flex justify-between items-center pt-3 border-t border-gray-700/30">
                     <span className="text-gray-300">Avg Duration</span>
-                    <span className="font-semibold text-orange-400">
+                    <span className="font-semibold text-slate-400">
                       {dashboard.scans.avg_duration_seconds.toFixed(2)}s
                     </span>
                   </div>
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Object.entries(dashboard.data.http_status_distribution || {}).map(([code, count]) => (
                 <div key={code} className="bg-gray-900/50 rounded p-4 text-center">
-                  <div className="text-2xl font-bold text-purple-400">{count}</div>
+                  <div className="text-2xl font-bold text-slate-400">{count}</div>
                   <div className="text-sm text-gray-400">HTTP {code}</div>
                 </div>
               ))}

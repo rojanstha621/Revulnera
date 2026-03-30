@@ -54,7 +54,7 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-slate-800 px-4 py-10">
+    <div className="min-h-screen bg-slate-950 px-4 py-10">
       <div className="max-w-md mx-auto card">
         <h2 className="text-2xl font-bold mb-6 text-white">
           Change Password
@@ -68,7 +68,7 @@ export default function ChangePassword() {
             value={form.old_password}
             onChange={onChange}
             placeholder="Current password"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white focus:ring-2 focus:ring-cyan-500/30 outline-none"
           />
 
           <input
@@ -78,7 +78,7 @@ export default function ChangePassword() {
             value={form.new_password}
             onChange={onChange}
             placeholder="New password"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white focus:ring-2 focus:ring-cyan-500/30 outline-none"
           />
 
           <input
@@ -88,7 +88,7 @@ export default function ChangePassword() {
             value={form.new_password2}
             onChange={onChange}
             placeholder="Confirm new password"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white focus:ring-2 focus:ring-cyan-500/30 outline-none"
           />
 
           <button

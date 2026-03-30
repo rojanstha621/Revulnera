@@ -62,7 +62,7 @@ export default function Profile() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center space-y-4 animate-fade-in">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-slate-500"></div>
         <p className="text-gray-400">Loading your profile...</p>
       </div>
     );
@@ -72,23 +72,23 @@ export default function Profile() {
     <div className="space-y-8 max-w-2xl mx-auto">
       {/* Header */}
       <div className="space-y-3 animate-slide-up">
-        <h1 className="text-4xl font-bold text-gradient">Profile Settings</h1>
+        <h1 className="text-4xl font-bold text-cyan-300">Profile Settings</h1>
         <p className="text-gray-400">Manage your account information and preferences</p>
       </div>
 
       {/* Profile Card */}
       <div className="card card-hover animate-slide-up">
         {/* User Info Card */}
-        <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-xl p-6 border border-purple-500/30 mb-8">
+        <div className="bg-slate-900 rounded-xl p-6 border border-slate-700 mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/50">
+              <div className="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center shadow-lg shadow-black/40">
                 <User className="w-8 h-8 text-white" />
               </div>
               <div>
                 <p className="text-gray-400 text-sm">Account Status</p>
                 <p className="text-2xl font-bold text-white">{auth?.user?.full_name || "User"}</p>
-                <p className="text-sm text-purple-300 flex items-center gap-1 mt-1">
+                <p className="text-sm text-slate-300 flex items-center gap-1 mt-1">
                   <CheckCircle className="w-4 h-4" />
                   Active
                 </p>
@@ -194,7 +194,7 @@ export default function Profile() {
         </form>
 
         {/* Password Change Link */}
-        <div className="mt-8 pt-8 border-t border-white/10">
+        <div className="mt-8 pt-8 border-t border-slate-800">
           <p className="text-gray-400 text-sm mb-4">Want to change your password?</p>
           <a
             href="/change-password"
@@ -213,8 +213,8 @@ export default function Profile() {
           <h3 className="text-lg font-bold text-white mb-2">Verified Account</h3>
           <p className="text-gray-400 text-sm">Your account is active and ready to use</p>
         </div>
-        <div className="card bg-purple-500/10 border-purple-500/30">
-          <CheckCircle className="w-6 h-6 text-purple-400 mb-3" />
+        <div className="card bg-slate-500/10 border-slate-500/30">
+          <CheckCircle className="w-6 h-6 text-slate-400 mb-3" />
           <h3 className="text-lg font-bold text-white mb-2">Two-Factor Ready</h3>
           <p className="text-gray-400 text-sm">Enhanced security options available</p>
         </div>

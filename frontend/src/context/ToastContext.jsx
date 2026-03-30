@@ -69,8 +69,8 @@ const Toast = ({ id, message, type, onClose }) => {
     },
     warning: {
       icon: AlertTriangle,
-      className: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-300',
-      iconClassName: 'text-yellow-400',
+      className: 'bg-gray-500/10 border-gray-500/30 text-gray-300',
+      iconClassName: 'text-gray-400',
     },
     info: {
       icon: Info,

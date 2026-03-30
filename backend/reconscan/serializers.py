@@ -4,7 +4,7 @@ from .models import Scan, Subdomain, Endpoint, PortScanFinding, TLSScanResult, D
 class ScanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scan
-        fields = ["id", "target", "status", "created_at", "updated_at"]
+        fields = ["id", "target", "status", "created_at", "updated_at", "auth_headers", "auth_cookies"]
 
 class SubdomainSerializer(serializers.ModelSerializer):
     class Meta:

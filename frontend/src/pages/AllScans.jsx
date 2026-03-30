@@ -45,7 +45,7 @@ export default function AllScans() {
       case "COMPLETED":
         return "bg-green-500/20 text-green-300 border-green-500/30";
       case "RUNNING":
-        return "bg-yellow-500/20 text-yellow-300 border-yellow-500/30";
+        return "bg-gray-500/20 text-gray-300 border-gray-500/30";
       case "FAILED":
         return "bg-red-500/20 text-red-300 border-red-500/30";
       default:
@@ -61,7 +61,7 @@ export default function AllScans() {
     <div className="space-y-8">
       {/* Header */}
       <div className="space-y-4 animate-slide-up">
-        <h1 className="text-5xl font-bold text-gradient">All Scans</h1>
+        <h1 className="text-5xl font-bold text-cyan-300 tracking-tight">All Scans</h1>
         <p className="text-gray-400">View and manage all your reconnaissance scans</p>
       </div>
 
@@ -105,7 +105,7 @@ export default function AllScans() {
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-white group-hover:text-purple-300 transition-colors">
+                  <h3 className="text-xl font-semibold text-white group-hover:text-slate-300 transition-colors">
                     {scan.target}
                   </h3>
                   <p className="text-sm text-gray-400 mt-1">
@@ -117,13 +117,13 @@ export default function AllScans() {
                 {/* Stats */}
                 <div className="flex gap-6">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-purple-300">
+                    <p className="text-2xl font-bold text-slate-300">
                       {scan.subdomain_count}
                     </p>
                     <p className="text-xs text-gray-400 mt-1">Subdomains</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-pink-300">
+                    <p className="text-2xl font-bold text-gray-300">
                       {scan.endpoint_count}
                     </p>
                     <p className="text-xs text-gray-400 mt-1">Endpoints</p>
@@ -150,7 +150,7 @@ export default function AllScans() {
                       e.stopPropagation();
                       navigate(`/scan/${scan.id}`);
                     }}
-                    className="p-2 rounded-lg hover:bg-purple-500/20 transition-colors text-purple-400 hover:text-purple-300"
+                    className="p-2 rounded-lg hover:bg-slate-500/20 transition-colors text-slate-400 hover:text-slate-300"
                   >
                     <Eye className="w-5 h-5" />
                   </button>

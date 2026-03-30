@@ -41,7 +41,7 @@ export default function AdminScanDetail() {
       <div className="space-y-4">
         <button
           onClick={() => navigate("/admin/scans")}
-          className="flex items-center space-x-2 text-purple-400 hover:text-purple-300"
+          className="flex items-center space-x-2 text-slate-400 hover:text-slate-300"
         >
           <ArrowLeft className="w-5 h-5" />
           Back to Scans
@@ -60,7 +60,7 @@ export default function AdminScanDetail() {
       case "FAILED":
         return "bg-red-900/40 text-red-300";
       case "PENDING":
-        return "bg-yellow-900/40 text-yellow-300";
+        return "bg-gray-900/40 text-gray-300";
       default:
         return "bg-gray-700/40 text-gray-300";
     }
@@ -71,7 +71,7 @@ export default function AdminScanDetail() {
       {/* Back Button */}
       <button
         onClick={() => navigate("/admin/scans")}
-        className="flex items-center space-x-2 text-purple-400 hover:text-purple-300 transition"
+        className="flex items-center space-x-2 text-slate-400 hover:text-slate-300 transition"
       >
         <ArrowLeft className="w-5 h-5" />
         Back to Scans
@@ -132,7 +132,7 @@ export default function AdminScanDetail() {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-300">Total Found</span>
-                <span className="text-2xl font-bold text-orange-400">{scan.stats.endpoints_found}</span>
+                <span className="text-2xl font-bold text-slate-400">{scan.stats.endpoints_found}</span>
               </div>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function AdminScanDetail() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">4xx</span>
-                <span className="text-yellow-400 font-semibold">{scan.stats["4xx_responses"]}</span>
+                <span className="text-gray-400 font-semibold">{scan.stats["4xx_responses"]}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">5xx</span>
@@ -187,7 +187,7 @@ export default function AdminScanDetail() {
         <div className="bg-gray-900/50 rounded p-4">
           <div className="flex items-center justify-between mb-4">
             <span className="text-gray-400">Total Endpoints</span>
-            <span className="text-3xl font-bold text-orange-400">{scan.endpoints.total}</span>
+            <span className="text-3xl font-bold text-slate-400">{scan.endpoints.total}</span>
           </div>
           {Object.keys(scan.endpoints.by_status_code || {}).length > 0 && (
             <div className="mt-4 pt-4 border-t border-gray-700/30">
@@ -196,7 +196,7 @@ export default function AdminScanDetail() {
                 {Object.entries(scan.endpoints.by_status_code).map(([code, count]) => (
                   <div key={code} className="bg-gray-800/50 rounded p-2 text-center">
                     <div className="text-sm text-gray-400">HTTP {code}</div>
-                    <div className="text-lg font-bold text-purple-400">{count}</div>
+                    <div className="text-lg font-bold text-slate-400">{count}</div>
                   </div>
                 ))}
               </div>

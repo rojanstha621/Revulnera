@@ -7,7 +7,10 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
+	"net/url"
+	"strings"
 	"sync"
 	"time"
 
@@ -215,9 +218,18 @@ func runFullScan(ctx context.Context, req ScanRequest) {
 
 	// Collect unique hosts from subdomains (alive hosts)
 	hosts := make([]string, 0)
+	seenHosts := make(map[string]struct{})
 	for _, sub := range subs {
 		if sub.Alive {
-			hosts = append(hosts, sub.Name)
+			networkHost := normalizeNetworkHost(sub.Name)
+			if networkHost == "" {
+				continue
+			}
+			if _, exists := seenHosts[networkHost]; exists {
+				continue
+			}
+			seenHosts[networkHost] = struct{}{}
+			hosts = append(hosts, networkHost)
 		}
 	}
 
@@ -256,6 +268,31 @@ func runFullScan(ctx context.Context, req ScanRequest) {
 
 	postStatus(req.AuthHeader, statusURL, "COMPLETED", "")
 	postLog(req.AuthHeader, logURL, "🎉 Scan completed successfully!", "success")
+}
+
+func normalizeNetworkHost(rawHost string) string {
+	host := strings.TrimSpace(rawHost)
+	if host == "" {
+		return ""
+	}
+
+	if strings.Contains(host, "://") {
+		if parsed, err := url.Parse(host); err == nil {
+			host = parsed.Host
+		}
+	}
+
+	if h, _, err := net.SplitHostPort(host); err == nil {
+		host = h
+	}
+
+	host = strings.Trim(host, "[]")
+	host = strings.TrimSpace(host)
+	if host == "" {
+		return ""
+	}
+
+	return strings.ToLower(host)
 }
 
 func runNetworkAnalysis(ctx context.Context, hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {

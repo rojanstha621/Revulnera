@@ -54,9 +54,9 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Header Section */}
-      <div className="space-y-3 animate-slide-up">
+      <div className="space-y-3">
         <div>
-          <h1 className="text-5xl font-bold text-gradient">
+          <h1 className="text-5xl font-bold text-cyan-300 tracking-tight">
             Welcome back, {auth?.user?.full_name?.split(" ")[0] || "Scanner"}
           </h1>
           <p className="text-gray-400 mt-3 text-lg">
@@ -74,24 +74,24 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Total Scans Card */}
-        <div className="stat-card card-hover animate-slide-up group">
+        <div className="stat-card">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-gray-400 text-sm font-medium">Total Scans</p>
               <h3 className="text-4xl font-bold text-white mt-2">
                 {stats.totalScans}
               </h3>
-              <p className="text-purple-400 text-sm mt-3 flex items-center">
+              <p className="text-cyan-300 text-sm mt-3 flex items-center">
                 <TrendingUp className="w-4 h-4 mr-1" />
                 Reconnaissance data collected
               </p>
             </div>
-            <Activity className="w-12 h-12 text-purple-500/30 group-hover:text-purple-400 transition-colors" />
+            <Activity className="w-12 h-12 text-cyan-500/30" />
           </div>
         </div>
 
         {/* Total Subdomains Card */}
-        <div className="stat-card card-hover animate-slide-up group">
+        <div className="stat-card">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-gray-400 text-sm font-medium">Subdomains Found</p>
@@ -103,12 +103,12 @@ export default function Dashboard() {
                 Unique assets discovered
               </p>
             </div>
-            <Zap className="w-12 h-12 text-green-500/30 group-hover:text-green-400 transition-colors" />
+            <Zap className="w-12 h-12 text-green-500/30" />
           </div>
         </div>
 
         {/* Quick Action Card */}
-        <div className="card card-hover animate-slide-up bg-gradient-to-br from-purple-600/40 to-pink-600/40 border border-purple-400/50 group">
+        <div className="card border border-slate-700">
           <div>
             <p className="text-gray-300 text-sm font-medium">Quick Action</p>
             <p className="text-gray-400 mt-2 text-sm">
@@ -116,7 +116,7 @@ export default function Dashboard() {
             </p>
             <Link 
               to="/scanners" 
-              className="btn-primary w-full text-center block mt-4 flex items-center justify-center gap-2 group-hover:gap-4 transition-all"
+              className="btn-primary w-full text-center block mt-4 flex items-center justify-center gap-2"
             >
               Start Scanner
               <ArrowRight className="w-4 h-4" />
@@ -128,13 +128,13 @@ export default function Dashboard() {
       {/* Last Scan & Features */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Last Scan Card */}
-        <div className="card card-hover animate-slide-up">
+        <div className="card">
           <div className="flex items-start justify-between mb-4">
             <div>
               <h2 className="text-xl font-bold text-white">Last Scan</h2>
               <p className="text-gray-400 text-sm">Recent reconnaissance results</p>
             </div>
-            <Clock className="w-6 h-6 text-purple-400/50" />
+            <Clock className="w-6 h-6 text-cyan-300/60" />
           </div>
           {lastScan ? (
             <div className="space-y-4 bg-black/20 rounded-xl p-4 border border-white/5">
@@ -148,14 +148,14 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-purple-500/10 rounded-lg p-3 border border-purple-500/20">
+                <div className="bg-slate-900 rounded-lg p-3 border border-slate-700">
                   <p className="text-gray-400 text-xs">Subdomains</p>
-                  <p className="text-2xl font-bold text-purple-300">{lastScan.subdomain_count}</p>
-                  <p className="text-xs text-purple-400 mt-1">Alive: {lastScan.alive_count}</p>
+                  <p className="text-2xl font-bold text-cyan-300">{lastScan.subdomain_count}</p>
+                  <p className="text-xs text-cyan-400 mt-1">Alive: {lastScan.alive_count}</p>
                 </div>
-                <div className="bg-pink-500/10 rounded-lg p-3 border border-pink-500/20">
+                <div className="bg-slate-900 rounded-lg p-3 border border-slate-700">
                   <p className="text-gray-400 text-xs">Endpoints</p>
-                  <p className="text-2xl font-bold text-pink-300">{lastScan.endpoint_count}</p>
+                  <p className="text-2xl font-bold text-slate-200">{lastScan.endpoint_count}</p>
                 </div>
               </div>
               <p className="text-xs text-gray-500 text-right">
@@ -182,13 +182,13 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Scans Card */}
-        <div className="card card-hover animate-slide-up">
+        <div className="card">
           <div className="flex items-start justify-between mb-4">
             <div>
               <h2 className="text-xl font-bold text-white">Recent Scans</h2>
               <p className="text-gray-400 text-sm">Your latest reconnaissance activity</p>
             </div>
-            <TrendingUp className="w-6 h-6 text-pink-400/50" />
+            <TrendingUp className="w-6 h-6 text-cyan-300/60" />
           </div>
           <div className="space-y-3 max-h-80 overflow-y-auto">
             {scans.length > 0 ? (
@@ -196,10 +196,10 @@ export default function Dashboard() {
                 <div 
                   key={scan.id} 
                   onClick={() => navigate(`/scan/${scan.id}`)}
-                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors border border-white/5 cursor-pointer group"
+                  className="flex items-center justify-between p-3 bg-slate-900/60 rounded-lg hover:bg-slate-900 border border-slate-800 cursor-pointer"
                 >
                   <div className="flex-1">
-                    <p className="text-white font-mono text-sm font-semibold group-hover:text-purple-300 transition-colors">{scan.target}</p>
+                    <p className="text-white font-mono text-sm font-semibold">{scan.target}</p>
                     <p className="text-gray-400 text-xs">
                       {scan.subdomain_count} subdomains • {scan.endpoint_count} endpoints
                     </p>
@@ -220,10 +220,8 @@ export default function Dashboard() {
       </div>
 
       {/* CTA Section */}
-      <div className="relative overflow-hidden rounded-2xl p-8 bg-gradient-to-r from-purple-600/30 via-pink-600/20 to-purple-600/30 border border-purple-400/30 animate-slide-up">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-600/20 rounded-full blur-3xl"></div>
-        <div className="relative z-10">
+      <div className="rounded-2xl p-8 bg-slate-900/80 border border-slate-700">
+        <div>
           <h3 className="text-2xl font-bold text-white mb-3">
             Ready to discover vulnerabilities?
           </h3>

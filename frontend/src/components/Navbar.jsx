@@ -26,7 +26,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-gray-950/80 border-b border-gradient-to-r from-purple-600/40 via-pink-600/20 to-purple-600/40">
+    <nav className="sticky top-0 z-50 backdrop-blur bg-gray-950/90 border-b border-slate-800">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         
         {/* BRAND */}
@@ -37,9 +37,9 @@ export default function Navbar() {
           <img 
             src="/logoImage.png" 
             alt="Revulnera Logo" 
-            className="w-10 h-10 rounded-lg shadow-lg shadow-purple-500/50 group-hover:shadow-purple-500/70 transition-all object-contain"
+            className="w-10 h-10 rounded-lg shadow-md shadow-black/40 transition-all object-contain group-hover:scale-105"
           />
-          <span className="text-2xl font-bold text-gradient hidden sm:inline">
+          <span className="text-2xl font-bold text-cyan-300 hidden sm:inline">
             Revulnera
           </span>
         </Link>
@@ -55,8 +55,8 @@ export default function Navbar() {
                   to={item.href}
                   className={({ isActive }) =>
                     isActive
-                      ? "flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600/30 text-purple-300 border border-purple-500/50 font-semibold transition-all"
-                      : "flex items-center gap-2 px-4 py-2 rounded-lg text-gray-300 hover:text-purple-400 hover:bg-purple-600/10 transition-all"
+                      ? "flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-cyan-300 border border-cyan-500/40 font-semibold transition-all"
+                      : "flex items-center gap-2 px-4 py-2 rounded-lg text-gray-300 hover:text-cyan-300 hover:bg-slate-900/70 transition-all"
                   }
                 >
                   <Icon className="w-4 h-4" />
@@ -73,7 +73,7 @@ export default function Navbar() {
             <>
               <Link
                 to="/auth/login"
-                className="text-gray-300 hover:text-purple-400 font-semibold transition-colors"
+                className="text-gray-300 hover:text-cyan-300 font-semibold transition-colors"
               >
                 Login
               </Link>
@@ -86,7 +86,7 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setAvatarOpen((v) => !v)}
-                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-all border border-white/0 hover:border-purple-500/30"
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/5 transition-all border border-white/0 hover:border-cyan-500/30"
                 >
                   <div className="text-left text-sm">
                     <p className="text-gray-100 font-semibold truncate max-w-[150px]">
@@ -97,14 +97,14 @@ export default function Navbar() {
                 </button>
 
                 {avatarOpen && (
-                  <div className="absolute right-0 mt-2 w-60 bg-gray-900 border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/10 p-2 backdrop-blur-md">
+                  <div className="absolute right-0 mt-2 w-60 bg-slate-900 border border-slate-700 rounded-xl shadow-xl p-2 backdrop-blur-md">
                     <div className="px-4 py-3 border-b border-white/10">
                       <p className="text-white font-semibold">{auth?.user?.full_name}</p>
                     </div>
 
                     <Link
                       to="/profile"
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-600/20 text-gray-300 hover:text-purple-300 transition-all"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-300 hover:text-cyan-300 transition-all"
                       onClick={() => setAvatarOpen(false)}
                     >
                       <Settings className="w-4 h-4" />
@@ -113,7 +113,7 @@ export default function Navbar() {
 
                     <Link
                       to="/change-password"
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-600/20 text-gray-300 hover:text-purple-300 transition-all"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-300 hover:text-cyan-300 transition-all"
                       onClick={() => setAvatarOpen(false)}
                     >
                       <Shield className="w-4 h-4" />
@@ -137,7 +137,7 @@ export default function Navbar() {
           {/* MOBILE MENU BUTTON */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="lg:hidden text-gray-200 hover:text-purple-400 transition-colors"
+            className="lg:hidden text-gray-200 hover:text-cyan-300 transition-colors"
           >
             {mobileOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -146,7 +146,7 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       {mobileOpen && isAuthenticated && (
-        <div className="lg:hidden bg-gradient-to-b from-gray-900 to-gray-950 border-t border-purple-600/40 px-4 py-4 space-y-2 backdrop-blur-md">
+        <div className="lg:hidden bg-gray-950 border-t border-slate-800 px-4 py-4 space-y-2 backdrop-blur-md">
           {userNavigation.map((item) => {
             const Icon = item.icon;
             return (
@@ -155,8 +155,8 @@ export default function Navbar() {
                 to={item.href}
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-600/30 text-purple-300 font-semibold transition-all"
-                    : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-purple-600/20 transition-all"
+                    ? "flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-900 text-cyan-300 border border-cyan-500/40 font-semibold transition-all"
+                    : "flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-slate-900 transition-all"
                 }
                 onClick={() => setMobileOpen(false)}
               >
@@ -166,11 +166,11 @@ export default function Navbar() {
             );
           })}
 
-          <hr className="my-4 border-purple-600/20" />
+          <hr className="my-4 border-slate-800" />
 
           <Link
             to="/profile"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-purple-600/20 transition-all"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-slate-900 transition-all"
             onClick={() => setMobileOpen(false)}
           >
             <Settings className="w-5 h-5" />

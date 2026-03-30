@@ -67,7 +67,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-slate-900 to-slate-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
       <div className="card w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-white">Create an account</h2>
         <p className="text-sm text-slate-300 mb-4">
@@ -82,7 +82,7 @@ export default function Register() {
             onChange={onChange}
             placeholder="Email"
             type="email"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-cyan-500/30"
           />
 
           <input
@@ -91,7 +91,7 @@ export default function Register() {
             value={form.full_name}
             onChange={onChange}
             placeholder="Full name"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-cyan-500/30"
           />
 
           <input
@@ -101,7 +101,7 @@ export default function Register() {
             onChange={onChange}
             type="password"
             placeholder="Password"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-cyan-500/30"
           />
 
           <input
@@ -111,7 +111,7 @@ export default function Register() {
             onChange={onChange}
             type="password"
             placeholder="Confirm password"
-            className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-cyan-500/30"
           />
 
           <button className="btn-primary w-full" type="submit" disabled={loading}>
@@ -125,7 +125,7 @@ export default function Register() {
             <p>{msg}</p>
             <p className="mt-2 text-slate-300">
               You can also{" "}
-              <Link to="/auth/login" className="text-purple-400 underline">
+              <Link to="/auth/login" className="text-cyan-300 underline">
                 sign in
               </Link>{" "}
               after verification.
@@ -135,7 +135,7 @@ export default function Register() {
 
         <p className="mt-4 text-xs text-slate-300">
           Already have an account?{" "}
-          <Link to="/auth/login" className="text-purple-400 underline">
+          <Link to="/auth/login" className="text-cyan-300 underline">
             Sign in
           </Link>
         </p>

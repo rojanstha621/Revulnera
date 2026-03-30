@@ -1,0 +1,221 @@
+{
+  "scan_id": 98,
+  "target": "hackerone.com",
+  "endpoints": [
+    {
+      "url": "https://support.hackerone.com/",
+      "status_code": 302,
+      "content_length": 108,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://docs.hackerone.com/",
+      "status_code": 302,
+      "content_length": 0,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://hackerone.com/",
+      "status_code": 302,
+      "content_length": 0,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://docs.hackerone.com/",
+      "status_code": 302,
+      "content_length": 0,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://hackerone.com/",
+      "status_code": 302,
+      "content_length": 0,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://a.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://b.ns.hackerone.com/",
+      "status_code": 301,
+      "content_length": 167,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://support.hackerone.com/",
+      "status_code": 302,
+      "content_length": 108,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Amazon S3",
+        "Amazon Web Services",
+        "Cloudflare",
+        "Cloudflare Bot Management",
+        "Envoy",
+        "HSTS"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://api.hackerone.com/",
+      "status_code": 200,
+      "content_length": 9126,
+      "title": "HackerOne API",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Algolia",
+        "Cloudflare",
+        "HSTS",
+        "jQuery",
+        "jsDelivr"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": 254628,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://www.hackerone.com/",
+      "status_code": 200,
+      "content_length": 254628,
+      "title": "HackerOne | Global leader in offensive security | Security for AI | Crowdsourced Security",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Drupal",
+        "Fastly",
+        "Google Tag Manager",
+        "HSTS",
+        "MariaDB",
+        "Nginx",
+        "PHP",
+        "Pantheon",
+        "Varnish",
+        "jQuery"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-03-24T16:26:58.818148536Z"
+}

@@ -15,11 +15,11 @@ export default function Button({
   const baseClasses = 'inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variants = {
-    primary: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:scale-105 active:scale-95 shadow-lg shadow-purple-500/30',
-    secondary: 'border-2 border-purple-500 text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 hover:scale-105 active:scale-95',
-    danger: 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:scale-105 active:scale-95 shadow-lg shadow-red-500/30',
-    ghost: 'text-gray-300 hover:bg-white/5 hover:text-purple-400',
-    outline: 'border border-white/20 text-gray-300 hover:border-purple-500/50 hover:bg-purple-500/10',
+    primary: 'bg-slate-900 text-slate-100 border border-slate-700 hover:bg-slate-800 active:scale-95 shadow-lg shadow-black/30',
+    secondary: 'border border-slate-600 text-slate-200 bg-slate-900/60 hover:bg-slate-800 active:scale-95',
+    danger: 'bg-red-600 text-white border border-red-500 hover:bg-red-500 active:scale-95 shadow-lg shadow-red-900/40',
+    ghost: 'text-gray-300 hover:bg-white/5 hover:text-cyan-300',
+    outline: 'border border-slate-700 text-gray-300 hover:border-cyan-500/50 hover:bg-slate-900',
   };
 
   return (
