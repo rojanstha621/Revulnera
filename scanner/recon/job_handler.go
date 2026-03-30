@@ -100,11 +100,20 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 
 	log.Printf("[recon] prepared %d hosts, starting concurrent probing", len(subdomains))
 
-	// Configure probe options
-	workers := 10
+	// Configure probe options with runtime-aware defaults.
+	runtimeCfg := GetRuntimeConfig()
+	workers := runtimeCfg.MaxWorkers
 	if job.Workers > 0 {
 		workers = job.Workers
 	}
+
+	log.Printf(
+		"[recon] worker_pool targets=%d workers=%d config_workers=%d job_workers=%d",
+		len(subdomains),
+		workers,
+		runtimeCfg.ComputedWorkers,
+		job.Workers,
+	)
 
 	opts := &probe.ProbeOptions{
 		Workers:      workers,

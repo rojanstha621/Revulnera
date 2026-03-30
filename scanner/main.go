@@ -25,6 +25,9 @@ func main() {
 	log.SetOutput(multiWriter)
 	log.SetFlags(log.Ldate | log.Ltime)
 
+	// Initialize runtime concurrency configuration at process start.
+	_ = reconpkg.GetRuntimeConfig()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/jobs", jobHandler)
 	mux.HandleFunc("/endpoints", endpointsHandler)

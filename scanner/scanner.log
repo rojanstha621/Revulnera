@@ -1,1 +1,2 @@
-2026/03/25 13:30:26 [recon] starting server on :8080
+2026/03/30 12:41:23 [recon] runtime_config detected_cores=12 free_ram_gb=5.39 computed_workers=36 max_workers=36 env_override_used=false gomaxprocs=12
+2026/03/30 12:41:23 [recon] starting server on :18085
