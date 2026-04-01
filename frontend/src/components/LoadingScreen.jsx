@@ -6,17 +6,19 @@ export default function LoadingScreen() {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-950 overflow-hidden">
       <style>
         {`
-          @keyframes float {
+          @keyframes subtlePulse {
             0%, 100% {
-              transform: translateY(0px);
+              transform: scale(1);
+              opacity: 0.95;
             }
             50% {
-              transform: translateY(-30px);
+              transform: scale(1.04);
+              opacity: 1;
             }
           }
           
-          .animate-float {
-            animation: float 2s ease-in-out infinite;
+          .animate-subtle {
+            animation: subtlePulse 0.7s ease-in-out infinite;
           }
         `}
       </style>
@@ -24,7 +26,7 @@ export default function LoadingScreen() {
       <img 
         src="/logoImage.png" 
         alt="Revulnera Logo" 
-        className="w-32 h-32 object-contain animate-float"
+        className="w-24 h-24 object-contain animate-subtle"
       />
     </div>
   );
