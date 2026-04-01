@@ -1,6 +1,6 @@
 // src/components/AdminNavbar.jsx
 import React, { useState, useContext } from "react";
-import { Menu, X, ChevronDown, LayoutDashboard, Users, BarChart3, Settings } from "lucide-react";
+import { Menu, X, ChevronDown, LayoutDashboard, Users, BarChart3, Settings, ShieldCheck } from "lucide-react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -13,6 +13,7 @@ export default function AdminNavbar() {
   const adminNavigation = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Users", href: "/admin/users", icon: Users },
+    { name: "KYC", href: "/admin/kyc", icon: ShieldCheck },
     { name: "Scans", href: "/admin/scans", icon: BarChart3 },
     { name: "Analytics", href: "/admin/analytics", icon: Settings },
   ];

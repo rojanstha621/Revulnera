@@ -1,0 +1,110 @@
+{
+  "scan_id": 103,
+  "target": "surilpokharel.com.np",
+  "subdomains": [
+    {
+      "name": "www.phpmyadmin.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.phpmyadmin.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "wise.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup wise.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "www.sitemap.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.sitemap.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "www.flowiseai.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.flowiseai.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "flow.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup flow.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "f087b892-2321-4285-9275-b6d53c087a0e.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup f087b892-2321-4285-9275-b6d53c087a0e.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "phpmyadmin.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup phpmyadmin.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "flowiseai.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup flowiseai.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "sitemap.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup sitemap.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "www.wise.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.wise.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "sitemaps.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup sitemaps.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "www.www.phpmyadmin.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.www.phpmyadmin.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "m.surilpokharel.com.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup m.surilpokharel.com.np: no such host"
+    },
+    {
+      "name": "surilpokharel.com.np",
+      "ip": "104.21.73.148",
+      "ips": [
+        "104.21.73.148",
+        "172.67.145.175",
+        "2606:4700:3035::ac43:91af",
+        "2606:4700:3033::6815:4994"
+      ],
+      "alive": true,
+      "error_msg": ""
+    }
+  ],
+  "saved_at": "2026-04-01T07:01:19.873361274Z"
+}

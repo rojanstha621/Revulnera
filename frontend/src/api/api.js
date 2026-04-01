@@ -86,6 +86,28 @@ async function requestJSON(method, path, body, retry = true) {
   return parseResponse(res);
 }
 
+async function requestFormData(method, path, formData, retry = true) {
+  const url = `${API_ROOT}${path}`;
+
+  const res = await fetch(url, {
+    method,
+    headers: {
+      ...authHeader(),
+    },
+    body: formData,
+  });
+
+  if (res.status === 401 && retry && getRefreshToken()) {
+    const refreshed = await refreshAccessToken();
+    if (refreshed) {
+      return requestFormData(method, path, formData, false);
+    }
+    clearTokens();
+  }
+
+  return parseResponse(res);
+}
+
 /* =========================
    Token refresh
 ========================= */
@@ -128,6 +150,14 @@ export function putJSON(path, body) {
 
 export function logoutClient() {
   clearTokens();
+}
+
+export async function getKYCStatus() {
+  return getJSON("/api/kyc/status/");
+}
+
+export async function submitKYC(formData) {
+  return requestFormData("POST", "/api/kyc/submit/", formData);
 }
 
 /* =========================

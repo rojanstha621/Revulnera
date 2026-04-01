@@ -1,6 +1,6 @@
 // src/components/Navbar.jsx
 import React, { useState, useContext } from "react";
-import { Menu, X, ChevronDown, Shield, Zap, Home, Settings } from "lucide-react";
+import { Menu, X, ChevronDown, Shield, Zap, Home, Settings, BadgeCheck } from "lucide-react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -120,6 +120,15 @@ export default function Navbar() {
                       Change Password
                     </Link>
 
+                    <Link
+                      to="/account-verification"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-300 hover:text-cyan-300 transition-all"
+                      onClick={() => setAvatarOpen(false)}
+                    >
+                      <BadgeCheck className="w-4 h-4" />
+                      Account Verification
+                    </Link>
+
                     <hr className="my-2 border-white/10" />
 
                     <button
@@ -175,6 +184,15 @@ export default function Navbar() {
           >
             <Settings className="w-5 h-5" />
             Profile
+          </Link>
+
+          <Link
+            to="/account-verification"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-slate-900 transition-all"
+            onClick={() => setMobileOpen(false)}
+          >
+            <BadgeCheck className="w-5 h-5" />
+            Account Verification
           </Link>
 
           <button

@@ -26,6 +26,7 @@ urlpatterns = [
     path("", health),
     path("admin/", admin.site.urls),
     path("auth/", include("accounts.urls")),
+    path("api/kyc/", include("kyc.urls")),
     path("api/recon/", include("reconscan.urls")),
     path("api/recon/", include("reconscan.admin_urls")),
     path("api/vulnerability-detection/", include("vulnerability_detection.urls")),

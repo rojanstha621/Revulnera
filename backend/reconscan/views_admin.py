@@ -7,7 +7,12 @@ from rest_framework import status, permissions
 from django.contrib.auth import get_user_model
 
 from .models import Scan, Subdomain, Endpoint
-from .serializers_admin import AdminUserSerializer, AdminScanSummarySerializer, AdminScanDetailSerializer
+from .serializers_admin import (
+    AdminUserSerializer,
+    AdminUserCreateUpdateSerializer,
+    AdminScanSummarySerializer,
+    AdminScanDetailSerializer,
+)
 
 User = get_user_model()
 
@@ -15,7 +20,15 @@ User = get_user_model()
 class IsAdmin(permissions.BasePermission):
     """Custom permission to check if user is admin"""
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == 'admin'
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and (
+                request.user.role == 'admin'
+                or request.user.is_staff
+                or request.user.is_superuser
+            )
+        )
 
 
 class AdminDashboardView(APIView):
@@ -97,7 +110,7 @@ class AdminUsersView(APIView):
         # Filters
         if role:
             queryset = queryset.filter(role=role)
-        if is_active is not None:
+        if is_active in ('true', 'false'):
             queryset = queryset.filter(is_active=is_active.lower() == 'true')
         if search:
             queryset = queryset.filter(Q(email__icontains=search) | Q(full_name__icontains=search))
@@ -117,6 +130,14 @@ class AdminUsersView(APIView):
             'total_pages': (total + page_size - 1) // page_size,
             'results': serializer.data,
         })
+
+    def post(self, request):
+        serializer = AdminUserCreateUpdateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = serializer.save()
+        return Response(AdminUserSerializer(user).data, status=status.HTTP_201_CREATED)
 
 
 class AdminUserDetailView(APIView):
@@ -149,6 +170,31 @@ class AdminUserDetailView(APIView):
             'recent_scans': scans_data,
             'scan_statistics': scan_stats,
         })
+
+    def patch(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = AdminUserCreateUpdateSerializer(user, data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        updated = serializer.save()
+        return Response(AdminUserSerializer(updated).data, status=status.HTTP_200_OK)
+
+    def delete(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        if user.id == request.user.id:
+            return Response({'error': 'You cannot delete your own account.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class AdminScansView(APIView):

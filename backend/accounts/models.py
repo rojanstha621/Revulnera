@@ -17,8 +17,11 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("role", "admin")
         if extra_fields.get("is_staff") is not True:
             raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("role") != "admin":
+            raise ValueError("Superuser must have role='admin'.")
         return self.create_user(email, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -32,8 +35,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=150, blank=True)
     role = models.CharField(max_length=30, choices=ROLE_CHOICES, default="user")
 
-    # verification gating
-    is_active = models.BooleanField(default=True)  # No email verification needed
+    # account lifecycle: email verification and admin activation are separate
+    email_verified = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     

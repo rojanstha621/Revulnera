@@ -11,7 +11,21 @@ class AdminUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'full_name', 'role', 'is_active', 'date_joined', 'last_login', 'scan_count', 'last_scan_date']
+        fields = [
+            'id',
+            'email',
+            'full_name',
+            'role',
+            'email_verified',
+            'is_active',
+            'is_staff',
+            'is_superuser',
+            'can_run_vulnerability_scans',
+            'date_joined',
+            'last_login',
+            'scan_count',
+            'last_scan_date',
+        ]
         read_only_fields = ['id', 'date_joined', 'last_login']
 
     def get_scan_count(self, obj):
@@ -20,6 +34,43 @@ class AdminUserSerializer(serializers.ModelSerializer):
     def get_last_scan_date(self, obj):
         last_scan = obj.scans.order_by('-created_at').first()
         return last_scan.created_at if last_scan else None
+
+
+class AdminUserCreateUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False, min_length=8)
+
+    class Meta:
+        model = User
+        fields = [
+            'email',
+            'password',
+            'full_name',
+            'role',
+            'email_verified',
+            'is_active',
+            'is_staff',
+            'is_superuser',
+            'can_run_vulnerability_scans',
+        ]
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        user = User(**validated_data)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
 
 class AdminScanSummarySerializer(serializers.ModelSerializer):

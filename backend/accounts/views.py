@@ -48,8 +48,26 @@ class RegisterView(generics.CreateAPIView):
             if existing:
                 return api_error("Email already registered", code=status.HTTP_400_BAD_REQUEST)
 
-        # Create new user (no email verification needed)
-        return super().create(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # New users must verify email before login.
+        user.email_verified = False
+        user.is_active = True
+        user.save(update_fields=["email_verified", "is_active"])
+
+        send_verification_email(request, user)
+
+        return Response(
+            {
+                "id": user.id,
+                "email": user.email,
+                "full_name": user.full_name,
+                "detail": "Registration successful. Verification email sent.",
+            },
+            status=status.HTTP_201_CREATED,
+        )
 
 class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -67,11 +85,12 @@ class VerifyEmailView(APIView):
         if not user:
             return api_error("User not found", code=status.HTTP_404_NOT_FOUND)
 
-        if user.is_active:
-            return Response({"detail": "Account already verified"}, status=status.HTTP_200_OK)
+        if user.email_verified:
+            return Response({"detail": "Email already verified."}, status=status.HTTP_200_OK)
 
+        user.email_verified = True
         user.is_active = True
-        user.save(update_fields=["is_active"])
+        user.save(update_fields=["email_verified", "is_active"])
         return Response({"detail": "Email verified successfully. You can now log in."})
 
 class ResendVerificationView(APIView):
@@ -86,8 +105,8 @@ class ResendVerificationView(APIView):
         if not user:
             return api_error("User not found", code=status.HTTP_404_NOT_FOUND)
 
-        if user.is_active:
-            return api_error("Account already verified", code=status.HTTP_400_BAD_REQUEST)
+        if user.email_verified:
+            return api_error("Email already verified", code=status.HTTP_400_BAD_REQUEST)
 
         send_verification_email(request, user)
         return Response({"detail": "Verification email sent"})
@@ -136,6 +155,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['full_name'] = user.full_name
         token['role'] = user.role
         token['is_staff'] = user.is_staff
+        token['is_superuser'] = user.is_superuser
+        token['email_verified'] = getattr(user, 'email_verified', True)
         token['can_run_vulnerability_scans'] = user.can_run_vulnerability_scans
         return token
 
@@ -143,6 +164,12 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
     
     def post(self, request, *args, **kwargs):
+        email = (request.data.get("email") or "").strip().lower()
+        if email:
+            account = User.objects.filter(email=email).first()
+            if account and not account.email_verified:
+                return api_error("Email not verified. Please verify from your inbox.", code=status.HTTP_403_FORBIDDEN)
+
         serializer = self.get_serializer(data=request.data)
 
         try:

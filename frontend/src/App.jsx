@@ -26,6 +26,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
 import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
+import AccountVerification from "./pages/AccountVerification";
 import VulnerabilityScans from "./pages/VulnerabilityScans";
 import VulnerabilityScanDetail from "./pages/VulnerabilityScanDetail";
 
@@ -33,6 +34,8 @@ import VulnerabilityScanDetail from "./pages/VulnerabilityScanDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import AdminUserDetail from "./pages/AdminUserDetail";
+import AdminKYCQueue from "./pages/AdminKYCQueue";
+import AdminKYCDetail from "./pages/AdminKYCDetail";
 import AdminScans from "./pages/AdminScans";
 import AdminScanDetail from "./pages/AdminScanDetail";
 import AdminAnalytics from "./pages/AdminAnalytics";
@@ -123,6 +126,14 @@ function AppContent() {
           }
         />
         <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/account-verification"
+          element={
+            <ProtectedRoute>
+              <AccountVerification />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Admin pages */}
         <Route
@@ -146,6 +157,22 @@ function AppContent() {
           element={
             <ProtectedRoute adminOnly>
               <AdminUserDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/kyc"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminKYCQueue />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/kyc/:submissionId"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminKYCDetail />
             </ProtectedRoute>
           }
         />

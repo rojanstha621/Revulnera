@@ -12,6 +12,13 @@ export default function AdminUserDetail() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({
+    full_name: "",
+    role: "user",
+    is_active: true,
+    can_run_vulnerability_scans: false,
+  });
 
   useEffect(() => {
     fetchUserDetail();
@@ -26,6 +33,12 @@ export default function AdminUserDetail() {
         setError(result.detail || "Failed to load user");
       } else {
         setData(result);
+        setForm({
+          full_name: result?.user?.full_name || "",
+          role: result?.user?.role || "user",
+          is_active: !!result?.user?.is_active,
+          can_run_vulnerability_scans: !!result?.user?.can_run_vulnerability_scans,
+        });
       }
     } catch (err) {
       setError("Failed to load user details");
@@ -53,6 +66,35 @@ export default function AdminUserDetail() {
 
   const user = data?.user;
   const stats = data?.scan_statistics;
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+
+    const result = await adminApi.updateUser(userId, form);
+    if (result?._status) {
+      setError(result.detail || "Failed to update user");
+      setSaving(false);
+      return;
+    }
+
+    await fetchUserDetail();
+    setSaving(false);
+  };
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm("Delete this user? This action cannot be undone.");
+    if (!confirmed) return;
+
+    setError(null);
+    const result = await adminApi.deleteUser(userId);
+    if (result?._status && result._status !== 204) {
+      setError(result.detail || "Failed to delete user");
+      return;
+    }
+    navigate("/admin/users");
+  };
 
   return (
     <div className="space-y-6">
@@ -86,6 +128,62 @@ export default function AdminUserDetail() {
           </div>
         </div>
       </div>
+
+      <form onSubmit={handleUpdate} className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6 space-y-4">
+        <h2 className="text-xl font-semibold text-white">Edit User</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            value={form.full_name}
+            onChange={(e) => setForm((f) => ({ ...f, full_name: e.target.value }))}
+            placeholder="Full name"
+            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white"
+          />
+          <select
+            value={form.role}
+            onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))}
+            className="px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white"
+          >
+            <option value="user">User</option>
+            <option value="analyst">Analyst</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div className="flex flex-wrap gap-6 text-sm text-gray-300">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={form.is_active}
+              onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))}
+            />
+            Active
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={form.can_run_vulnerability_scans}
+              onChange={(e) => setForm((f) => ({ ...f, can_run_vulnerability_scans: e.target.checked }))}
+            />
+            Vulnerability access approved
+          </label>
+        </div>
+        <div className="flex gap-3">
+          <button
+            type="submit"
+            disabled={saving}
+            className="px-4 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white disabled:opacity-50"
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="px-4 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white"
+          >
+            Delete User
+          </button>
+        </div>
+      </form>
 
       {/* User Info Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

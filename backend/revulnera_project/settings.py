@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django_rest_passwordreset",
     "channels",
     "reconscan",
+    "kyc.apps.KycConfig",
     "vulnerability_detection",
 ]
 
@@ -174,6 +175,9 @@ USE_TZ = True
 # --------------------------------------------------
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Private KYC upload storage (not exposed via public media URL)
+KYC_PRIVATE_FILES_ROOT = BASE_DIR / "private_kyc_uploads"
 
 # --------------------------------------------------
 # Email (DEV MODE)

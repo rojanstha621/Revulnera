@@ -6,17 +6,21 @@ import { AuthContext } from "../context/AuthContext";
 export default function HomePage() {
   const { auth, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+  const isAdmin =
+    auth?.user?.role === "admin" ||
+    auth?.user?.is_staff === true ||
+    auth?.user?.is_superuser === true;
 
   useEffect(() => {
     // If admin, redirect to admin dashboard
-    if (auth?.user?.role === "admin") {
+    if (isAdmin) {
       navigate("/admin", { replace: true });
     }
     // If authenticated regular user, redirect to user dashboard
     else if (isAuthenticated) {
       navigate("/dashboard", { replace: true });
     }
-  }, [auth, isAuthenticated, navigate]);
+  }, [isAdmin, isAuthenticated, navigate]);
 
   // If not authenticated, show landing page
   if (!isAuthenticated) {
