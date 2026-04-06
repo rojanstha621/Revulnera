@@ -4,7 +4,10 @@ from django.db import models
 from django.utils import timezone
 
 class UserManager(BaseUserManager):
+    """Custom manager so users are created with email instead of username."""
+
     def create_user(self, email, password=None, **extra_fields):
+        """Create a normal user account."""
         if not email:
             raise ValueError("Email required")
         email = self.normalize_email(email)
@@ -14,6 +17,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
+        """Create an admin/superuser with required flags."""
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -25,6 +29,8 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """Application user model used across all backend modules."""
+
     ROLE_CHOICES = (
         ("admin", "Admin"),
         ("analyst", "Analyst"),
@@ -60,6 +66,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserProfile(models.Model):
+    """Optional profile details separated from core auth fields."""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     phone = models.CharField(max_length=30, blank=True)
     address = models.CharField(max_length=255, blank=True)

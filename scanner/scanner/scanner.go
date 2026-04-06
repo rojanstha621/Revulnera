@@ -52,6 +52,8 @@ func DefaultScanOptions() *ScanOptions {
 // ScanDomain performs a complete scan: subdomain enumeration + concurrent probing.
 // This is the main high-level function you should use.
 func ScanDomain(domain string, opts *ScanOptions) (*ScanResult, error) {
+	// High-level API used by demos and integrations:
+	// enumerate subdomains first, then probe them concurrently.
 	if opts == nil {
 		opts = DefaultScanOptions()
 	}
@@ -114,6 +116,8 @@ func ScanDomain(domain string, opts *ScanOptions) (*ScanResult, error) {
 
 // ScanDomains scans multiple domains concurrently.
 func ScanDomains(domains []string, opts *ScanOptions) []*ScanResult {
+	// Convenience helper for scanning a list of domains.
+	// Currently sequential to avoid overloading local resources.
 	if opts == nil {
 		opts = DefaultScanOptions()
 	}
@@ -135,6 +139,7 @@ func ScanDomains(domains []string, opts *ScanOptions) []*ScanResult {
 
 // GetAliveHosts returns only the hosts that are alive from scan results.
 func GetAliveHosts(result *ScanResult) []probe.HostCheck {
+	// Filters only alive hosts to simplify downstream usage.
 	alive := make([]probe.HostCheck, 0)
 	for _, check := range result.HostChecks {
 		if check.Alive {
@@ -146,6 +151,7 @@ func GetAliveHosts(result *ScanResult) []probe.HostCheck {
 
 // GetHostsWithErrors returns hosts that had errors during probing.
 func GetHostsWithErrors(result *ScanResult) []probe.HostCheck {
+	// Filters hosts where probing returned useful error details.
 	withErrors := make([]probe.HostCheck, 0)
 	for _, check := range result.HostChecks {
 		if check.ErrorMsg != "" {

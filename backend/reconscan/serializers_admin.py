@@ -6,6 +6,8 @@ User = get_user_model()
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
+    """Read-only representation used in admin user listing/details."""
+
     scan_count = serializers.SerializerMethodField()
     last_scan_date = serializers.SerializerMethodField()
 
@@ -37,6 +39,8 @@ class AdminUserSerializer(serializers.ModelSerializer):
 
 
 class AdminUserCreateUpdateSerializer(serializers.ModelSerializer):
+    """Create/update serializer used by admin user management APIs."""
+
     password = serializers.CharField(write_only=True, required=False, min_length=8)
 
     class Meta:
@@ -54,6 +58,7 @@ class AdminUserCreateUpdateSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        """Create user with hashed password (or unusable password if omitted)."""
         password = validated_data.pop('password', None)
         user = User(**validated_data)
         if password:
@@ -64,6 +69,7 @@ class AdminUserCreateUpdateSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
+        """Patch existing user fields and optionally reset password."""
         password = validated_data.pop('password', None)
         for key, value in validated_data.items():
             setattr(instance, key, value)

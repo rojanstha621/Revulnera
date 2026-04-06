@@ -6,6 +6,7 @@ import (
 )
 
 func TestParseNmapXML(t *testing.T) {
+	// Confirms our XML structs map correctly to common nmap output fields.
 	sampleXML := `<?xml version="1.0"?>
 <nmaprun>
   <host>
@@ -57,6 +58,7 @@ func TestParseNmapXML(t *testing.T) {
 }
 
 func TestPortFindingStructure(t *testing.T) {
+	// Confirms JSON-facing PortFinding fields are populated as expected.
 	finding := PortFinding{
 		Host:     "example.com",
 		Port:     443,

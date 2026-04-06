@@ -69,6 +69,7 @@ var (
 
 // GetEngine returns the singleton fingerprint engine
 func GetEngine() *FingerprintEngine {
+	// Lazily creates a single shared fingerprint engine instance.
 	engineOnce.Do(func() {
 		engine = &FingerprintEngine{
 			signatures: []CompiledSignature{},
@@ -79,6 +80,7 @@ func GetEngine() *FingerprintEngine {
 
 // LoadSignatures loads technology signatures from a JSON file
 func (e *FingerprintEngine) LoadSignatures(filepath string) error {
+	// Loads regex signatures from JSON and compiles them once for fast matching.
 	log.Printf("[Fingerprint] Loading signatures from: %s", filepath)
 
 	file, err := os.Open(filepath)
@@ -170,6 +172,7 @@ func (e *FingerprintEngine) LoadSignatures(filepath string) error {
 
 // loadBuiltInSignatures loads a default set of technology signatures
 func (e *FingerprintEngine) loadBuiltInSignatures() {
+	// Fallback signature set used when external signature file is unavailable.
 	log.Printf("[Fingerprint] Loading built-in signatures")
 
 	builtIn := []TechSignature{
@@ -255,6 +258,7 @@ type ExtractedData struct {
 
 // ExtractResponseData extracts fingerprinting data from HTTP response (max 20KB body)
 func ExtractResponseData(headers map[string]string, bodyReader io.Reader) (*ExtractedData, error) {
+	// Builds the input object that regex matching uses: headers, cookies, body, scripts, meta tags.
 	data := &ExtractedData{
 		Headers:    headers,
 		Cookies:    []string{},
@@ -320,6 +324,7 @@ func ExtractResponseData(headers map[string]string, bodyReader io.Reader) (*Extr
 
 // DetectTechnologies analyzes extracted data and returns detected technologies
 func (e *FingerprintEngine) DetectTechnologies(data *ExtractedData) []TechResult {
+	// Applies all compiled signatures and calculates confidence/evidence for each technology.
 	e.mu.RLock()
 	defer e.mu.RUnlock()
 
@@ -419,6 +424,7 @@ func (e *FingerprintEngine) DetectTechnologies(data *ExtractedData) []TechResult
 
 // extractCookieName extracts the cookie name from a Set-Cookie header value
 func extractCookieName(cookie string) string {
+	// Returns the cookie key part before '=' for cleaner evidence text.
 	parts := strings.Split(cookie, "=")
 	if len(parts) > 0 {
 		return strings.TrimSpace(parts[0])
@@ -431,6 +437,7 @@ func extractCookieName(cookie string) string {
 // ============================================================
 
 func newResult() Result {
+	// Creates an empty result container for lightweight tag-based fingerprinting.
 	return Result{
 		Tags:     make([]string, 0, 8),
 		Evidence: make(map[string]string),
@@ -438,6 +445,7 @@ func newResult() Result {
 }
 
 func addTag(tags *[]string, evidence map[string]string, tag, key, value string) {
+	// Adds a tag only once and stores evidence so reports can explain why it matched.
 	for _, t := range *tags {
 		if t == tag {
 			return
@@ -452,6 +460,7 @@ DOMAIN‑LEVEL FINGERPRINTING
 Runs ONCE per host
 */
 func FingerprintDomain(headers map[string]string, body string) DomainResult {
+	// Lightweight host-level fingerprinting from headers/cookies/body heuristics.
 	res := DomainResult{
 		Tags:     []string{},
 		Evidence: map[string]string{},
@@ -516,6 +525,7 @@ func FingerprintEndpoint(
 	title string,
 	headers map[string]string,
 ) Result {
+	// Lightweight endpoint-level tagging used by native probing fallback path.
 
 	res := newResult()
 

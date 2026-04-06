@@ -6,6 +6,7 @@ import (
 )
 
 func TestCheckHost(t *testing.T) {
+	// Basic integration-style test against a well-known domain.
 	result := CheckHost("google.com")
 
 	if result.Host != "google.com" {
@@ -20,6 +21,7 @@ func TestCheckHost(t *testing.T) {
 }
 
 func TestCheckHostWithInvalidDomain(t *testing.T) {
+	// Validates error handling behavior for non-resolvable targets.
 	result := CheckHost("this-domain-definitely-does-not-exist-12345.com")
 
 	if len(result.IPs) > 0 {
@@ -38,6 +40,7 @@ func TestCheckHostWithInvalidDomain(t *testing.T) {
 }
 
 func TestProbeHosts(t *testing.T) {
+	// Ensures bulk probing returns one result per requested host.
 	hosts := []string{
 		"google.com",
 		"github.com",
@@ -77,6 +80,7 @@ func TestProbeHosts(t *testing.T) {
 }
 
 func TestDefaultProbeOptions(t *testing.T) {
+	// Sanity-checks default options so regressions are caught early.
 	opts := DefaultProbeOptions()
 
 	if opts.Workers <= 0 {

@@ -7,12 +7,14 @@ from django_rest_passwordreset.signals import reset_password_token_created
 
 @receiver(user_logged_in)
 def update_login_info(sender, user, request, **kwargs):
+    """Store login IP for basic account audit trail."""
     ip = request.META.get('REMOTE_ADDR')
     user.last_login_ip = ip
     user.save(update_fields=['last_login_ip'])
 
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, **kwargs):
+    """Send frontend password-reset link when reset token is generated."""
     reset_url = (
         f"{settings.DEFAULT_FRONTEND_URL}/auth/reset-password/"
         f"{reset_password_token.key}"

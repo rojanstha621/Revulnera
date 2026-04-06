@@ -8,6 +8,8 @@ import re
 User = get_user_model()
 
 class AccountsAuthTests(APITestCase):
+    """Integration-style tests for register/login/verify/logout account flows."""
+
     def test_register_verify_resend_and_login(self):
         client = APIClient()
         email = "alice@example.com"

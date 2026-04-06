@@ -5,9 +5,11 @@ from django.conf import settings
 signer = TimestampSigner(salt="revulnera-email-verify")
 
 def make_verify_token(email: str) -> str:
+    """Create a signed token string for email verification links."""
     return signer.sign(email)
 
 def verify_token(token: str, max_age_seconds: int):
+    """Validate signed token and return either email or user-friendly error."""
     try:
         email = signer.unsign(token, max_age=max_age_seconds)
         return email, None

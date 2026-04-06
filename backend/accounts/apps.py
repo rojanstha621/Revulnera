@@ -6,4 +6,5 @@ class AccountsConfig(AppConfig):
     name = "accounts"
 
     def ready(self):
+        # Register signal handlers when Django starts.
         import accounts.signals

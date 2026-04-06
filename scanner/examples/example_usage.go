@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+	// Demo runner that shows three ways to use scanner/probe packages.
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: go run example_usage.go <domain>")
 		fmt.Println("Example: go run example_usage.go example.com")
@@ -37,6 +38,7 @@ func main() {
 }
 
 func scanExample(domain string) {
+	// Demonstrates full domain scan with customizable options.
 	// Configure scan options
 	opts := scanner.DefaultScanOptions()
 	opts.ProbeWorkers = 15 // Use 15 concurrent workers
@@ -96,6 +98,7 @@ func scanExample(domain string) {
 }
 
 func manualProbeExample() {
+	// Demonstrates probing a small host list without full subdomain enumeration.
 	hosts := []string{
 		"google.com",
 		"github.com",
@@ -134,6 +137,7 @@ func manualProbeExample() {
 }
 
 func singleHostExample(host string) {
+	// Demonstrates single-host checks with default and custom probe options.
 	fmt.Printf("Checking single host: %s\n", host)
 
 	// Simple check with defaults

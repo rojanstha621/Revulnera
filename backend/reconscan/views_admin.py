@@ -19,7 +19,9 @@ User = get_user_model()
 
 class IsAdmin(permissions.BasePermission):
     """Custom permission to check if user is admin"""
+
     def has_permission(self, request, view):
+        """Allow request only for admin role, staff, or superuser."""
         return bool(
             request.user
             and request.user.is_authenticated
@@ -99,6 +101,7 @@ class AdminUsersView(APIView):
     permission_classes = [IsAdmin]
 
     def get(self, request):
+        """Return paginated users with optional role/active/search filters."""
         role = request.query_params.get('role')
         is_active = request.query_params.get('is_active')
         search = request.query_params.get('search')
@@ -132,6 +135,7 @@ class AdminUsersView(APIView):
         })
 
     def post(self, request):
+        """Create user account from admin dashboard API."""
         serializer = AdminUserCreateUpdateSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -145,6 +149,7 @@ class AdminUserDetailView(APIView):
     permission_classes = [IsAdmin]
 
     def get(self, request, user_id):
+        """Return user profile plus recent scan statistics for admin review."""
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -172,6 +177,7 @@ class AdminUserDetailView(APIView):
         })
 
     def patch(self, request, user_id):
+        """Admin partial update for role, status, and other user fields."""
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -185,6 +191,7 @@ class AdminUserDetailView(APIView):
         return Response(AdminUserSerializer(updated).data, status=status.HTTP_200_OK)
 
     def delete(self, request, user_id):
+        """Delete target user account (except self-delete protection)."""
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:

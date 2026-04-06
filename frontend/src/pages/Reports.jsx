@@ -7,12 +7,19 @@ import {
 import { getReportsSummary, generateScanReport } from "../api/api";
 
 export default function Reports() {
+  // User-selected scan window filter shown as quick range buttons.
   const [dateRange, setDateRange] = useState("all");
+  // List of scans used to choose which report to generate.
   const [scans, setScans] = useState([]);
+  // Loading state for initial scan list fetch.
   const [loading, setLoading] = useState(true);
+  // Tracks the currently selected scan id.
   const [selectedScan, setSelectedScan] = useState(null);
+  // Full report payload returned by backend.
   const [report, setReport] = useState(null);
+  // Loading state for report generation call.
   const [reportLoading, setReportLoading] = useState(false);
+  // Download UI feedback state for export buttons.
   const [downloadStatus, setDownloadStatus] = useState(null); // null, 'downloading', 'success', 'error'
 
   useEffect(() => {
@@ -22,6 +29,7 @@ export default function Reports() {
   const loadScans = async () => {
     try {
       setLoading(true);
+      // Get report-ready scan summaries for selected date range.
       const data = await getReportsSummary(dateRange);
       setScans(data || []);
     } catch (err) {
@@ -35,6 +43,7 @@ export default function Reports() {
     try {
       setReportLoading(true);
       setSelectedScan(scanId);
+      // Fetch one fully aggregated report from backend.
       const reportData = await generateScanReport(scanId);
       setReport(reportData);
       
@@ -64,6 +73,7 @@ export default function Reports() {
     setDownloadStatus('downloading');
     
     try {
+      // JSON export keeps the complete report structure for API/tool reuse.
       const dataStr = JSON.stringify(report, null, 2);
       const dataBlob = new Blob([dataStr], { type: "application/json" });
       const url = URL.createObjectURL(dataBlob);
@@ -113,6 +123,7 @@ export default function Reports() {
     setDownloadStatus('downloading');
     
     try {
+      // HTML export is generated client-side from current report payload.
       const html = generateHTMLReport(report);
       const dataBlob = new Blob([html], { type: "text/html" });
       const url = URL.createObjectURL(dataBlob);
@@ -175,7 +186,7 @@ export default function Reports() {
         });
       }
       
-      // Add subdomains section
+      // Add a compact subdomain appendix (trimmed for spreadsheet readability).
       csv += "\n\nSubdomains\n";
       csv += "Name,IP,Status\n";
       if (report.detailed_results?.subdomains) {
@@ -225,6 +236,7 @@ export default function Reports() {
   };
 
   const getSeverityColor = (severity) => {
+    // Map severity to badge background/text styles for quick visual scanning.
     switch (severity) {
       case "critical": return "text-red-400 bg-red-500/20 border-red-500/30";
       case "high": return "text-slate-400 bg-slate-500/20 border-slate-500/30";
@@ -235,6 +247,7 @@ export default function Reports() {
   };
 
   const normalizeSeverity = (severity) => {
+    // Normalize incoming values so scoring always works with known levels.
     const value = String(severity || "").toLowerCase();
     if (["critical", "high", "medium", "low"].includes(value)) {
       return value;
@@ -243,6 +256,7 @@ export default function Reports() {
   };
 
   const getRiskScore = (reportData) => {
+    // Heuristic risk score (0-100) derived from finding severity + exposure counts.
     const findings = reportData?.critical_findings || [];
     const severityWeights = { critical: 25, high: 15, medium: 8, low: 3 };
 
@@ -259,6 +273,7 @@ export default function Reports() {
   };
 
   const getRiskLabel = (score) => {
+    // Human-friendly score buckets for dashboard readability.
     if (score >= 75) return "Critical";
     if (score >= 50) return "High";
     if (score >= 25) return "Medium";
@@ -266,6 +281,7 @@ export default function Reports() {
   };
 
   const getRiskLabelColor = (label) => {
+    // Keep risk wording and color aligned in cards/badges.
     if (label === "Critical") return "text-red-400";
     if (label === "High") return "text-slate-400";
     if (label === "Medium") return "text-gray-400";
@@ -273,6 +289,7 @@ export default function Reports() {
   };
 
   const getSeverityBreakdown = (reportData) => {
+    // Count findings by severity for compact "what's most urgent" view.
     const counts = { critical: 0, high: 0, medium: 0, low: 0 };
     (reportData?.critical_findings || []).forEach((finding) => {
       counts[normalizeSeverity(finding.severity)] += 1;
@@ -281,6 +298,7 @@ export default function Reports() {
   };
 
   const getTopRiskHosts = (reportData) => {
+    // Rank hosts by highest observed severity, then number of findings.
     const hostMap = {};
     const severityScores = { critical: 4, high: 3, medium: 2, low: 1 };
 
@@ -307,6 +325,7 @@ export default function Reports() {
   };
 
   const getScannerCoverage = (reportData) => {
+    // Explain what scanner modules produced usable data in this report.
     const details = reportData?.detailed_results || {};
 
     return [
@@ -344,6 +363,7 @@ export default function Reports() {
   };
 
   const getEndpointOverview = (reportData) => {
+    // Summarize endpoint health and identify auth/admin-heavy attack surface.
     const endpoints = reportData?.detailed_results?.endpoints || [];
     const overview = {
       total: endpoints.length,
@@ -372,6 +392,7 @@ export default function Reports() {
   };
 
   const getActionPlan = (reportData) => {
+    // Convert findings into plain-language next actions for non-technical viewers.
     const actions = [];
     const summary = reportData?.summary || {};
     const severity = getSeverityBreakdown(reportData);
@@ -833,6 +854,7 @@ export default function Reports() {
 
 // Helper function to generate HTML report
 function generateHTMLReport(report) {
+  // Build a standalone HTML document that can be shared offline.
   const findings = report.critical_findings || [];
   const severityCounts = findings.reduce((acc, finding) => {
     const sev = String(finding.severity || "low").toLowerCase();
@@ -867,6 +889,7 @@ function generateHTMLReport(report) {
     { healthy: 0, redirects: 0, clientErrors: 0, serverErrors: 0 }
   );
 
+  // Entire HTML and CSS are embedded so the exported file has no external dependencies.
   return `
 <!DOCTYPE html>
 <html lang="en">

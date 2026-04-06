@@ -5,3 +5,4 @@ package network
 // - PortFinding in nmap.go
 // - TLSResult in tls.go
 // - DirectoryFinding in directory.go
+// Keep this file as a quick map for contributors during code navigation.

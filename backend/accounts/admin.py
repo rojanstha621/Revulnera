@@ -5,12 +5,16 @@ from django.db.models import Count
 from .models import User, UserProfile
 
 class UserProfileInline(admin.StackedInline):
+    """Show profile fields directly inside user admin page."""
+
     model = UserProfile
     extra = 0
     can_delete = False
 
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
+    """Admin panel configuration for managing platform users."""
+
     ordering = ("-date_joined",)
     list_display = ("email", "full_name", "role", "is_active", "is_staff", "vuln_scan_approved", "date_joined", "scan_count", "last_login")
     list_filter = ("role", "is_active", "is_staff", "can_run_vulnerability_scans", "date_joined")
@@ -60,6 +64,8 @@ class UserAdmin(DjangoUserAdmin):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
+    """Admin list view for user profile records."""
+
     list_display = ("user", "phone", "updated_at")
     search_fields = ("user__email", "phone")
     raw_id_fields = ("user",)

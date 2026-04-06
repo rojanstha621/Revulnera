@@ -34,6 +34,8 @@ type ScanRequest struct {
 }
 
 func scanHandler(w http.ResponseWriter, r *http.Request) {
+	// Receives a new scan request from Django and starts scanning in a goroutine.
+	// The HTTP response is immediate; the actual scan continues in background.
 	if r.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -71,6 +73,7 @@ func scanHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func cancelScanHandler(w http.ResponseWriter, r *http.Request) {
+	// Cancels an active scan by calling the stored context cancel function.
 	if r.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -111,6 +114,11 @@ func cancelScanHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func runFullScan(ctx context.Context, req ScanRequest) {
+	// Full scan pipeline in order:
+	// 1) subdomain discovery + liveness
+	// 2) endpoint discovery + fingerprinting
+	// 3) network analysis (ports/TLS/directories)
+	// Each phase streams progress/data back to Django ingestion endpoints.
 	statusURL := fmt.Sprintf("%s/api/recon/scans/%d/status/", req.BackendBase, req.ScanID)
 	subIngest := fmt.Sprintf("%s/api/recon/scans/%d/ingest/subdomains/", req.BackendBase, req.ScanID)
 	epIngest := fmt.Sprintf("%s/api/recon/scans/%d/ingest/endpoints/", req.BackendBase, req.ScanID)
@@ -271,6 +279,8 @@ func runFullScan(ctx context.Context, req ScanRequest) {
 }
 
 func normalizeNetworkHost(rawHost string) string {
+	// Normalizes host values so network tools receive clean hostnames.
+	// Handles cases like scheme, ports, and bracketed IPv6 notation.
 	host := strings.TrimSpace(rawHost)
 	if host == "" {
 		return ""
@@ -296,6 +306,7 @@ func normalizeNetworkHost(rawHost string) string {
 }
 
 func runNetworkAnalysis(ctx context.Context, hosts []string, authHeader, portIngest, tlsIngest, dirIngest string) {
+	// Runs per-host network checks in a worker pool and supports cancellation.
 	workers := 10
 	jobs := make(chan string, len(hosts))
 	var wg sync.WaitGroup
@@ -336,6 +347,8 @@ func runNetworkAnalysis(ctx context.Context, hosts []string, authHeader, portIng
 }
 
 func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest string) {
+	// Runs 3 checks on one host and sends findings in chunks:
+	// open ports, TLS posture, and sensitive directory exposure.
 	log.Printf("[network] analyzing host: %s", host)
 
 	// 1) Port Scanning
@@ -386,6 +399,7 @@ func analyzeHost(host, authHeader, portIngest, tlsIngest, dirIngest string) {
 }
 
 func postStatus(authHeader, url, status, errMsg string) {
+	// Sends scan status changes (RUNNING/COMPLETED/FAILED/CANCELLED) to Django.
 	body := map[string]any{"status": status}
 	if errMsg != "" {
 		body["error"] = errMsg
@@ -394,6 +408,7 @@ func postStatus(authHeader, url, status, errMsg string) {
 }
 
 func postLog(authHeader, url, message, level string) {
+	// Sends structured log messages so frontend can show real-time scan logs.
 	body := map[string]any{
 		"message":   message,
 		"level":     level,
@@ -403,6 +418,7 @@ func postLog(authHeader, url, message, level string) {
 }
 
 func postJSON(authHeader, url string, payload any) {
+	// Shared HTTP POST helper used by all callback endpoints in this worker.
 	data, _ := json.Marshal(payload)
 	req, _ := http.NewRequest(http.MethodPost, url, bytes.NewReader(data))
 	req.Header.Set("Content-Type", "application/json")

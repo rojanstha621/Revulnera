@@ -448,16 +448,22 @@ class IngestDirectoryFindingsView(APIView):
 
 
 class GenerateScanReportView(APIView):
-    """Generate comprehensive report for a completed scan"""
+    """Build an on-demand, aggregated report for one user-owned scan.
+
+    This endpoint does not read from a separate "report" table.
+    Instead, it aggregates current scan data (subdomains/endpoints/network findings)
+    every time the endpoint is called.
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, scan_id: int):
+        # Enforce ownership: users can only generate reports for their own scans.
         try:
             scan = Scan.objects.get(id=scan_id, created_by=request.user)
         except Scan.DoesNotExist:
             return Response({"detail": "Scan not found"}, status=404)
 
-        # Collect all scan data
+        # Pull raw scan artifacts that feed the final report.
         subdomains = list(scan.subdomains.all().values(
             "name", "ip", "ips", "alive", "error_msg"
         ))
@@ -475,7 +481,7 @@ class GenerateScanReportView(APIView):
             "host", "base_url", "path", "status_code", "issue_type", "evidence"
         ))
 
-        # Calculate statistics
+        # Compute summary metrics shown in the report header/cards.
         total_subdomains = len(subdomains)
         alive_subdomains = sum(1 for s in subdomains if s["alive"])
         total_endpoints = len(endpoints)
@@ -484,10 +490,11 @@ class GenerateScanReportView(APIView):
         total_tls_issues = sum(len(t.get("issues", [])) for t in tls_results)
         total_directory_issues = len(directory_findings)
 
-        # Identify critical findings
+        # Derive normalized "critical findings" from heterogeneous scan results.
+        # These become concise, user-facing security findings.
         critical_findings = []
         
-        # High-risk open ports
+        # Rule group 1: High-risk open ports.
         for port in port_findings:
             if "high-risk" in port.get("risk_tags", []):
                 critical_findings.append({
@@ -497,7 +504,7 @@ class GenerateScanReportView(APIView):
                     "detail": f"High-risk service {port['service']} on port {port['port']}"
                 })
         
-        # TLS issues
+        # Rule group 2: TLS weaknesses and certificate health.
         for tls in tls_results:
             if "weak_tls_version_10" in tls.get("issues", []) or "weak_tls_version_11" in tls.get("issues", []):
                 critical_findings.append({
@@ -514,7 +521,7 @@ class GenerateScanReportView(APIView):
                     "detail": "SSL certificate has expired"
                 })
         
-        # Directory issues
+        # Rule group 3: Sensitive file/directory exposure.
         for dir_finding in directory_findings:
             if dir_finding["issue_type"] in ["git_exposed", "env_exposed"]:
                 critical_findings.append({
@@ -524,13 +531,14 @@ class GenerateScanReportView(APIView):
                     "detail": f"Sensitive path exposed: {dir_finding['path']}"
                 })
 
-        # Technology fingerprints summary
+        # Build technology frequency map from endpoint fingerprints.
+        # This gives a quick view of detected stack composition.
         tech_stack = {}
         for endpoint in endpoints:
             for tech in endpoint.get("fingerprints", []):
                 tech_stack[tech] = tech_stack.get(tech, 0) + 1
 
-        # Build comprehensive report
+        # Final API shape consumed by the frontend Reports page and exports.
         report = {
             "scan_info": {
                 "id": scan.id,
@@ -550,7 +558,7 @@ class GenerateScanReportView(APIView):
                 "directory_issues": total_directory_issues,
                 "critical_findings_count": len([f for f in critical_findings if f["severity"] in ["critical", "high"]]),
             },
-            "critical_findings": critical_findings[:20],  # Top 20
+            "critical_findings": critical_findings[:20],  # Keep output concise for UI/export readability.
             "technology_stack": dict(sorted(tech_stack.items(), key=lambda x: x[1], reverse=True)[:15]),
             "detailed_results": {
                 "subdomains": subdomains,
@@ -565,14 +573,18 @@ class GenerateScanReportView(APIView):
 
 
 class UserReportsSummaryView(APIView):
-    """Get summary of all scans for report generation"""
+    """Return report-friendly scan summaries for the Reports list page.
+
+    The frontend uses this endpoint to populate selectable scans before calling
+    the detailed report endpoint for a specific scan.
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Get scans with filters
+        # Base queryset: only scans that belong to the authenticated user.
         scans = Scan.objects.filter(created_by=request.user).order_by("-created_at")
         
-        # Apply date filter if provided
+        # Optional date filters used by Reports UI quick ranges.
         date_range = request.query_params.get("range", "all")
         if date_range == "7days":
             from django.utils import timezone
@@ -585,7 +597,7 @@ class UserReportsSummaryView(APIView):
             cutoff = timezone.now() - timedelta(days=30)
             scans = scans.filter(created_at__gte=cutoff)
         
-        # Build summary list
+        # Build lightweight rows (fast to render, enough for scan selection).
         summary = []
         for scan in scans:
             summary.append({
@@ -596,6 +608,7 @@ class UserReportsSummaryView(APIView):
                 "subdomain_count": scan.subdomains.count(),
                 "endpoint_count": scan.endpoints.count(),
                 "port_findings_count": scan.port_findings.count(),
+                # Boolean indicator to visually flag risky scans in the list.
                 "has_critical_findings": scan.port_findings.filter(
                     risk_tags__contains=["high-risk"]
                 ).exists() or scan.directory_findings.filter(

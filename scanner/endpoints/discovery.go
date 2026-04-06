@@ -60,6 +60,8 @@ func DefaultDiscoveryOptions() *DiscoveryOptions {
 // DiscoverURLsFromHosts performs dynamic endpoint discovery for given hosts
 // Returns deduplicated, normalized URLs ready for probing
 func DiscoverURLsFromHosts(ctx context.Context, hosts []string, opts *DiscoveryOptions) []string {
+	// Discovers candidate URLs from multiple hosts using external tools,
+	// then normalizes and deduplicates them before probing.
 	if opts == nil {
 		opts = DefaultDiscoveryOptions()
 	}
@@ -135,6 +137,7 @@ func DiscoverURLsFromHosts(ctx context.Context, hosts []string, opts *DiscoveryO
 
 // discoverURLsForHost discovers URLs for a single host using all enabled methods
 func discoverURLsForHost(host string, opts *DiscoveryOptions, urlChan chan<- string) {
+	// Runs discovery methods for one host concurrently and emits raw URLs.
 	log.Printf("[discovery] discovering URLs for %s", host)
 	if discoveryLogCallback != nil {
 		discoveryLogCallback(fmt.Sprintf("🔍 Discovering URLs for %s...", host), "info")
@@ -180,6 +183,7 @@ func discoverURLsForHost(host string, opts *DiscoveryOptions, urlChan chan<- str
 
 // runGau executes gau and returns discovered URLs
 func runGau(host string, opts *DiscoveryOptions) []string {
+	// Uses gau to collect historical URLs from public archives/indexes.
 	ctx, cancel := context.WithTimeout(context.Background(), opts.Timeout)
 	defer cancel()
 
@@ -234,6 +238,7 @@ func runGau(host string, opts *DiscoveryOptions) []string {
 
 // runKatana executes katana and returns discovered URLs
 func runKatana(host string, opts *DiscoveryOptions) []string {
+	// Uses katana crawler to discover live links and endpoints from pages/JS.
 	ctx, cancel := context.WithTimeout(context.Background(), opts.Timeout)
 	defer cancel()
 
@@ -321,6 +326,7 @@ func runKatana(host string, opts *DiscoveryOptions) []string {
 // extractEndpointsFromJS extracts API endpoints from JavaScript content
 // This regex-based approach looks for common endpoint patterns
 func extractEndpointsFromJS(jsContent string) []string {
+	// Regex heuristics to pull API-like paths from JavaScript source text.
 	endpoints := make([]string, 0)
 
 	// Patterns to match API endpoints in JS
@@ -353,6 +359,7 @@ func extractEndpointsFromJS(jsContent string) []string {
 // normalizeAndDeduplicateURLs performs URL normalization and deduplication
 // Similar to uro tool behavior
 func normalizeAndDeduplicateURLs(urls []string, maxURLs int) []string {
+	// Produces canonical URLs to reduce duplicate probing and noisy variants.
 	seen := make(map[string]bool)
 	normalized := make([]string, 0)
 
@@ -388,6 +395,8 @@ func normalizeAndDeduplicateURLs(urls []string, maxURLs int) []string {
 
 // normalizeURL performs URL normalization
 func normalizeURL(u *url.URL) string {
+	// Canonicalization rules: lowercase scheme/host, strip default ports, drop fragment,
+	// normalize query encoding, and trim trailing slash for non-root paths.
 	// Convert scheme to lowercase
 	u.Scheme = strings.ToLower(u.Scheme)
 
@@ -427,6 +436,7 @@ func normalizeURL(u *url.URL) string {
 // deduplicateByPattern performs intelligent deduplication
 // Groups URLs by pattern and keeps representative samples
 func deduplicateByPattern(urls []string) []string {
+	// Groups similar URLs by normalized path pattern and keeps one representative.
 	patterns := make(map[string][]string)
 
 	for _, rawURL := range urls {
@@ -448,6 +458,7 @@ func deduplicateByPattern(urls []string) []string {
 // extractURLPattern extracts a pattern from URL for grouping
 // Example: /api/users/123 -> /api/users/{id}
 func extractURLPattern(rawURL string) string {
+	// Replaces dynamic-looking path segments (IDs, UUIDs, hashes) with placeholders.
 	parsedURL, err := url.Parse(rawURL)
 	if err != nil {
 		return rawURL

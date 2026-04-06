@@ -13,6 +13,8 @@ import (
 )
 
 func main() {
+	// This is the scanner worker entry point.
+	// It starts an HTTP service that Django calls to run scans.
 	// Set up logging to both terminal and file (overwrite on each start)
 	logFile, err := os.OpenFile("scanner.log", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil {
@@ -46,6 +48,7 @@ func main() {
 }
 
 func jobHandler(w http.ResponseWriter, r *http.Request) {
+	// Handles subdomain-only jobs and returns all discovered hosts in one response.
 	if r.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -74,6 +77,7 @@ func jobHandler(w http.ResponseWriter, r *http.Request) {
 
 // endpointsHandler: use saved subdomain data to find endpoints.
 func endpointsHandler(w http.ResponseWriter, r *http.Request) {
+	// Handles endpoint-only jobs by loading previously saved subdomain results.
 	if r.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return

@@ -51,6 +51,8 @@ func ScanFilePath(userID int64, scanID int64, target string) string {
 // HandleJob: enum + liveness + save to file.
 // Now uses concurrent probing with worker pool.
 func HandleJob(job Job) ([]SubdomainResult, error) {
+	// Main recon pipeline for one target:
+	// derive host candidates -> probe concurrently -> stream results -> save artifact file.
 	log.Printf("[recon] starting job: scan_id=%d target=%s", job.ScanID, job.Target)
 
 	enumDomain, directProbeHost := normalizeTargetForRecon(job.Target)
@@ -62,7 +64,7 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 		hostCandidates = append(hostCandidates, directProbeHost)
 	}
 
-	// Enumerate subdomains only for public domain targets.
+	// Public domains go through subfinder; localhost/IP targets use fallback host generation.
 	if enumDomain != "" {
 		subdomains, err := enum.EnumerateSubdomains(enumDomain, &enum.SubfinderOptions{
 			BinaryPath: "subfinder",
@@ -100,7 +102,7 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 
 	log.Printf("[recon] prepared %d hosts, starting concurrent probing", len(subdomains))
 
-	// Configure probe options with runtime-aware defaults.
+	// Worker count is auto-tuned from machine resources unless caller overrides it.
 	runtimeCfg := GetRuntimeConfig()
 	workers := runtimeCfg.MaxWorkers
 	if job.Workers > 0 {
@@ -129,7 +131,8 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 	aliveCount := 0
 	var resultsMutex sync.Mutex
 
-	// Create callback for immediate streaming
+	// Streaming callback is called as soon as each host check is ready.
+	// This enables real-time updates in frontend through Django websocket broadcast.
 	streamCallback := func(check probe.HostCheck) {
 		primaryIP := ""
 		if len(check.IPs) > 0 {
@@ -180,6 +183,9 @@ func HandleJob(job Job) ([]SubdomainResult, error) {
 }
 
 func normalizeTargetForRecon(rawTarget string) (enumDomain string, probeHost string) {
+	// Splits a user target into:
+	// - enumDomain: clean domain for subfinder
+	// - probeHost: host (optionally host:port) for direct probing
 	target := strings.TrimSpace(rawTarget)
 	if target == "" {
 		return "", ""
@@ -214,6 +220,7 @@ func normalizeTargetForRecon(rawTarget string) (enumDomain string, probeHost str
 }
 
 func parseTargetAsURL(target string) *url.URL {
+	// Accepts either full URL or bare host forms by adding a temporary scheme if needed.
 	if strings.Contains(target, "://") {
 		if u, err := url.Parse(target); err == nil {
 			return u
@@ -284,6 +291,7 @@ func enumerateLocalFallbackHosts(probeHost string) []string {
 }
 
 func splitHostAndPortLoose(input string) (host string, port string) {
+	// Best-effort host/port split that also handles non-bracketed host:port inputs.
 	if input == "" {
 		return "", ""
 	}
@@ -310,6 +318,7 @@ func splitHostAndPortLoose(input string) (host string, port string) {
 }
 
 func readLoopbackHostAliases() []string {
+	// Reads /etc/hosts and returns names mapped to local loopback IPs.
 	f, err := os.Open("/etc/hosts")
 	if err != nil {
 		return []string{}
@@ -347,6 +356,7 @@ func readLoopbackHostAliases() []string {
 
 // SaveSubdomainsToFile writes the results as JSON to data/user_<user_id>/scan_<id>_<target>.json
 func SaveSubdomainsToFile(job Job, subs []SubdomainResult) (string, error) {
+	// Writes a scanner artifact JSON file so later phases can reuse recon output.
 	dataDir := "data"
 	userDir := filepath.Join(dataDir, fmt.Sprintf("user_%d", job.UserID))
 
@@ -387,6 +397,7 @@ func SaveSubdomainsToFile(job Job, subs []SubdomainResult) (string, error) {
 
 // LoadSubdomainsFromFile reads a JSON file and returns subdomains.
 func LoadSubdomainsFromFile(path string) ([]SubdomainResult, error) {
+	// Loads a previously saved recon artifact from disk.
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("open file: %w", err)
@@ -409,6 +420,7 @@ func LoadSubdomainsFromFile(path string) ([]SubdomainResult, error) {
 
 // LoadSubdomainsForScan uses user_id + scan_id + target to compute the file path.
 func LoadSubdomainsForScan(userID int64, scanID int64, target string) ([]SubdomainResult, string, error) {
+	// Convenience helper: compute path + load in one call.
 	path := ScanFilePath(userID, scanID, target)
 	subs, err := LoadSubdomainsFromFile(path)
 	if err != nil {

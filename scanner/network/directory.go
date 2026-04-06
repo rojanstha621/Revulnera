@@ -44,6 +44,7 @@ var sensitivePaths = []string{
 
 // CheckDirectories scans for exposed directories and sensitive files
 func CheckDirectories(host string, hasHTTPS bool) []DirectoryFinding {
+	// Probes a curated list of sensitive paths and reports only meaningful exposures.
 	scheme := "http"
 	if hasHTTPS {
 		scheme = "https"
@@ -78,6 +79,7 @@ func CheckDirectories(host string, hasHTTPS bool) []DirectoryFinding {
 
 // checkPath checks a single path for issues
 func checkPath(client *http.Client, host, baseURL, path, url string) *DirectoryFinding {
+	// Classifies accessible path responses into security-relevant finding types.
 	resp, err := client.Get(url)
 	if err != nil {
 		// Silently skip unreachable paths

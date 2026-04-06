@@ -64,6 +64,8 @@ func DiscoverEndpointsFromScan(ctx context.Context, userID int64, scanID int64, 
 // DiscoverEndpointsFromScanWithCallback allows streaming results via callback
 // Use SetLogCallback to enable progress log messages during discovery
 func DiscoverEndpointsFromScanWithCallback(ctx context.Context, userID int64, scanID int64, target string, callback func(EndpointResult)) ([]EndpointResult, error) {
+	// End-to-end endpoint phase:
+	// load alive hosts -> discover URLs -> probe URLs -> store endpoint fingerprints/evidence.
 	subdomains, scanFile, err := recon.LoadSubdomainsForScan(userID, scanID, target)
 	if err != nil {
 		return nil, fmt.Errorf("load subdomains: %w", err)
@@ -160,6 +162,8 @@ func probeURLsConcurrently(urls []string, workers int, rps int) []EndpointResult
 
 // probeURLsConcurrentlyWithCallback allows streaming results via callback
 func probeURLsConcurrentlyWithCallback(urls []string, workers int, rps int, callback func(EndpointResult)) []EndpointResult {
+	// Preferred path is httpx (fast and rich metadata).
+	// If httpx is unavailable/fails, fallback to native HTTP probing.
 	// Try httpx first (much faster and more reliable)
 	if results, err := probeWithHttpxCallback(urls, workers, rps, callback); err == nil && len(results) > 0 {
 		log.Printf("[endpoints] httpx found %d results", len(results))
@@ -178,6 +182,7 @@ func probeWithHttpx(urls []string, workers int, rps int) ([]EndpointResult, erro
 
 // probeWithHttpxCallback allows streaming results via callback
 func probeWithHttpxCallback(urls []string, workers int, rps int, callback func(EndpointResult)) ([]EndpointResult, error) {
+	// Executes httpx on a temp input file and converts JSONL output into EndpointResult.
 	// Create temp file for input URLs
 	tmpfile, err := os.CreateTemp("", "httpx-input-*.txt")
 	if err != nil {
@@ -281,6 +286,7 @@ func probeWithNativeHTTP(urls []string, workers int, rps int) []EndpointResult {
 
 // probeWithNativeHTTPCallback allows streaming results via callback
 func probeWithNativeHTTPCallback(urls []string, workers int, rps int, callback func(EndpointResult)) []EndpointResult {
+	// Native fallback worker pool with basic rate limiting per worker.
 	jobs := make(chan string, workers*2)
 	results := make(chan EndpointResult, workers*2)
 
@@ -332,6 +338,7 @@ func probeWithNativeHTTPCallback(urls []string, workers int, rps int, callback f
 // ---------------- PROBE ----------------
 
 func shouldKeepStatus(code int) bool {
+	// Filters useful responses and keeps auth-related results that are relevant for security scanning.
 	if code >= 200 && code < 400 {
 		return true
 	}
@@ -345,6 +352,7 @@ func shouldKeepStatus(code int) bool {
 
 // probeURLNative is the native Go fallback implementation
 func probeURLNative(client *http.Client, url string) (*EndpointResult, error) {
+	// Probes one endpoint, extracts title + selected headers, and applies lightweight fingerprint tags.
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -386,6 +394,7 @@ func probeURLNative(client *http.Client, url string) (*EndpointResult, error) {
 // ---------------- HELPERS ----------------
 
 func extractTitle(snippet string) string {
+	// Extracts <title> text from a small HTML snippet.
 	m := fingerprint.TitleRegex.FindStringSubmatch(snippet)
 	if len(m) < 2 {
 		return ""
@@ -395,6 +404,7 @@ func extractTitle(snippet string) string {
 }
 
 func snapshotHeaders(resp *http.Response) map[string]string {
+	// Stores a curated subset of headers that are useful for reporting/fingerprinting.
 	keep := []string{
 		"Server",
 		"X-Powered-By",
@@ -418,11 +428,13 @@ func snapshotHeaders(resp *http.Response) map[string]string {
 // ---------------- STORAGE ----------------
 
 func EndpointsFilePath(scanID int64, target string) string {
+	// Endpoint artifact file name based on scan id and target.
 	safe := strings.NewReplacer("/", "_", ":", "_").Replace(target)
 	return filepath.Join("data", fmt.Sprintf("endpoints_%d_%s.json", scanID, safe))
 }
 
 func saveEndpointsToFile(scanID int64, target string, eps []EndpointResult) (string, error) {
+	// Persists endpoint results as JSON artifact for debugging and offline analysis.
 	if err := os.MkdirAll("data", 0755); err != nil {
 		return "", err
 	}
@@ -455,6 +467,7 @@ func saveEndpointsToFile(scanID int64, target string, eps []EndpointResult) (str
 // ---------------- ENV ----------------
 
 func getEnvOrDefault(k, d string) string {
+	// Reads string env var with default fallback.
 	if v := os.Getenv(k); v != "" {
 		return v
 	}
@@ -462,6 +475,7 @@ func getEnvOrDefault(k, d string) string {
 }
 
 func getEnvIntOrDefault(k string, d int) int {
+	// Reads positive integer env var with default fallback.
 	v := os.Getenv(k)
 	i, err := strconv.Atoi(v)
 	if err != nil || i <= 0 {

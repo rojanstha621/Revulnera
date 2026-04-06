@@ -52,6 +52,8 @@ func CheckHost(host string) HostCheck {
 
 // CheckHostWithOptions probes a single host with custom options.
 func CheckHostWithOptions(host string, opts *ProbeOptions) HostCheck {
+	// Single-host probe flow:
+	// normalize target -> DNS resolve -> httpx check -> native HTTP fallback.
 	if opts == nil {
 		opts = DefaultProbeOptions()
 	}
@@ -107,6 +109,7 @@ func CheckHostWithOptions(host string, opts *ProbeOptions) HostCheck {
 }
 
 func normalizeProbeTarget(raw string) (requestHost string, dnsHost string) {
+	// Keeps host:port for HTTP requests but strips port for DNS lookup.
 	target := strings.TrimSpace(raw)
 	if target == "" {
 		return "", ""
@@ -140,6 +143,8 @@ func ProbeHosts(hosts []string, opts *ProbeOptions) []HostCheck {
 // ProbeHostsWithCallback probes hosts and calls the callback immediately for each result.
 // If callback is nil, behaves like ProbeHosts (returns all results at end).
 func ProbeHostsWithCallback(hosts []string, opts *ProbeOptions, callback func(HostCheck)) []HostCheck {
+	// Runs bulk probing in parallel and preserves output order by input index.
+	// Callback is triggered per host for streaming use-cases.
 	if opts == nil {
 		opts = DefaultProbeOptions()
 	}
@@ -183,6 +188,7 @@ func ProbeHostsWithCallback(hosts []string, opts *ProbeOptions, callback func(Ho
 
 // checkWithHttpx runs httpx and returns (alive, error).
 func checkWithHttpx(host, binary string, timeoutSec int) (bool, error) {
+	// Delegates liveness probing to httpx for fast HTTP/HTTPS checks.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeoutSec+5)*time.Second)
 	defer cancel()
 
@@ -211,6 +217,7 @@ func checkWithHttpx(host, binary string, timeoutSec int) (bool, error) {
 // checkWithNativeHTTP tries HTTP and HTTPS requests using Go's http.Client.
 // Returns (alive, error).
 func checkWithNativeHTTP(host string, timeout time.Duration) (bool, error) {
+	// Native fallback checks both HTTPS and HTTP; any response code means reachable web service.
 	client := &http.Client{
 		Timeout: timeout,
 		Transport: &http.Transport{
@@ -254,6 +261,7 @@ func checkWithNativeHTTP(host string, timeout time.Duration) (bool, error) {
 
 // resolveAllIPs performs DNS lookup and returns all IPs (IPv4 + IPv6).
 func resolveAllIPs(host string, timeout time.Duration) ([]string, error) {
+	// Resolves all A/AAAA records and returns unique IP values.
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 

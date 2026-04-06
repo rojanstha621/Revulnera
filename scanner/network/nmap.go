@@ -66,6 +66,7 @@ type PortFinding struct {
 
 // ScanHostPorts performs Nmap TCP connect scan on a single host
 func ScanHostPorts(host string, topPorts int) ([]PortFinding, error) {
+	// Runs nmap, parses XML output, and returns only open ports with basic service metadata.
 	args := []string{
 		"-sT", // TCP connect scan (safe, no SYN scan needed)
 		"-sV", // Version detection
@@ -123,6 +124,7 @@ func ScanHostPorts(host string, topPorts int) ([]PortFinding, error) {
 
 // ScanHostsConcurrently scans multiple hosts in parallel with worker pool
 func ScanHostsConcurrently(hosts []string, workers int, topPorts int) []PortFinding {
+	// Worker-pool wrapper around ScanHostPorts for scanning many hosts in parallel.
 	jobs := make(chan string, len(hosts))
 	results := make(chan []PortFinding, len(hosts))
 
@@ -169,6 +171,7 @@ func ScanHostsConcurrently(hosts []string, workers int, topPorts int) []PortFind
 
 // classifyPortRisk assigns risk tags based on port number and service
 func classifyPortRisk(port int, service string) []string {
+	// Converts raw port/service values into human-readable security risk tags.
 	tags := []string{}
 
 	// High-risk services that are commonly targeted
@@ -262,6 +265,7 @@ func classifyPortRisk(port int, service string) []string {
 
 // contains checks if a string slice contains a specific string
 func contains(slice []string, item string) bool {
+	// Small helper for tag de-duplication checks.
 	for _, s := range slice {
 		if s == item {
 			return true

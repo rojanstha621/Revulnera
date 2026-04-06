@@ -16,6 +16,8 @@ type SubfinderOptions struct {
 }
 
 func EnumerateSubdomains(domain string, opts *SubfinderOptions) ([]string, error) {
+	// Runs subfinder CLI for one domain and returns a lowercase, deduplicated list.
+	// This function is only responsible for enumeration, not liveness checks.
 	domain = strings.TrimSpace(domain)
 	if domain == "" {
 		return nil, fmt.Errorf("domain is empty")
@@ -35,6 +37,7 @@ func EnumerateSubdomains(domain string, opts *SubfinderOptions) ([]string, error
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
+	// -silent keeps output parse-friendly (one result per line).
 	cmd := exec.CommandContext(ctx, bin, "-silent", "-d", domain)
 
 	var stdout, stderr bytes.Buffer

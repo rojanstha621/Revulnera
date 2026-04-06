@@ -32,7 +32,9 @@ urlpatterns = [
     path("user/scans/", UserScansListView.as_view(), name="user-scans"),
     path("user/scans/<int:scan_id>/", UserScanDetailView.as_view(), name="user-scan-detail"),
     
-    # Report generation endpoints
+    # Reporting endpoints used by the Reports page:
+    # 1) summary list for selectable scans
+    # 2) full per-scan aggregated report payload
     path("reports/scans/", UserReportsSummaryView.as_view(), name="user-reports-summary"),
     path("reports/scans/<int:scan_id>/", GenerateScanReportView.as_view(), name="generate-scan-report"),
 ]

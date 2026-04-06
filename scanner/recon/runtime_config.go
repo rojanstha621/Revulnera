@@ -84,6 +84,8 @@ func GetRuntimeConfig() RuntimeConfig {
 }
 
 func workerCountFromResources(cores int, freeRAMBytes int64) int {
+	// Simple scaling rule:
+	// low-resource machines stay conservative, high-resource machines use more workers.
 	if cores <= 2 || freeRAMBytes < minFreeRAMBytes {
 		return 2
 	}
@@ -106,6 +108,8 @@ func workerCountFromResources(cores int, freeRAMBytes int64) int {
 // getAvailableRAMBytes reads MemAvailable from /proc/meminfo.
 // If unavailable, it returns a large value so CPU-based scaling is used.
 func getAvailableRAMBytes() int64 {
+	// Reads Linux memory availability from /proc/meminfo.
+	// If unavailable, returns a very large fallback so CPU-based sizing still works.
 	f, err := os.Open("/proc/meminfo")
 	if err != nil {
 		return 1<<62 - 1

@@ -25,6 +25,7 @@ type TLSResult struct {
 
 // CheckTLS performs comprehensive TLS/SSL analysis on a host
 func CheckTLS(host string) TLSResult {
+	// Tests TLS support/version posture and certificate health for one host.
 	result := TLSResult{
 		Host:              host,
 		HasHTTPS:          false,
@@ -73,6 +74,8 @@ func CheckTLS(host string) TLSResult {
 
 // checkTLSVersion tests if a specific TLS version is supported
 func checkTLSVersion(addr string, version uint16) bool {
+	// Attempts a handshake pinned to one TLS version.
+	// Success means that version is supported by the target.
 	config := &tls.Config{
 		InsecureSkipVerify: true,
 		MinVersion:         version,
@@ -90,6 +93,7 @@ func checkTLSVersion(addr string, version uint16) bool {
 
 // extractCertificateInfo retrieves and analyzes the server certificate
 func extractCertificateInfo(addr string, result *TLSResult) {
+	// Pulls certificate fields and flags expiry/not-yet-valid conditions.
 	config := &tls.Config{
 		InsecureSkipVerify: true,
 	}

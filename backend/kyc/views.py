@@ -18,6 +18,8 @@ from .serializers import (
 
 
 class KYCSubmitView(APIView):
+    """User submits identity documents for admin review."""
+
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -36,6 +38,8 @@ class KYCSubmitView(APIView):
 
 
 class KYCStatusView(APIView):
+    """User checks latest KYC status from their own submissions."""
+
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -62,6 +66,8 @@ class KYCStatusView(APIView):
 
 
 class AdminKYCQueueView(APIView):
+    """Admin view to list all pending KYC submissions."""
+
     permission_classes = [IsAdmin]
 
     def get(self, request):
@@ -71,6 +77,8 @@ class AdminKYCQueueView(APIView):
 
 
 class AdminKYCDetailView(APIView):
+    """Admin view to inspect one KYC submission in detail."""
+
     permission_classes = [IsAdmin]
 
     def get(self, request, submission_id):
@@ -83,6 +91,8 @@ class AdminKYCDetailView(APIView):
 
 
 class AdminKYCFileView(APIView):
+    """Admin-only endpoint to stream uploaded KYC files securely."""
+
     permission_classes = [IsAdmin]
 
     def get(self, request, submission_id, file_field):
@@ -102,6 +112,8 @@ class AdminKYCFileView(APIView):
 
 
 class AdminKYCApproveView(APIView):
+    """Approve KYC and unlock vulnerability scanning for the user."""
+
     permission_classes = [IsAdmin]
 
     def post(self, request, submission_id):
@@ -132,6 +144,8 @@ class AdminKYCApproveView(APIView):
 
 
 class AdminKYCRejectView(APIView):
+    """Reject KYC, store reason, and keep scan access disabled."""
+
     permission_classes = [IsAdmin]
 
     def post(self, request, submission_id):

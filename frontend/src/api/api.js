@@ -174,10 +174,14 @@ export async function getUserScanDetail(scanId) {
 /* =========================
    Report API functions
 ========================= */
+// Fetch scan list with lightweight metrics for the Reports selection table.
+// dateRange supports: all, 7days, 30days.
 export async function getReportsSummary(dateRange = "all") {
   return getJSON(`/api/recon/reports/scans/?range=${dateRange}`);
 }
 
+// Fetch full aggregated report payload for a specific scan id.
+// This includes summary, critical findings, technologies, and detailed results.
 export async function generateScanReport(scanId) {
   return getJSON(`/api/recon/reports/scans/${scanId}/`);
 }

@@ -15,6 +15,7 @@ from .utils import make_verify_token, verify_token
 User = get_user_model()
 
 def api_error(message, code=status.HTTP_400_BAD_REQUEST, field=None):
+    """Return errors in a predictable JSON shape for frontend handling."""
     # Consistent error structure for frontend
     payload = {"detail": message}
     if field:
@@ -22,6 +23,7 @@ def api_error(message, code=status.HTTP_400_BAD_REQUEST, field=None):
     return Response(payload, status=code)
 
 def send_verification_email(request, user):
+    """Build signed verification URL and send it to the user's email."""
     token = make_verify_token(user.email)
     frontend = getattr(settings, "DEFAULT_FRONTEND_URL", "http://localhost:5173")
     # Send the user to the frontend verification route, which will call the backend
@@ -37,10 +39,13 @@ def send_verification_email(request, user):
     )
 
 class RegisterView(generics.CreateAPIView):
+    """Create account and trigger email verification."""
+
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
+        """Custom create flow to handle duplicate emails and verification setup."""
         # Check if user with this email already exists
         email = request.data.get("email")
         if email:
@@ -70,9 +75,12 @@ class RegisterView(generics.CreateAPIView):
         )
 
 class VerifyEmailView(APIView):
+    """Verify email using a signed token from email link."""
+
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
+        """Activate email verification state if token is valid and not expired."""
         token = request.GET.get("token")
         if not token:
             return api_error("token is required", field="token")
@@ -94,9 +102,12 @@ class VerifyEmailView(APIView):
         return Response({"detail": "Email verified successfully. You can now log in."})
 
 class ResendVerificationView(APIView):
+    """Resend verification link to users who have not verified yet."""
+
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
+        """Find user by email and re-send verification email."""
         email = request.data.get("email")
         if not email:
             return api_error("email is required", field="email")
@@ -117,6 +128,7 @@ class ValidateResetTokenView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
+        """Check if password reset token exists before showing reset form."""
         token = request.GET.get("token")
         if not token:
             return api_error("token is required", field="token")
@@ -130,9 +142,12 @@ class ValidateResetTokenView(APIView):
         return Response({"ok": True})
 
 class LogoutView(APIView):
+    """Invalidate refresh token by blacklisting it."""
+
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
+        """Logout endpoint expects refresh token in request body."""
         refresh = request.data.get("refresh")
         if not refresh:
             return api_error("refresh token required", field="refresh")
@@ -161,9 +176,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class CustomTokenObtainPairView(TokenObtainPairView):
+    """Login endpoint with pre-check for email verification."""
+
     serializer_class = CustomTokenObtainPairSerializer
     
     def post(self, request, *args, **kwargs):
+        """Authenticate user, block unverified accounts, and return JWT pair."""
         email = (request.data.get("email") or "").strip().lower()
         if email:
             account = User.objects.filter(email=email).first()
@@ -188,6 +206,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class ProfileView(generics.RetrieveUpdateAPIView):
+    """Get and update currently logged-in user's account/profile."""
+
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -195,6 +215,8 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 class ChangePasswordView(generics.UpdateAPIView):
+    """Allow authenticated user to change their password."""
+
     serializer_class = ChangePasswordSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -202,6 +224,7 @@ class ChangePasswordView(generics.UpdateAPIView):
         return self.request.user
 
     def update(self, request, *args, **kwargs):
+        """Validate old/new passwords and persist the change."""
         serializer = self.get_serializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
