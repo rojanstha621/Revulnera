@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getKYCStatus, submitKYC } from "../api/api";
 import LoadingSpinner from "../components/admin/LoadingSpinner";
@@ -16,9 +16,59 @@ export default function AccountVerification() {
   const [docFront, setDocFront] = useState(null);
   const [docBack, setDocBack] = useState(null);
   const [selfie, setSelfie] = useState(null);
+  const [selfiePreviewUrl, setSelfiePreviewUrl] = useState("");
+  const [cameraActive, setCameraActive] = useState(false);
+  const [cameraReady, setCameraReady] = useState(false);
+
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const cameraStreamRef = useRef(null);
+  const selfiePreviewRef = useRef("");
+
+  const stopCamera = () => {
+    if (!cameraStreamRef.current) {
+      setCameraActive(false);
+      setCameraReady(false);
+      return;
+    }
+    cameraStreamRef.current.getTracks().forEach((track) => track.stop());
+    cameraStreamRef.current = null;
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    setCameraActive(false);
+    setCameraReady(false);
+  };
+
+  const setSelfieWithPreview = (file) => {
+    if (selfiePreviewRef.current) {
+      URL.revokeObjectURL(selfiePreviewRef.current);
+      selfiePreviewRef.current = "";
+    }
+
+    setSelfie(file);
+
+    if (!file) {
+      setSelfiePreviewUrl("");
+      return;
+    }
+
+    const nextUrl = URL.createObjectURL(file);
+    selfiePreviewRef.current = nextUrl;
+    setSelfiePreviewUrl(nextUrl);
+  };
 
   useEffect(() => {
     loadStatus();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      stopCamera();
+      if (selfiePreviewRef.current) {
+        URL.revokeObjectURL(selfiePreviewRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -31,6 +81,23 @@ export default function AccountVerification() {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [loading, location.hash, statusData?.status]);
+
+  useEffect(() => {
+    if (!cameraActive || !videoRef.current || !cameraStreamRef.current) return;
+
+    const video = videoRef.current;
+    video.srcObject = cameraStreamRef.current;
+
+    const startPlayback = async () => {
+      try {
+        await video.play();
+      } catch {
+        // Some browsers delay playback until enough data is available.
+      }
+    };
+
+    startPlayback();
+  }, [cameraActive]);
 
   const loadStatus = async () => {
     setLoading(true);
@@ -68,7 +135,7 @@ export default function AccountVerification() {
       return;
     }
     if (!selfie) {
-      setError("Selfie image is required.");
+      setError("Selfie capture from camera is required.");
       return;
     }
 
@@ -90,8 +157,81 @@ export default function AccountVerification() {
     setSuccess("KYC submitted successfully. Please wait for admin review.");
     setDocFront(null);
     setDocBack(null);
-    setSelfie(null);
+    setSelfieWithPreview(null);
     await loadStatus();
+  };
+
+  const startCamera = async () => {
+    setError("");
+    setCameraReady(false);
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setError("Camera is not supported in this browser. Please use a compatible browser/device.");
+      return;
+    }
+
+    try {
+      stopCamera();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: false,
+      });
+      cameraStreamRef.current = stream;
+      setCameraActive(true);
+    } catch {
+      setError("Camera permission was denied or camera is unavailable. Please allow camera access and try again.");
+      stopCamera();
+    }
+  };
+
+  const captureSelfie = async () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (!video || !canvas || !cameraStreamRef.current) {
+      setError("Camera is not active. Please start the camera first.");
+      return;
+    }
+
+    if (!cameraReady || video.readyState < 2) {
+      setError("Camera feed is still loading. Please wait a moment and try again.");
+      return;
+    }
+
+    const width = video.videoWidth || 640;
+    const height = video.videoHeight || 480;
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      setError("Failed to capture selfie. Please try again.");
+      return;
+    }
+
+    ctx.drawImage(video, 0, 0, width, height);
+
+    const file = await new Promise((resolve) => {
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            resolve(null);
+            return;
+          }
+          resolve(new File([blob], `selfie-${Date.now()}.jpg`, { type: "image/jpeg" }));
+        },
+        "image/jpeg",
+        0.92
+      );
+    });
+
+    if (!file) {
+      setError("Failed to capture selfie. Please try again.");
+      return;
+    }
+
+    setSelfieWithPreview(file);
+    stopCamera();
   };
 
   if (loading) return <LoadingSpinner />;
@@ -177,14 +317,75 @@ export default function AccountVerification() {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Selfie (required)</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setSelfie(e.target.files?.[0] || null)}
-              className="w-full text-sm text-gray-300"
-              required
-            />
+            <label className="block text-sm text-gray-300 mb-2">Selfie From Camera (required)</label>
+
+            <div className="space-y-3">
+              <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
+                Camera permission is required. Please allow access when your browser asks.
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={startCamera}
+                  className="px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                >
+                  {cameraActive ? "Restart Camera" : "Take Selfie From Camera"}
+                </button>
+                {cameraActive && (
+                  <button
+                    type="button"
+                    onClick={captureSelfie}
+                    disabled={!cameraReady}
+                    className="px-3 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Capture Selfie
+                  </button>
+                )}
+                {cameraActive && (
+                  <button
+                    type="button"
+                    onClick={stopCamera}
+                    className="px-3 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-white text-sm"
+                  >
+                    Cancel Camera
+                  </button>
+                )}
+              </div>
+
+              {cameraActive && (
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  onLoadedMetadata={() => setCameraReady(true)}
+                  onCanPlay={() => setCameraReady(true)}
+                  className="w-full max-w-md aspect-video object-cover rounded-lg border border-gray-600 bg-black"
+                />
+              )}
+
+              {cameraActive && !cameraReady && (
+                <p className="text-xs text-yellow-300">Starting camera feed, please wait...</p>
+              )}
+
+              <canvas ref={canvasRef} className="hidden" />
+
+              <p className="text-xs text-gray-400">
+                Manual upload is disabled. You must capture a selfie using your camera.
+              </p>
+
+              {selfiePreviewUrl && (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-400">Selfie preview</p>
+                  <img
+                    src={selfiePreviewUrl}
+                    alt="Selfie preview"
+                    className="w-full max-w-md rounded-lg border border-gray-600"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <button
