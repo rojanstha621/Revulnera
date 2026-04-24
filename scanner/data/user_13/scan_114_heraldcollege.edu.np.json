@@ -1,0 +1,303 @@
+{
+  "scan_id": 114,
+  "target": "heraldcollege.edu.np",
+  "subdomains": [
+    {
+      "name": "project.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup project.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "cpcontacts.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup cpcontacts.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "cpcalendars.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup cpcalendars.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "v2.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup v2.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "webdisk.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup webdisk.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "videos.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup videos.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "mail.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup mail.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "cpanel.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup cpanel.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "webmail.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup webmail.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "project2.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup project2.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "www.videos.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.videos.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "www.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "ips": [
+        "172.67.158.153",
+        "104.21.14.95",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "admission.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "ips": [
+        "160.30.132.198"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "v3.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "ips": [
+        "160.30.132.198"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "ips": [
+        "104.21.14.95",
+        "172.67.158.153",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "attendance.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "ips": [
+        "160.30.132.198"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "demo.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "ips": [
+        "160.30.132.198"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "events.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "ips": [
+        "172.67.158.153",
+        "104.21.14.95",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "showcase.heraldcollege.edu.np",
+      "ip": "110.34.30.60",
+      "ips": [
+        "110.34.30.60"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "creators.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "ips": [
+        "104.21.14.95",
+        "172.67.158.153",
+        "2606:4700:3030::ac43:9e99",
+        "2606:4700:3037::6815:e5f"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "portal.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "ips": [
+        "104.21.14.95",
+        "172.67.158.153",
+        "2606:4700:3030::ac43:9e99",
+        "2606:4700:3037::6815:e5f"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "dns01.heraldcollege.edu.np",
+      "ip": "110.34.30.120",
+      "ips": [
+        "110.34.30.120"
+      ],
+      "alive": false,
+      "error_msg": "HTTP check failed: Get \"http://dns01.heraldcollege.edu.np\": dial tcp 110.34.30.120:80: connect: connection refused"
+    },
+    {
+      "name": "ethicalcommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "ips": [
+        "172.67.158.153",
+        "104.21.14.95",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "devopspioneercommunity.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "ips": [
+        "104.21.14.95",
+        "172.67.158.153",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "creatorscommunity.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "ips": [
+        "104.21.14.95",
+        "172.67.158.153",
+        "2606:4700:3030::ac43:9e99",
+        "2606:4700:3037::6815:e5f"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "ailearnerscommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "ips": [
+        "172.67.158.153",
+        "104.21.14.95",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "bizcorecommunity.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "ips": [
+        "104.21.14.95",
+        "172.67.158.153",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "iotinnovatorscommunity.heraldcollege.edu.np",
+      "ip": "104.21.14.95",
+      "ips": [
+        "104.21.14.95",
+        "172.67.158.153",
+        "2606:4700:3030::ac43:9e99",
+        "2606:4700:3037::6815:e5f"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "uivisualscommunity.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "ips": [
+        "172.67.158.153",
+        "104.21.14.95",
+        "2606:4700:3030::ac43:9e99",
+        "2606:4700:3037::6815:e5f"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "gamedevheroes.heraldcollege.edu.np",
+      "ip": "172.67.158.153",
+      "ips": [
+        "172.67.158.153",
+        "104.21.14.95",
+        "2606:4700:3037::6815:e5f",
+        "2606:4700:3030::ac43:9e99"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "devplat.heraldcollege.edu.np",
+      "ip": "110.34.30.60",
+      "ips": [
+        "110.34.30.60"
+      ],
+      "alive": true,
+      "error_msg": ""
+    }
+  ],
+  "saved_at": "2026-04-07T06:20:11.861837188Z"
+}

@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.db.models import Count
-from .models import User, UserProfile
+from .models import User, UserProfile, SubscriptionPlan, UserSubscription
 
 class UserProfileInline(admin.StackedInline):
     """Show profile fields directly inside user admin page."""
@@ -69,3 +69,32 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "phone", "updated_at")
     search_fields = ("user__email", "phone")
     raw_id_fields = ("user",)
+
+
+@admin.register(SubscriptionPlan)
+class SubscriptionPlanAdmin(admin.ModelAdmin):
+    list_display = (
+        "display_name",
+        "name",
+        "price_per_month",
+        "max_concurrent_scans",
+        "worker_count",
+        "scan_queue_priority",
+        "is_active",
+    )
+    list_filter = ("name", "is_active", "full_owasp_top10", "api_access")
+    search_fields = ("name", "display_name")
+
+
+@admin.register(UserSubscription)
+class UserSubscriptionAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "plan",
+        "status",
+        "payment_provider",
+        "current_period_end",
+        "auto_renew",
+    )
+    list_filter = ("status", "plan", "payment_provider", "auto_renew")
+    search_fields = ("user__email", "plan__name", "subscription_id")

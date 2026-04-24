@@ -3,7 +3,8 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     RegisterView, ProfileView, ChangePasswordView, VerifyEmailView,
-    CustomTokenObtainPairView, LogoutView, ResendVerificationView, ValidateResetTokenView
+    CustomTokenObtainPairView, LogoutView, ResendVerificationView, ValidateResetTokenView,
+    SubscriptionPlanListView, MySubscriptionView, UpgradeSubscriptionView,
 )
 
 urlpatterns = [
@@ -24,4 +25,9 @@ urlpatterns = [
     # Authenticated user self-service endpoints
     path("me/", ProfileView.as_view(), name="me"),
     path("change-password/", ChangePasswordView.as_view(), name="change-password"),
+
+    # Subscription endpoints
+    path("subscription/plans/", SubscriptionPlanListView.as_view(), name="subscription-plans"),
+    path("subscription/me/", MySubscriptionView.as_view(), name="my-subscription"),
+    path("subscription/upgrade/", UpgradeSubscriptionView.as_view(), name="upgrade-subscription"),
 ]

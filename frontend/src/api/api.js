@@ -223,3 +223,29 @@ export async function getVulnerabilityLogs(scanId = null) {
   return getJSON(path);
 }
 
+/* =========================
+   Subscription API functions
+========================= */
+export async function getSubscriptionPlans() {
+  return getJSON("/auth/subscription/plans/");
+}
+
+export async function getUserSubscription() {
+  return getJSON("/auth/subscription/me/");
+}
+
+export async function upgradSubscription(planId, reason = "") {
+  return postJSON("/auth/subscription/upgrade/", { plan_id: planId, reason });
+}
+
+// Preferred spelling for new calls.
+export async function upgradeSubscription(planId, reason = "") {
+  return upgradSubscription(planId, reason);
+}
+
+// History endpoint is not implemented yet on backend, return empty collection
+// so existing UI can continue rendering safely.
+export async function getSubscriptionHistory() {
+  return [];
+}
+

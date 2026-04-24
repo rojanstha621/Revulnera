@@ -1,0 +1,226 @@
+{
+  "scan_id": 118,
+  "target": "heraldcollege.edu.np",
+  "subdomains": [
+    {
+      "name": "project2.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup project2.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "videos.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup videos.heraldcollege.edu.np: no such host"
+    },
+    {
+      "name": "demo.heraldcollege.edu.np",
+      "ip": "160.30.132.198",
+      "ips": [
+        "160.30.132.198"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "cpcalendars.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup cpcalendars.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "events.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup events.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "www.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "v2.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup v2.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "attendance.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup attendance.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "www.videos.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup www.videos.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "admission.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup admission.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "webmail.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup webmail.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "cpanel.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup cpanel.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "showcase.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup showcase.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "devopspioneercommunity.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup devopspioneercommunity.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "bizcorecommunity.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup bizcorecommunity.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "dns01.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup dns01.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "gamedevheroes.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup gamedevheroes.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "webdisk.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup webdisk.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "uivisualscommunity.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup uivisualscommunity.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "portal.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup portal.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "project.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup project.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "creators.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup creators.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "devplat.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup devplat.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "mail.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup mail.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "ailearnerscommunity.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup ailearnerscommunity.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "iotinnovatorscommunity.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup iotinnovatorscommunity.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "ethicalcommunity.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup ethicalcommunity.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "cpcontacts.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup cpcontacts.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "v3.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup v3.heraldcollege.edu.np: i/o timeout"
+    },
+    {
+      "name": "creatorscommunity.heraldcollege.edu.np",
+      "ip": "",
+      "ips": [],
+      "alive": false,
+      "error_msg": "DNS resolution failed: lookup creatorscommunity.heraldcollege.edu.np: i/o timeout"
+    }
+  ],
+  "saved_at": "2026-04-07T07:07:37.278243692Z"
+}

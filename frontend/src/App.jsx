@@ -16,6 +16,8 @@ import Register from "./pages/Register";
 // import ScanLive from "./pages/ScanLive";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
+import Plans from "./pages/Plans";
+import Subscription from "./pages/Subscription";
 import Scanners from "./pages/Scanners";
 import Reports from "./pages/Reports";
 import AllScans from "./pages/AllScans";
@@ -74,6 +76,18 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/plans"
+          element={<Plans />}
+        />
+        <Route
+          path="/subscription"
+          element={
+            <ProtectedRoute>
+              <Subscription />
             </ProtectedRoute>
           }
         />

@@ -6,6 +6,7 @@ from rest_framework import status, permissions
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.utils.dateparse import parse_datetime
+from accounts.subscription_utils import can_start_scan, get_scan_limits
 
 from .models import Scan, Subdomain, Endpoint, PortScanFinding, TLSScanResult, DirectoryFinding
 from .serializers import ScanSerializer
@@ -25,6 +26,12 @@ class StartScanView(APIView):
         target = request.data.get("target")
         if not target:
             return Response({"detail": "target required"}, status=400)
+
+        can_scan, reason = can_start_scan(request.user)
+        if not can_scan:
+            return Response({"detail": reason}, status=status.HTTP_403_FORBIDDEN)
+
+        limits = get_scan_limits(request.user)
 
         scan = Scan.objects.create(
             target=target,
@@ -49,6 +56,8 @@ class StartScanView(APIView):
                 "user_id": request.user.id,  # Pass user ID for file organization
                 "backend_base": django_base,
                 "auth_header": token,  # Go will reuse it when posting back
+                "worker_count": limits["worker_count"],
+                "queue_priority": limits["scan_queue_priority"],
             }, timeout=5)
         except Exception as e:
             scan.status = "FAILED"

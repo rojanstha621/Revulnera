@@ -1,9 +1,9 @@
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Activity, Zap, TrendingUp, Clock, ArrowRight } from "lucide-react";
+import { Activity, Zap, TrendingUp, Clock, ArrowRight, Crown } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
-import { getUserScans } from "../api/api";
+import { getUserScans, getUserSubscription } from "../api/api";
 import LoadingScreen from "../components/LoadingScreen";
 
 export default function Dashboard() {
@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [lastScan, setLastScan] = useState(null);
   const [scans, setScans] = useState([]);
   const [stats, setStats] = useState({ totalScans: 0, totalSubdomains: 0 });
+  const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -19,7 +20,14 @@ export default function Dashboard() {
     const loadScans = async () => {
       try {
         setLoading(true);
-        const data = await getUserScans();
+        const [data, subscriptionData] = await Promise.all([
+          getUserScans(),
+          getUserSubscription(),
+        ]);
+
+        if (subscriptionData?.plan) {
+          setSubscription(subscriptionData);
+        }
         
         if (Array.isArray(data)) {
           setScans(data);
@@ -62,6 +70,13 @@ export default function Dashboard() {
           <p className="text-gray-400 mt-3 text-lg">
             Real-time reconnaissance and vulnerability assessment dashboard
           </p>
+
+          {subscription?.plan && (
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-4 py-1.5 text-sm text-cyan-200">
+              <Crown className="w-4 h-4" />
+              Current Plan: {subscription.plan.display_name}
+            </div>
+          )}
         </div>
       </div>
 
@@ -215,6 +230,41 @@ export default function Dashboard() {
             ) : (
               <p className="text-gray-400 text-center py-6">No scans yet</p>
             )}
+          </div>
+        </div>
+      </div>
+
+      <div className="card border border-slate-700 space-y-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-xl font-bold text-white">Compute Power Allocation</h3>
+            <p className="text-gray-400 text-sm mt-1">
+              All plans include full scanning modules. Your tier changes execution power.
+            </p>
+          </div>
+          <Link to="/plans" className="btn-secondary text-sm">
+            Compare Power Tiers
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="rounded-xl border border-slate-700 bg-slate-900/50 p-4">
+            <p className="text-gray-400 text-xs">Worker cores</p>
+            <p className="text-white font-semibold mt-2">
+              {subscription?.plan?.worker_count ?? 1}
+            </p>
+          </div>
+          <div className="rounded-xl border border-slate-700 bg-slate-900/50 p-4">
+            <p className="text-gray-400 text-xs">Queue priority</p>
+            <p className="text-white font-semibold mt-2">
+              {subscription?.plan?.scan_queue_priority ?? 1}
+            </p>
+          </div>
+          <div className="rounded-xl border border-slate-700 bg-slate-900/50 p-4">
+            <p className="text-gray-400 text-xs">Concurrent Scans</p>
+            <p className="text-white font-semibold mt-2">
+              {subscription?.plan?.max_concurrent_scans ?? 1}
+            </p>
           </div>
         </div>
       </div>

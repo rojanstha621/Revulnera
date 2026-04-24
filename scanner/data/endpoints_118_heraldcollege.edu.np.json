@@ -1,0 +1,20 @@
+{
+  "scan_id": 118,
+  "target": "heraldcollege.edu.np",
+  "endpoints": [
+    {
+      "url": "http://demo.heraldcollege.edu.np/",
+      "status_code": 308,
+      "content_length": 0,
+      "title": "",
+      "headers": {
+        "Server": "Caddy"
+      },
+      "fingerprints": [
+        "Caddy"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-04-07T07:08:42.41474377Z"
+}

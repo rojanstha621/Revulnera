@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from .models import UserProfile
+from .models import UserProfile, SubscriptionPlan, UserSubscription
 
 User = get_user_model()
 
@@ -77,3 +77,77 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.last_password_change = timezone.now()
         user.save(update_fields=["password", "last_password_change"])
         return user
+
+
+class SubscriptionPlanSerializer(serializers.ModelSerializer):
+    """Public serializer for listing subscription plans."""
+
+    price_per_month_display = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SubscriptionPlan
+        fields = [
+            "id",
+            "name",
+            "display_name",
+            "description",
+            "price_per_month",
+            "price_per_month_display",
+            "max_scans_per_month",
+            "max_concurrent_scans",
+            "max_storage_gb",
+            "api_rate_limit_per_minute",
+            "support_level",
+            "advanced_reporting",
+            "custom_integrations",
+            "dedicated_account_manager",
+            "worker_count",
+            "scan_queue_priority",
+            "max_scan_history",
+            "basic_modules_only",
+            "full_owasp_top10",
+            "full_export",
+            "unlimited_history",
+            "api_access",
+            "is_active",
+        ]
+
+    def get_price_per_month_display(self, obj):
+        return f"${obj.price_per_month / 100:.2f}"
+
+
+class UserSubscriptionSerializer(serializers.ModelSerializer):
+    """Serializer for authenticated user's current subscription."""
+
+    plan = SubscriptionPlanSerializer(read_only=True)
+    days_remaining = serializers.IntegerField(read_only=True)
+    is_active = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = UserSubscription
+        fields = [
+            "id",
+            "plan",
+            "status",
+            "current_period_start",
+            "current_period_end",
+            "days_remaining",
+            "is_active",
+            "auto_renew",
+            "payment_provider",
+            "created_at",
+            "updated_at",
+        ]
+
+
+class UpgradeSubscriptionSerializer(serializers.Serializer):
+    """Payload validator for subscription upgrades/downgrades."""
+
+    plan_id = serializers.IntegerField(required=False)
+    plan_name = serializers.ChoiceField(choices=["free", "pro", "plus"], required=False)
+    reason = serializers.CharField(required=False, allow_blank=True, max_length=500)
+
+    def validate(self, attrs):
+        if not attrs.get("plan_id") and not attrs.get("plan_name"):
+            raise serializers.ValidationError("Provide either plan_id or plan_name.")
+        return attrs

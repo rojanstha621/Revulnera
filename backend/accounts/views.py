@@ -5,12 +5,23 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
+from .models import SubscriptionPlan
+from .serializers import (
+    RegisterSerializer,
+    UserSerializer,
+    ChangePasswordSerializer,
+    SubscriptionPlanSerializer,
+    UserSubscriptionSerializer,
+    UpgradeSubscriptionSerializer,
+)
 from .utils import make_verify_token, verify_token
+from .subscription_utils import get_or_create_user_subscription
 
 User = get_user_model()
 
@@ -229,3 +240,95 @@ class ChangePasswordView(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"detail": "Password updated successfully"})
+
+
+class SubscriptionPlanListView(generics.ListAPIView):
+    """List all active subscription plans for pricing UI."""
+
+    permission_classes = [permissions.AllowAny]
+    serializer_class = SubscriptionPlanSerializer
+
+    def get_queryset(self):
+        return SubscriptionPlan.objects.filter(is_active=True).order_by("price_per_month")
+
+
+class MySubscriptionView(APIView):
+    """Return authenticated user's current subscription state."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        subscription = get_or_create_user_subscription(request.user)
+        serializer = UserSubscriptionSerializer(subscription)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UpgradeSubscriptionView(APIView):
+    """Upgrade or downgrade subscription plan (payment provider integration stub)."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = UpgradeSubscriptionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        plan_id = serializer.validated_data.get("plan_id")
+        plan_name = serializer.validated_data.get("plan_name")
+        reason = serializer.validated_data.get("reason", "")
+
+        target_plan = None
+        if plan_id:
+            target_plan = SubscriptionPlan.objects.filter(id=plan_id, is_active=True).first()
+        if not target_plan and plan_name:
+            target_plan = SubscriptionPlan.objects.filter(name=plan_name, is_active=True).first()
+
+        if not target_plan:
+            return api_error("Requested plan not found", code=status.HTTP_404_NOT_FOUND)
+
+        user_subscription = get_or_create_user_subscription(request.user)
+        current_plan = user_subscription.plan
+
+        if current_plan.id == target_plan.id:
+            return Response(
+                {
+                    "detail": f"You are already on {target_plan.display_name}.",
+                    "subscription": UserSubscriptionSerializer(user_subscription).data,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        # Payment integration stub:
+        # 1) Create subscription/update call in Stripe or Razorpay when target plan is paid.
+        # 2) Verify payment webhook signature and mark active only after successful event.
+        # 3) Persist external subscription id into subscription_id.
+        # 4) Handle failed payments by setting status to past_due.
+        # This stub keeps behavior deterministic for local/dev environments.
+
+        user_subscription.plan = target_plan
+        user_subscription.status = "active"
+        user_subscription.current_period_start = timezone.now()
+        user_subscription.current_period_end = timezone.now() + timedelta(days=30)
+        user_subscription.payment_provider = "manual"
+        user_subscription.save(
+            update_fields=[
+                "plan",
+                "status",
+                "current_period_start",
+                "current_period_end",
+                "payment_provider",
+                "updated_at",
+            ]
+        )
+
+        action = "upgraded" if target_plan.price_per_month > current_plan.price_per_month else "changed"
+        detail = f"Subscription {action} to {target_plan.display_name}."
+        if reason:
+            detail = f"{detail} Reason: {reason}"
+
+        return Response(
+            {
+                "detail": detail,
+                "subscription": UserSubscriptionSerializer(user_subscription).data,
+            },
+            status=status.HTTP_200_OK,
+        )
