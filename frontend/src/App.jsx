@@ -31,6 +31,7 @@ import ChangePassword from "./pages/ChangePassword";
 import AccountVerification from "./pages/AccountVerification";
 import VulnerabilityScans from "./pages/VulnerabilityScans";
 import VulnerabilityScanDetail from "./pages/VulnerabilityScanDetail";
+import DomainVerification from "./pages/DomainVerification";
 
 // Admin pages
 import AdminDashboard from "./pages/AdminDashboard";
@@ -38,6 +39,9 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminUserDetail from "./pages/AdminUserDetail";
 import AdminKYCQueue from "./pages/AdminKYCQueue";
 import AdminKYCDetail from "./pages/AdminKYCDetail";
+import AdminDomainProofQueue from "./pages/AdminDomainProofQueue";
+import AdminDomainProofDetail from "./pages/AdminDomainProofDetail";
+import AdminBugBountyScopes from "./pages/AdminBugBountyScopes";
 import AdminScans from "./pages/AdminScans";
 import AdminScanDetail from "./pages/AdminScanDetail";
 import AdminAnalytics from "./pages/AdminAnalytics";
@@ -132,6 +136,14 @@ function AppContent() {
           }
         />
         <Route
+          path="/domain-verification"
+          element={
+            <ProtectedRoute>
+              <DomainVerification />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/vulnerability-scans/:scanId"
           element={
             <ProtectedRoute>
@@ -187,6 +199,30 @@ function AppContent() {
           element={
             <ProtectedRoute adminOnly>
               <AdminKYCDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/domain-proofs"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminDomainProofQueue />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/domain-proofs/:verificationId"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminDomainProofDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/bug-bounty"
+          element={
+            <ProtectedRoute adminOnly>
+              <AdminBugBountyScopes />
             </ProtectedRoute>
           }
         />

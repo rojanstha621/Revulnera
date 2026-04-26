@@ -30,4 +30,5 @@ urlpatterns = [
     path("api/recon/", include("reconscan.urls")),
     path("api/recon/", include("reconscan.admin_urls")),
     path("api/vulnerability-detection/", include("vulnerability_detection.urls")),
+    path("api/vulnerability-detection/", include("vulnerability_detection.admin_urls")),
 ]

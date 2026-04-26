@@ -1,8 +1,9 @@
 // src/pages/AdminDashboard.jsx
 import React, { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { adminApi } from "../api/adminApi";
-import { TrendingUp, Users, BarChart3, AlertCircle } from "lucide-react";
+import { TrendingUp, Users, BarChart3, AlertCircle, ShieldCheck, Bug } from "lucide-react";
 import StatCard from "../components/admin/StatCard";
 import LoadingSpinner from "../components/admin/LoadingSpinner";
 import ErrorAlert from "../components/admin/ErrorAlert";
@@ -131,6 +132,41 @@ export default function AdminDashboard() {
                 )}
               </div>
             </div>
+          </div>
+
+          {/* Authorization Workflows */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Link
+              to="/admin/domain-proofs"
+              className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-5 hover:border-slate-500/60 transition"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-sm text-gray-400">Domain Proof Queue</p>
+                  <p className="text-2xl font-bold text-white mt-1">
+                    {dashboard.authorization?.pending_domain_proofs ?? 0}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-2">Pending manual reviews</p>
+                </div>
+                <ShieldCheck className="w-6 h-6 text-yellow-300" />
+              </div>
+            </Link>
+
+            <Link
+              to="/admin/bug-bounty"
+              className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-5 hover:border-slate-500/60 transition"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-sm text-gray-400">Bug Bounty Scopes</p>
+                  <p className="text-2xl font-bold text-white mt-1">
+                    {dashboard.authorization?.active_bug_bounty_scopes ?? 0}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-2">Active allowlist entries</p>
+                </div>
+                <Bug className="w-6 h-6 text-slate-300" />
+              </div>
+            </Link>
           </div>
 
           {/* Data Discovery */}

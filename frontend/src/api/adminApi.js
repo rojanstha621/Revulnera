@@ -178,4 +178,78 @@ export const adminApi = {
     const blobUrl = URL.createObjectURL(blob);
     return { error: false, url: blobUrl };
   },
+
+  // Domain proof review
+  getDomainProofQueue: async () => {
+    const res = await fetch(`${API_ROOT}/api/vulnerability-detection/admin/domain-proof-queue/`, {
+      headers: getAuthHeader(),
+    });
+    return parseResponse(res);
+  },
+
+  getDomainProofDetail: async (verificationId) => {
+    const res = await fetch(`${API_ROOT}/api/vulnerability-detection/admin/domain-proof-detail/${verificationId}/`, {
+      headers: getAuthHeader(),
+    });
+    return parseResponse(res);
+  },
+
+  approveDomainProof: async (verificationId, manual_review_note = "") => {
+    const res = await fetch(`${API_ROOT}/api/vulnerability-detection/admin/domain-proof-approve/${verificationId}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeader(),
+      },
+      body: JSON.stringify({ manual_review_note }),
+    });
+    return parseResponse(res);
+  },
+
+  rejectDomainProof: async (verificationId, manual_review_note) => {
+    const res = await fetch(`${API_ROOT}/api/vulnerability-detection/admin/domain-proof-reject/${verificationId}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeader(),
+      },
+      body: JSON.stringify({ manual_review_note }),
+    });
+    return parseResponse(res);
+  },
+
+  getDomainProofFileBlobUrl: async (verificationId) => {
+    const token = localStorage.getItem("access");
+    const res = await fetch(`${API_ROOT}/api/vulnerability-detection/admin/domain-proof-file/${verificationId}/`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+
+    if (!res.ok) {
+      return { error: true, detail: "Failed to load domain proof image" };
+    }
+
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    return { error: false, url: blobUrl };
+  },
+
+  // Bug bounty scopes
+  getBugBountyScopes: async () => {
+    const res = await fetch(`${API_ROOT}/api/vulnerability-detection/bug-bounty-scopes/`, {
+      headers: getAuthHeader(),
+    });
+    return parseResponse(res);
+  },
+
+  importBugBountyScopes: async (payload) => {
+    const res = await fetch(`${API_ROOT}/api/vulnerability-detection/bug-bounty-scopes/import_scopes/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeader(),
+      },
+      body: JSON.stringify(payload),
+    });
+    return parseResponse(res);
+  },
 };

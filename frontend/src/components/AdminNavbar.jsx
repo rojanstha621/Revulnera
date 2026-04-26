@@ -14,6 +14,8 @@ export default function AdminNavbar() {
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Users", href: "/admin/users", icon: Users },
     { name: "KYC", href: "/admin/kyc", icon: ShieldCheck },
+    { name: "Domain Proofs", href: "/admin/domain-proofs", icon: ShieldCheck },
+    { name: "Bug Bounty", href: "/admin/bug-bounty", icon: ShieldCheck },
     { name: "Scans", href: "/admin/scans", icon: BarChart3 },
     { name: "Analytics", href: "/admin/analytics", icon: Settings },
   ];

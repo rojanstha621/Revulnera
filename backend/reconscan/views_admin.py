@@ -7,6 +7,7 @@ from rest_framework import status, permissions
 from django.contrib.auth import get_user_model
 
 from .models import Scan, Subdomain, Endpoint
+from vulnerability_detection.models import DomainVerification, BugBountyScope
 from .serializers_admin import (
     AdminUserSerializer,
     AdminUserCreateUpdateSerializer,
@@ -66,6 +67,11 @@ class AdminDashboardView(APIView):
         alive_subdomains = Subdomain.objects.filter(alive=True).count()
         total_endpoints = Endpoint.objects.count()
 
+        # Target authorization workflow stats
+        pending_domain_proofs = DomainVerification.objects.filter(manual_proof_status='PENDING').count()
+        approved_domain_proofs = DomainVerification.objects.filter(manual_proof_status='APPROVED').count()
+        active_bug_bounty_scopes = BugBountyScope.objects.filter(is_active=True).count()
+
         # HTTP Status Code Distribution
         status_codes = {}
         for ep in Endpoint.objects.values('status_code'):
@@ -92,7 +98,12 @@ class AdminDashboardView(APIView):
                 'alive_subdomains': alive_subdomains,
                 'total_endpoints': total_endpoints,
                 'http_status_distribution': status_codes,
-            }
+            },
+            'authorization': {
+                'pending_domain_proofs': pending_domain_proofs,
+                'approved_domain_proofs': approved_domain_proofs,
+                'active_bug_bounty_scopes': active_bug_bounty_scopes,
+            },
         })
 
 

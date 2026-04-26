@@ -148,6 +148,10 @@ export function putJSON(path, body) {
   return requestJSON("PUT", path, body);
 }
 
+export function postFormData(path, formData) {
+  return requestFormData("POST", path, formData);
+}
+
 export function logoutClient() {
   clearTokens();
 }
@@ -224,14 +228,76 @@ export async function getVulnerabilityLogs(scanId = null) {
 }
 
 /* =========================
+   Domain verification API functions
+========================= */
+export async function getDomainVerifications() {
+  return getJSON("/api/vulnerability-detection/domain-verifications/");
+}
+
+export async function createDomainVerification(data) {
+  return postJSON("/api/vulnerability-detection/domain-verifications/", data);
+}
+
+export async function verifyDomainChallenge(verificationId) {
+  return postJSON(`/api/vulnerability-detection/domain-verifications/${verificationId}/verify/`);
+}
+
+export async function submitDomainManualProof(verificationId, formData) {
+  return postFormData(
+    `/api/vulnerability-detection/domain-verifications/${verificationId}/submit_manual_proof/`,
+    formData
+  );
+}
+
+export async function getBugBountyScopes() {
+  return getJSON("/api/vulnerability-detection/bug-bounty-scopes/");
+}
+
+/* =========================
    Subscription API functions
 ========================= */
+function normalizeSubscriptionResponse(subscription) {
+  if (!subscription || typeof subscription !== "object") {
+    return subscription;
+  }
+
+  const plan = subscription.plan || {};
+  const maxScansPerMonth = plan.max_scans_per_month;
+  const maxStorageGb = plan.max_storage_gb;
+
+  const defaultUsage = {
+    scans_used_this_month: 0,
+    scans_remaining:
+      maxScansPerMonth === null || maxScansPerMonth === undefined
+        ? null
+        : maxScansPerMonth,
+    current_storage_used_gb: 0,
+    storage_remaining_gb:
+      maxStorageGb === null || maxStorageGb === undefined
+        ? null
+        : maxStorageGb,
+    api_calls_today: 0,
+    usage_period_start: subscription.current_period_start || null,
+    last_updated: subscription.updated_at || null,
+    plan_name: plan.display_name || plan.name || "Free",
+  };
+
+  return {
+    ...subscription,
+    usage: {
+      ...defaultUsage,
+      ...(subscription.usage || {}),
+    },
+  };
+}
+
 export async function getSubscriptionPlans() {
   return getJSON("/auth/subscription/plans/");
 }
 
 export async function getUserSubscription() {
-  return getJSON("/auth/subscription/me/");
+  const subscription = await getJSON("/auth/subscription/me/");
+  return normalizeSubscriptionResponse(subscription);
 }
 
 export async function upgradSubscription(planId, reason = "") {
