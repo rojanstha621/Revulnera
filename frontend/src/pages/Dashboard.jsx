@@ -3,8 +3,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Activity, Zap, TrendingUp, Clock, ArrowRight, Crown } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
-import { getUserScans, getUserSubscription } from "../api/api";
+import {
+  buildWsUrl,
+  getUserScans,
+  getUserSubscription,
+  getSystemHealth,
+  getSystemMetrics,
+} from "../api/api";
 import LoadingScreen from "../components/LoadingScreen";
+import SystemStatusIndicator from "../components/SystemStatusIndicator";
 
 export default function Dashboard() {
   const { auth } = useContext(AuthContext);
@@ -13,46 +20,68 @@ export default function Dashboard() {
   const [scans, setScans] = useState([]);
   const [stats, setStats] = useState({ totalScans: 0, totalSubdomains: 0 });
   const [subscription, setSubscription] = useState(null);
+  const [systemHealth, setSystemHealth] = useState(null);
+  const [systemMetrics, setSystemMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const loadScans = async () => {
-      try {
+  const loadScans = async (silent = false) => {
+    try {
+      if (!silent) {
         setLoading(true);
-        const [data, subscriptionData] = await Promise.all([
-          getUserScans(),
-          getUserSubscription(),
-        ]);
+      }
+      const [data, subscriptionData, healthData, metricsData] = await Promise.all([
+        getUserScans(),
+        getUserSubscription(),
+        getSystemHealth(),
+        getSystemMetrics(),
+      ]);
 
-        if (subscriptionData?.plan) {
-          setSubscription(subscriptionData);
+      if (subscriptionData?.plan) {
+        setSubscription(subscriptionData);
+      }
+
+      if (healthData && !healthData._status) {
+        setSystemHealth(healthData);
+      }
+
+      if (metricsData && !metricsData._status) {
+        setSystemMetrics(metricsData);
+      }
+
+      if (Array.isArray(data)) {
+        setScans(data);
+
+        if (data.length > 0) {
+          // Get latest scan
+          setLastScan(data[0]);
+
+          // Calculate stats
+          const totalScans = data.length;
+          const totalSubdomains = data.reduce((sum, scan) => sum + (scan.subdomain_count || 0), 0);
+          setStats({ totalScans, totalSubdomains });
         }
-        
-        if (Array.isArray(data)) {
-          setScans(data);
-          
-          if (data.length > 0) {
-            // Get latest scan
-            setLastScan(data[0]);
-            
-            // Calculate stats
-            const totalScans = data.length;
-            const totalSubdomains = data.reduce((sum, scan) => sum + (scan.subdomain_count || 0), 0);
-            setStats({ totalScans, totalSubdomains });
-          }
-        } else {
-          setError("Failed to load scans");
-        }
-      } catch (err) {
-        console.error("Error loading scans:", err);
-        setError("Failed to fetch scan data");
-      } finally {
+      } else {
+        setError("Failed to load scans");
+      }
+    } catch (err) {
+      console.error("Error loading scans:", err);
+      setError("Failed to fetch scan data");
+    } finally {
+      if (!silent) {
         setLoading(false);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     loadScans();
+  }, []);
+
+  useEffect(() => {
+    const ws = new WebSocket(buildWsUrl("/ws/vulnerability-scans/stream/"));
+    ws.onmessage = () => loadScans(true);
+    return () => ws.close();
   }, []);
 
   if (loading) {
@@ -85,6 +114,26 @@ export default function Dashboard() {
           {error}
         </div>
       )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <SystemStatusIndicator
+          health={systemHealth}
+          queueBusy={(systemMetrics?.queued_tasks || 0) > 5}
+          workers={systemMetrics?.workers || 0}
+        />
+        <div className="card border border-slate-700">
+          <p className="text-gray-400 text-sm">Queue Load</p>
+          <p className="text-sm text-white mt-2">Queued Tasks: {systemMetrics?.queued_tasks ?? 0}</p>
+          <p className="text-sm text-white">Workers: {systemMetrics?.workers ?? 0}</p>
+          <p className="text-sm text-white">Worker Concurrency: {systemMetrics?.worker_concurrency ?? 0}</p>
+        </div>
+        <div className="card border border-slate-700">
+          <p className="text-gray-400 text-sm">Plan Runtime Limits</p>
+          <p className="text-sm text-white mt-2">Plan: {subscription?.plan?.display_name || "Free"}</p>
+          <p className="text-sm text-white">Concurrent Limit: {subscription?.plan?.max_concurrent_scans ?? 1}</p>
+          <p className="text-sm text-white">Workers/Scan: {subscription?.plan?.worker_count ?? 1}</p>
+        </div>
+      </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

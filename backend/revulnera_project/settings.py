@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "accounts",
     "django_rest_passwordreset",
     "channels",
+    "monitoring.apps.MonitoringConfig",
     "reconscan",
     "kyc.apps.KycConfig",
     "vulnerability_detection",
@@ -52,17 +53,36 @@ INSTALLED_APPS = [
 # --------------------------------------------------
 ASGI_APPLICATION = "revulnera_project.asgi.application"
 
-# Dev only (no Redis)
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
+CHANNEL_REDIS_URL = os.getenv(
+    "CHANNEL_REDIS_URL",
+    os.getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0"),
+)
+if CHANNEL_REDIS_URL:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [CHANNEL_REDIS_URL],
+            },
+        }
     }
-}
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 # --------------------------------------------------
 # External services
 # --------------------------------------------------
 GO_RECON_URL = "http://localhost:8080"
+
+# Celery broker/backend (required for async vulnerability scan execution).
+# By default we target local Redis for development.
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", CELERY_BROKER_URL)
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # --------------------------------------------------
 # Custom user model
@@ -128,6 +148,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
+    "DEFAULT_THROTTLE_CLASSES": (),
 }
 
 SIMPLE_JWT = {

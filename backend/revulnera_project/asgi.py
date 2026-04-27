@@ -3,6 +3,7 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 import reconscan.routing
+import ws.routing
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "revulnera_project.settings")
 
@@ -11,6 +12,6 @@ django_asgi_app = get_asgi_application()
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
     "websocket": AuthMiddlewareStack(
-        URLRouter(reconscan.routing.websocket_urlpatterns)
+        URLRouter(reconscan.routing.websocket_urlpatterns + ws.routing.websocket_urlpatterns)
     ),
 })

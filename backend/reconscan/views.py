@@ -7,6 +7,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.utils.dateparse import parse_datetime
 from accounts.subscription_utils import can_start_scan, get_scan_limits
+from vulnerability_detection.throttles import PlanAwareScanThrottle
 
 from .models import Scan, Subdomain, Endpoint, PortScanFinding, TLSScanResult, DirectoryFinding
 from .serializers import ScanSerializer
@@ -21,6 +22,13 @@ def broadcast(scan_id: int, payload: dict):
 
 class StartScanView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [PlanAwareScanThrottle]
+
+    def throttled(self, request, wait):
+        return Response(
+            {"error": "Rate limit exceeded"},
+            status=status.HTTP_429_TOO_MANY_REQUESTS,
+        )
 
     def post(self, request):
         target = request.data.get("target")

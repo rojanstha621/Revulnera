@@ -12,6 +12,12 @@ function getAccessToken() {
   return localStorage.getItem("access");
 }
 
+export function buildWsUrl(path) {
+  const token = getAccessToken();
+  const suffix = token ? `${path.includes("?") ? "&" : "?"}token=${encodeURIComponent(token)}` : "";
+  return `${WS_ROOT}${path}${suffix}`;
+}
+
 function getRefreshToken() {
   return localStorage.getItem("refresh");
 }
@@ -211,6 +217,14 @@ export async function executeVulnerabilityScan(scanId) {
 
 export async function cancelVulnerabilityScan(scanId) {
   return postJSON(`/api/vulnerability-detection/scans/${scanId}/cancel/`);
+}
+
+export async function getSystemHealth() {
+  return getJSON("/api/system/health/");
+}
+
+export async function getSystemMetrics() {
+  return getJSON("/api/system/metrics/");
 }
 
 export async function getVulnerabilityFindings(scanId = null) {

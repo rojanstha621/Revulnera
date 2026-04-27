@@ -84,7 +84,15 @@ pip install -r requirements.txt
 # Configure database in settings.py
 python manage.py migrate
 python manage.py createsuperuser
+
+# One-command local startup (auto-starts Redis + Celery worker + Django)
+python manage.py devserver
+
+# `runserver` now delegates to `devserver` automatically in this project.
 python manage.py runserver
+
+# Optional fallback if you want Django only
+# python manage.py runserver --plain-runserver
 ```
 
 #### 2. Go Worker Setup

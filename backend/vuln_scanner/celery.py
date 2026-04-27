@@ -2,6 +2,7 @@ import logging
 import os
 
 from celery import Celery
+from kombu import Queue
 
 from vuln_scanner.runtime_config import get_optimal_workers, get_runtime_config
 
@@ -12,6 +13,15 @@ logger = logging.getLogger(__name__)
 app = Celery("revulnera")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
+
+app.conf.task_queues = (
+    Queue("premium"),
+    Queue("standard"),
+    Queue("free"),
+)
+app.conf.task_default_queue = "free"
+app.conf.task_queue_max_priority = 10
+app.conf.task_default_priority = 5
 
 _runtime_config = get_runtime_config()
 _worker_concurrency = get_optimal_workers()

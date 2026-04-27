@@ -1,6 +1,7 @@
 """Subscription helpers used by API views and scan services."""
 
 from datetime import timedelta
+from django.conf import settings
 from django.utils import timezone
 
 from .models import SubscriptionPlan, UserSubscription
@@ -151,13 +152,43 @@ def get_effective_worker_count(user, system_worker_cap, workload_size=None):
     return max(max_workers, 1)
 
 
+def _expire_stale_active_scans(user):
+    """Mark stale PENDING/RUNNING scans as FAILED before concurrency checks.
+
+    This avoids zombie rows permanently consuming a user's concurrent-scan budget
+    after worker crashes or interrupted sessions.
+    """
+    stale_minutes = int(getattr(settings, "SCAN_STALE_MINUTES", 180))
+    now = timezone.now()
+    cutoff = now - timedelta(minutes=stale_minutes)
+
+    user.scans.filter(
+        status__in=["PENDING", "RUNNING"],
+        updated_at__lt=cutoff,
+    ).update(status="FAILED")
+
+    user.vulnerability_scans.filter(
+        status__in=["PENDING", "RUNNING"],
+        updated_at__lt=cutoff,
+    ).update(
+        status="FAILED",
+        completed_at=now,
+        error_message="Scan marked FAILED automatically after stale worker timeout.",
+    )
+
+
 def can_start_scan(user):
     """Validate whether user can start another scan now."""
     if not user.can_run_vulnerability_scans:
         return False, "Vulnerability scanning is not yet approved for your account."
 
+    _expire_stale_active_scans(user)
+
     limits = get_scan_limits(user)
-    active_scans = user.scans.filter(status__in=["PENDING", "RUNNING"]).count()
+    # Apply one shared parallel-scan budget across recon and vulnerability jobs.
+    active_recon_scans = user.scans.filter(status__in=["PENDING", "RUNNING"]).count()
+    active_vuln_scans = user.vulnerability_scans.filter(status__in=["PENDING", "RUNNING"]).count()
+    active_scans = active_recon_scans + active_vuln_scans
     if active_scans >= limits["max_concurrent_scans"]:
         return (
             False,
