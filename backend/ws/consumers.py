@@ -10,10 +10,6 @@ from vulnerability_detection.models import VulnerabilityScan
 
 class BaseAuthConsumer(AsyncWebsocketConsumer):
     async def _resolve_user(self):
-        user = self.scope.get("user")
-        if user and getattr(user, "is_authenticated", False):
-            return user
-
         query = parse_qs((self.scope.get("query_string") or b"").decode("utf-8"))
         token = (query.get("token") or [None])[0]
         if not token:
@@ -33,7 +29,12 @@ class BaseAuthConsumer(AsyncWebsocketConsumer):
 
 class VulnerabilityScanConsumer(BaseAuthConsumer):
     async def connect(self):
-        self.scan_id = int(self.scope["url_route"]["kwargs"]["scan_id"])
+        try:
+            self.scan_id = int(self.scope["url_route"]["kwargs"]["scan_id"])
+        except (TypeError, ValueError, KeyError):
+            await self.close(code=4400)
+            return
+
         self.user = await self._resolve_user()
 
         if not self.user or not self.user.is_authenticated:
