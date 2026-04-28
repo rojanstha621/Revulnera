@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, Eye } from "lucide-react";
 import { getUserScans } from "../api/api";
 import LoadingScreen from "../components/LoadingScreen";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function AllScans() {
   const navigate = useNavigate();
@@ -12,6 +13,12 @@ export default function AllScans() {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+
+  useEffect(() => {
+    if (error) {
+      emitErrorToast(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const loadScans = async () => {

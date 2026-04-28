@@ -1,5 +1,5 @@
 // src/pages/Dashboard.jsx
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Activity, Zap, TrendingUp, Clock, ArrowRight, Crown } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
@@ -12,6 +12,8 @@ import {
 } from "../api/api";
 import LoadingScreen from "../components/LoadingScreen";
 import SystemStatusIndicator from "../components/SystemStatusIndicator";
+import { emitErrorToast } from "../utils/errorUtils";
+import LazyRender from "../components/LazyRender";
 
 export default function Dashboard() {
   const { auth } = useContext(AuthContext);
@@ -24,30 +26,20 @@ export default function Dashboard() {
   const [systemMetrics, setSystemMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const wsRefreshTimerRef = useRef(null);
 
-  const loadScans = async (silent = false) => {
+  useEffect(() => {
+    if (error) {
+      emitErrorToast(error);
+    }
+  }, [error]);
+
+  const loadScanData = async (silent = false) => {
     try {
       if (!silent) {
         setLoading(true);
       }
-      const [data, subscriptionData, healthData, metricsData] = await Promise.all([
-        getUserScans(),
-        getUserSubscription(),
-        getSystemHealth(),
-        getSystemMetrics(),
-      ]);
-
-      if (subscriptionData?.plan) {
-        setSubscription(subscriptionData);
-      }
-
-      if (healthData && !healthData._status) {
-        setSystemHealth(healthData);
-      }
-
-      if (metricsData && !metricsData._status) {
-        setSystemMetrics(metricsData);
-      }
+      const data = await getUserScans();
 
       if (Array.isArray(data)) {
         setScans(data);
@@ -74,14 +66,65 @@ export default function Dashboard() {
     }
   };
 
+  const loadSystemData = async () => {
+    try {
+      const [subscriptionData, healthData, metricsData] = await Promise.all([
+        getUserSubscription(),
+        getSystemHealth(),
+        getSystemMetrics(),
+      ]);
+
+      if (subscriptionData?.plan) {
+        setSubscription(subscriptionData);
+      }
+
+      if (healthData && !healthData._status) {
+        setSystemHealth(healthData);
+      }
+
+      if (metricsData && !metricsData._status) {
+        setSystemMetrics(metricsData);
+      }
+    } catch (err) {
+      console.error("Error loading dashboard system data:", err);
+    }
+  };
+
+  const loadScans = async (silent = false) => {
+    await Promise.all([loadScanData(silent), loadSystemData()]);
+  };
+
+  const scheduleScanRefresh = () => {
+    if (wsRefreshTimerRef.current) {
+      return;
+    }
+
+    wsRefreshTimerRef.current = setTimeout(() => {
+      wsRefreshTimerRef.current = null;
+      loadScanData(true);
+    }, 1200);
+  };
+
   useEffect(() => {
     loadScans();
   }, []);
 
   useEffect(() => {
     const ws = new WebSocket(buildWsUrl("/ws/vulnerability-scans/stream/"));
-    ws.onmessage = () => loadScans(true);
-    return () => ws.close();
+    ws.onmessage = () => scheduleScanRefresh();
+    return () => {
+      if (wsRefreshTimerRef.current) {
+        clearTimeout(wsRefreshTimerRef.current);
+      }
+      ws.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      loadSystemData();
+    }, 30000);
+    return () => clearInterval(timer);
   }, []);
 
   if (loading) {
@@ -190,6 +233,7 @@ export default function Dashboard() {
       </div>
 
       {/* Last Scan & Features */}
+      <LazyRender minHeight={520}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Last Scan Card */}
         <div className="card">
@@ -282,7 +326,9 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      </LazyRender>
 
+      <LazyRender minHeight={280}>
       <div className="card border border-slate-700 space-y-4">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -317,8 +363,10 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      </LazyRender>
 
       {/* CTA Section */}
+      <LazyRender minHeight={180}>
       <div className="rounded-2xl p-8 bg-slate-900/80 border border-slate-700">
         <div>
           <h3 className="text-2xl font-bold text-white mb-3">
@@ -333,6 +381,7 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
+      </LazyRender>
     </div>
   );
 }

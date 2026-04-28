@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { getJSON } from "../api/api"; // if you don't have getJSON, tell me and I'll adapt to postJSON
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function VerifyEmail() {
   const [params] = useSearchParams();
@@ -10,6 +11,12 @@ export default function VerifyEmail() {
   const [status, setStatus] = useState("verifying"); // verifying | success | error
   const [message, setMessage] = useState("");
   const nav = useNavigate();
+
+  useEffect(() => {
+    if (status === "error" && message) {
+      emitErrorToast(message);
+    }
+  }, [status, message]);
 
   useEffect(() => {
     const run = async () => {

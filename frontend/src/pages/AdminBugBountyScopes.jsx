@@ -14,6 +14,7 @@ export default function AdminBugBountyScopes() {
   const [programName, setProgramName] = useState("");
   const [sourceUrl, setSourceUrl] = useState("");
   const [payloadText, setPayloadText] = useState("");
+  const [rawDomainsText, setRawDomainsText] = useState("");
 
   useEffect(() => {
     fetchScopes();
@@ -48,15 +49,19 @@ export default function AdminBugBountyScopes() {
 
     let payload = null;
     if (!sourceUrl.trim()) {
-      if (!payloadText.trim()) {
-        setError("Provide either source URL or JSON payload");
-        return;
-      }
-      try {
-        payload = JSON.parse(payloadText);
-      } catch {
-        setError("Invalid JSON payload");
-        return;
+      if (rawDomainsText.trim()) {
+        payload = rawDomainsText;
+      } else {
+        if (!payloadText.trim()) {
+          setError("Provide either source URL, raw domains, or JSON payload");
+          return;
+        }
+        try {
+          payload = JSON.parse(payloadText);
+        } catch {
+          setError("Invalid JSON payload");
+          return;
+        }
       }
     }
 
@@ -134,6 +139,20 @@ export default function AdminBugBountyScopes() {
             className="input-premium w-full"
             placeholder="https://platform.example/program/scopes.json"
           />
+        </div>
+
+        <div>
+          <label className="block text-sm text-gray-300 mb-2">Raw Domains / URLs</label>
+          <textarea
+            value={rawDomainsText}
+            onChange={(e) => setRawDomainsText(e.target.value)}
+            className="input-premium w-full font-mono text-sm"
+            rows={8}
+            placeholder={"example.com\n*.api.example.com\nhttps://app.example.com\n# one item per line"}
+          />
+          <p className="mt-2 text-xs text-gray-400">
+            Paste one domain or URL per line. Comments starting with # are ignored.
+          </p>
         </div>
 
         <div>

@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import { getSubscriptionPlans, getUserSubscription } from "../api/api";
 import LoadingScreen from "../components/LoadingScreen";
 import UpgradeModal from "../components/subscription/UpgradeModal";
+import { emitErrorToast } from "../utils/errorUtils";
 
 const FALLBACK_PLANS = [
   {
@@ -76,6 +77,12 @@ export default function Plans() {
   const [error, setError] = useState("");
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      emitErrorToast(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const loadData = async () => {

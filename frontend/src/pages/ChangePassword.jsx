@@ -1,6 +1,7 @@
 // src/pages/ChangePassword.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { putJSON } from "../api/api";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function ChangePassword() {
   const [form, setForm] = useState({
@@ -12,6 +13,12 @@ export default function ChangePassword() {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
+
+  useEffect(() => {
+    if (err) {
+      emitErrorToast(err);
+    }
+  }, [err]);
 
   const onChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));

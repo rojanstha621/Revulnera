@@ -16,6 +16,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import SubscriptionCard from "../components/subscription/SubscriptionCard";
 import UsageCard from "../components/subscription/UsageCard";
 import HistoryTimeline from "../components/subscription/HistoryTimeline";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function Subscription() {
   const navigate = useNavigate();
@@ -23,6 +24,12 @@ export default function Subscription() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (error) {
+      emitErrorToast(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const loadData = async () => {

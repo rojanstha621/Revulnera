@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { User, Mail, Phone, MapPin, Lock, CheckCircle, AlertCircle } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import { getJSON, putJSON } from "../api/api";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function Profile() {
   const { auth } = useContext(AuthContext);
@@ -16,6 +17,12 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
+
+  useEffect(() => {
+    if (err) {
+      emitErrorToast(err);
+    }
+  }, [err]);
 
   useEffect(() => {
     const loadProfile = async () => {

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Shield, Globe, Copy, Check, Loader, Lock, FolderOpen, Network, AlertTriangle, LayoutGrid, Table, ChevronDown, ChevronRight, ExternalLink, Tags, Server, FileText, Filter, X } from "lucide-react";
 import { getUserScanDetail } from "../api/api";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function ScanDetail() {
   const { scanId } = useParams();
@@ -25,6 +26,12 @@ export default function ScanDetail() {
   const [tlsStatusFilter, setTlsStatusFilter] = useState("all");
   const [directoryFilter, setDirectoryFilter] = useState("");
   const [directoryIssueFilter, setDirectoryIssueFilter] = useState("all");
+
+  useEffect(() => {
+    if (error) {
+      emitErrorToast(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     const loadScan = async () => {

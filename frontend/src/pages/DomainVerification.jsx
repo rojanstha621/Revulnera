@@ -7,6 +7,7 @@ import {
   verifyDomainChallenge,
 } from "../api/api";
 import LoadingScreen from "../components/LoadingScreen";
+import { emitErrorToast } from "../utils/errorUtils";
 
 function statusClass(status) {
   if (status === "VERIFIED") return "bg-green-600/20 text-green-300 border-green-600/30";
@@ -49,7 +50,9 @@ export default function DomainVerification() {
       ]);
 
       if (verificationData?._status) {
-        setError(verificationData.detail || "Failed to load domain verifications");
+        const message = verificationData.detail || "Failed to load domain verifications";
+        setError(message);
+        emitErrorToast(message);
       } else {
         setDomainVerifications(Array.isArray(verificationData) ? verificationData : []);
       }
@@ -58,7 +61,9 @@ export default function DomainVerification() {
         setBugBountyScopes(Array.isArray(scopeData) ? scopeData : []);
       }
     } catch {
-      setError("Failed to load domain authorization data");
+      const message = "Failed to load domain authorization data";
+      setError(message);
+      emitErrorToast(message);
     } finally {
       setLoading(false);
     }
@@ -74,7 +79,9 @@ export default function DomainVerification() {
 
     const res = await createDomainVerification({ domain: domain.trim() });
     if (res?._status) {
-      setError(res.detail || "Failed to create domain verification");
+      const message = res.detail || "Failed to create domain verification";
+      setError(message);
+      emitErrorToast(message);
       setSaving(false);
       return;
     }
@@ -92,7 +99,9 @@ export default function DomainVerification() {
 
     const res = await verifyDomainChallenge(verificationId);
     if (res?._status) {
-      setError(res.detail || res.error || "DNS verification failed");
+      const message = res.detail || res.error || "DNS verification failed";
+      setError(message);
+      emitErrorToast(message);
     } else {
       setSuccess("DNS verification successful.");
     }
@@ -106,7 +115,9 @@ export default function DomainVerification() {
     const note = proofNotes[verificationId] || "";
 
     if (!file) {
-      setError("Please select an image before submitting manual proof.");
+      const message = "Please select an image before submitting manual proof.";
+      setError(message);
+      emitErrorToast(message);
       return;
     }
 
@@ -120,7 +131,9 @@ export default function DomainVerification() {
 
     const res = await submitDomainManualProof(verificationId, formData);
     if (res?._status) {
-      setError(res.detail || "Failed to submit manual proof");
+      const message = res.detail || "Failed to submit manual proof";
+      setError(message);
+      emitErrorToast(message);
     } else {
       setSuccess("Manual proof submitted. Please wait for admin review.");
     }

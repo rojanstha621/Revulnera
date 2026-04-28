@@ -6,6 +6,7 @@ import { Search, Filter } from "lucide-react";
 import LoadingSpinner from "../components/admin/LoadingSpinner";
 import ErrorAlert from "../components/admin/ErrorAlert";
 import Pagination from "../components/admin/Pagination";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -17,6 +18,8 @@ export default function AdminUsers() {
   const [roleFilter, setRoleFilter] = useState("");
   const [activeFilter, setActiveFilter] = useState("");
   const [creating, setCreating] = useState(false);
+  const [deletingUserId, setDeletingUserId] = useState(null);
+  const [deleteDialogUserId, setDeleteDialogUserId] = useState(null);
   const [createForm, setCreateForm] = useState({
     email: "",
     password: "",
@@ -91,15 +94,24 @@ export default function AdminUsers() {
   };
 
   const handleDeleteUser = async (userId) => {
-    const confirmed = window.confirm("Delete this user? This action cannot be undone.");
-    if (!confirmed) return;
+    setDeleteDialogUserId(userId);
+  };
 
-    setError(null);
-    const res = await adminApi.deleteUser(userId);
-    if (res?._status && res._status !== 204) {
-      setError(res.detail || "Failed to delete user");
+  const confirmDeleteUser = async () => {
+    if (!deleteDialogUserId) {
       return;
     }
+
+    setDeletingUserId(deleteDialogUserId);
+    setError(null);
+    const res = await adminApi.deleteUser(deleteDialogUserId);
+    if (res?._status && res._status !== 204) {
+      setError(res.detail || "Failed to delete user");
+      setDeletingUserId(null);
+      return;
+    }
+    setDeleteDialogUserId(null);
+    setDeletingUserId(null);
     fetchUsers();
   };
 
@@ -278,6 +290,22 @@ export default function AdminUsers() {
           <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </>
       )}
+
+      <ConfirmDialog
+        isOpen={!!deleteDialogUserId}
+        onClose={() => {
+          if (!deletingUserId) {
+            setDeleteDialogUserId(null);
+          }
+        }}
+        onConfirm={confirmDeleteUser}
+        title="Delete User"
+        description="Delete this user? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={!!deletingUserId}
+      />
     </div>
   );
 }

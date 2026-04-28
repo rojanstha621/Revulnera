@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { getKYCStatus, submitKYC } from "../api/api";
 import LoadingSpinner from "../components/admin/LoadingSpinner";
 import ErrorAlert from "../components/admin/ErrorAlert";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function AccountVerification() {
   const location = useLocation();
@@ -11,6 +12,12 @@ export default function AccountVerification() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    if (error) {
+      emitErrorToast(error);
+    }
+  }, [error]);
 
   const [docType, setDocType] = useState("CITIZENSHIP");
   const [docFront, setDocFront] = useState(null);

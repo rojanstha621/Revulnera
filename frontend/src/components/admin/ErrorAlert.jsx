@@ -1,8 +1,15 @@
 // src/components/admin/ErrorAlert.jsx
 import React from "react";
 import { AlertCircle, X } from "lucide-react";
+import { emitErrorToast } from "../../utils/errorUtils";
 
 export default function ErrorAlert({ message, onDismiss }) {
+  React.useEffect(() => {
+    if (message) {
+      emitErrorToast(message);
+    }
+  }, [message]);
+
   return (
     <div className="bg-red-900/20 border border-red-700/50 rounded-lg p-4 flex items-start justify-between">
       <div className="flex items-start space-x-3">

@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { postJSON } from "../api/api";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function Login() {
   const { login, isAuthenticated } = useContext(AuthContext);
@@ -26,10 +27,12 @@ export default function Login() {
 
     if (!form.email.includes("@")) {
       setErr("Please enter a valid email address.");
+      emitErrorToast("Please enter a valid email address.");
       return;
     }
     if (form.password.length < 8) {
       setErr("Password must be at least 8 characters.");
+      emitErrorToast("Password must be at least 8 characters.");
       return;
     }
 
@@ -49,6 +52,7 @@ export default function Login() {
 
     const msg = res?.detail || "Login failed. Please try again.";
     setErr(msg);
+    emitErrorToast(msg);
   };
 
   const resendVerification = async () => {
@@ -58,6 +62,7 @@ export default function Login() {
     const email = form.email.trim();
     if (!email || !email.includes("@")) {
       setErr("Enter your email first to resend verification.");
+      emitErrorToast("Enter your email first to resend verification.");
       return;
     }
 

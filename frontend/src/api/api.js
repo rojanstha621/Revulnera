@@ -1,4 +1,5 @@
 // src/api/api.js
+import { extractErrorMessages, getPrimaryErrorMessage, emitErrorToast } from "../utils/errorUtils";
 
 const API_ROOT =
   import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -47,19 +48,28 @@ async function parseResponse(res) {
   try {
     data = text ? JSON.parse(text) : {};
   } catch {
-    return {
+    const payload = {
       detail: `Non-JSON response (${res.status})`,
       _status: res.status,
       _raw: text.slice(0, 200),
     };
+
+    if (!res.ok) {
+      emitErrorToast(payload.detail);
+    }
+    return payload;
   }
 
   if (!res.ok) {
-    return {
-      detail: data.detail || "Request failed",
-      _status: res.status,
+    const normalized = {
       ...data,
+      detail: getPrimaryErrorMessage(data, "Request failed"),
+      _errors: extractErrorMessages(data),
+      _status: res.status,
     };
+
+    emitErrorToast(normalized.detail);
+    return normalized;
   }
 
   return data;

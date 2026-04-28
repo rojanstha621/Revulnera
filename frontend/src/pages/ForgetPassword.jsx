@@ -1,13 +1,20 @@
 // src/pages/ForgotPassword.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { postJSON } from "../api/api";
 import { Link } from "react-router-dom";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
+
+  useEffect(() => {
+    if (err) {
+      emitErrorToast(err);
+    }
+  }, [err]);
 
   const onSubmit = async (e) => {
     e.preventDefault();

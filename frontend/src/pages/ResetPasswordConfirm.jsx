@@ -1,7 +1,8 @@
 // src/pages/ResetPasswordConfirm.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useParams, Link, useNavigate } from "react-router-dom";
 import { postJSON } from "../api/api";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function ResetPasswordConfirm() {
   const [params] = useSearchParams();
@@ -16,6 +17,12 @@ export default function ResetPasswordConfirm() {
   const [submitted, setSubmitted] = useState(false);
 
   const nav = useNavigate();
+
+  useEffect(() => {
+    if (err) {
+      emitErrorToast(err);
+    }
+  }, [err]);
 
   const onSubmit = async (e) => {
     e.preventDefault();

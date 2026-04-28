@@ -1,5 +1,5 @@
 // src/App.jsx
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
@@ -10,41 +10,39 @@ import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingScreen from "./components/LoadingScreen";
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-// import ScanCreate from "./pages/ScanCreate";
-// import ScanLive from "./pages/ScanLive";
-import HomePage from "./pages/HomePage";
-import Dashboard from "./pages/Dashboard";
-import Plans from "./pages/Plans";
-import Subscription from "./pages/Subscription";
-import Scanners from "./pages/Scanners";
-import Reports from "./pages/Reports";
-import AllScans from "./pages/AllScans";
-import ScanDetail from "./pages/ScanDetail";
-import NotFound from "./pages/NotFound";
-import ForgotPassword from "./pages/ForgetPassword";
-import VerifyEmail from "./pages/VerifyEmail";
-import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
-import Profile from "./pages/Profile";
-import ChangePassword from "./pages/ChangePassword";
-import AccountVerification from "./pages/AccountVerification";
-import VulnerabilityScans from "./pages/VulnerabilityScans";
-import VulnerabilityScanDetail from "./pages/VulnerabilityScanDetail";
-import DomainVerification from "./pages/DomainVerification";
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Plans = lazy(() => import("./pages/Plans"));
+const Subscription = lazy(() => import("./pages/Subscription"));
+const Scanners = lazy(() => import("./pages/Scanners"));
+const Reports = lazy(() => import("./pages/Reports"));
+const AllScans = lazy(() => import("./pages/AllScans"));
+const ScanDetail = lazy(() => import("./pages/ScanDetail"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const ForgotPassword = lazy(() => import("./pages/ForgetPassword"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+const ResetPasswordConfirm = lazy(() => import("./pages/ResetPasswordConfirm"));
+const Profile = lazy(() => import("./pages/Profile"));
+const ChangePassword = lazy(() => import("./pages/ChangePassword"));
+const AccountVerification = lazy(() => import("./pages/AccountVerification"));
+const VulnerabilityScans = lazy(() => import("./pages/VulnerabilityScans"));
+const VulnerabilityScanDetail = lazy(() => import("./pages/VulnerabilityScanDetail"));
+const DomainVerification = lazy(() => import("./pages/DomainVerification"));
 
 // Admin pages
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminUsers from "./pages/AdminUsers";
-import AdminUserDetail from "./pages/AdminUserDetail";
-import AdminKYCQueue from "./pages/AdminKYCQueue";
-import AdminKYCDetail from "./pages/AdminKYCDetail";
-import AdminDomainProofQueue from "./pages/AdminDomainProofQueue";
-import AdminDomainProofDetail from "./pages/AdminDomainProofDetail";
-import AdminBugBountyScopes from "./pages/AdminBugBountyScopes";
-import AdminScans from "./pages/AdminScans";
-import AdminScanDetail from "./pages/AdminScanDetail";
-import AdminAnalytics from "./pages/AdminAnalytics";
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminUsers = lazy(() => import("./pages/AdminUsers"));
+const AdminUserDetail = lazy(() => import("./pages/AdminUserDetail"));
+const AdminKYCQueue = lazy(() => import("./pages/AdminKYCQueue"));
+const AdminKYCDetail = lazy(() => import("./pages/AdminKYCDetail"));
+const AdminDomainProofQueue = lazy(() => import("./pages/AdminDomainProofQueue"));
+const AdminDomainProofDetail = lazy(() => import("./pages/AdminDomainProofDetail"));
+const AdminBugBountyScopes = lazy(() => import("./pages/AdminBugBountyScopes"));
+const AdminScans = lazy(() => import("./pages/AdminScans"));
+const AdminScanDetail = lazy(() => import("./pages/AdminScanDetail"));
+const AdminAnalytics = lazy(() => import("./pages/AdminAnalytics"));
 
 function AppContent() {
   const loading = usePageLoader();
@@ -55,6 +53,7 @@ function AppContent() {
 
   return (
     <Layout>
+      <Suspense fallback={<LoadingScreen />}>
       <Routes>
         {/* Auth */}
         <Route path="/auth/login" element={<Login />} />
@@ -254,6 +253,7 @@ function AppContent() {
         {/* Fallback */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
     </Layout>
   );
 }

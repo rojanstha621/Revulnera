@@ -5,6 +5,7 @@ import {
   Shield, Globe, Lock, Server, Activity 
 } from "lucide-react";
 import { getReportsSummary, generateScanReport } from "../api/api";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function Reports() {
   // User-selected scan window filter shown as quick range buttons.
@@ -56,7 +57,7 @@ export default function Reports() {
       }, 200);
     } catch (err) {
       console.error("Error generating report:", err);
-      alert("Failed to generate report: " + (err.message || "Unknown error"));
+      emitErrorToast("Failed to generate report: " + (err.message || "Unknown error"));
     } finally {
       setReportLoading(false);
     }

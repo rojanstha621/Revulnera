@@ -5,6 +5,7 @@ import { adminApi } from "../api/adminApi";
 import { ArrowLeft, Mail, Calendar, BarChart3 } from "lucide-react";
 import LoadingSpinner from "../components/admin/LoadingSpinner";
 import ErrorAlert from "../components/admin/ErrorAlert";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default function AdminUserDetail() {
   const { userId } = useParams();
@@ -13,6 +14,8 @@ export default function AdminUserDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [form, setForm] = useState({
     full_name: "",
     role: "user",
@@ -84,15 +87,16 @@ export default function AdminUserDetail() {
   };
 
   const handleDelete = async () => {
-    const confirmed = window.confirm("Delete this user? This action cannot be undone.");
-    if (!confirmed) return;
-
+    setDeleting(true);
     setError(null);
     const result = await adminApi.deleteUser(userId);
     if (result?._status && result._status !== 204) {
       setError(result.detail || "Failed to delete user");
+      setDeleting(false);
       return;
     }
+    setShowDeleteDialog(false);
+    setDeleting(false);
     navigate("/admin/users");
   };
 
@@ -177,7 +181,7 @@ export default function AdminUserDetail() {
           </button>
           <button
             type="button"
-            onClick={handleDelete}
+            onClick={() => setShowDeleteDialog(true)}
             className="px-4 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white"
           >
             Delete User
@@ -219,6 +223,22 @@ export default function AdminUserDetail() {
           </span>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={showDeleteDialog}
+        onClose={() => {
+          if (!deleting) {
+            setShowDeleteDialog(false);
+          }
+        }}
+        onConfirm={handleDelete}
+        title="Delete User"
+        description="Delete this user? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={deleting}
+      />
 
       {/* Scan Statistics */}
       <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">

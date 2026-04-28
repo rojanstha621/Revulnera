@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { postJSON } from "../api/api";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import { emitErrorToast } from "../utils/errorUtils";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -51,18 +52,22 @@ export default function Register() {
 
     if (!email.includes("@")) {
       setErr("Please enter a valid email address.");
+      emitErrorToast("Please enter a valid email address.");
       return;
     }
     if (form.password.length < 8) {
       setErr("Password must be at least 8 characters.");
+      emitErrorToast("Password must be at least 8 characters.");
       return;
     }
     if (form.password !== form.password2) {
       setErr("Passwords do not match.");
+      emitErrorToast("Passwords do not match.");
       return;
     }
     if (!acceptedPrivacyPolicy) {
       setErr("You must accept the Privacy Policy before registration.");
+      emitErrorToast("You must accept the Privacy Policy before registration.");
       return;
     }
 
@@ -83,7 +88,9 @@ export default function Register() {
       return;
     }
 
-    setErr(res?.detail || "Registration error. Please try again.");
+    const message = res?.detail || "Registration error. Please try again.";
+    setErr(message);
+    emitErrorToast(message);
   };
 
   return (

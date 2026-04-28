@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { postJSON, WS_ROOT } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { emitErrorToast } from "../utils/errorUtils";
 
 // API_ROOT for direct fetch calls
 const API_ROOT = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -209,13 +210,17 @@ export default function Scanners() {
 
     const token = localStorage.getItem("access");
     if (!token) {
-      setError("Login required (no access token found).");
+      const message = "Login required (no access token found).";
+      setError(message);
+      emitErrorToast(message);
       return;
     }
 
     const t = target.trim();
     if (!t) {
-      setError("Please enter a domain (example.com).");
+      const message = "Please enter a domain (example.com).";
+      setError(message);
+      emitErrorToast(message);
       return;
     }
 
@@ -231,7 +236,9 @@ export default function Scanners() {
       try {
         scanData.auth_headers = JSON.parse(authHeaders);
       } catch (e) {
-        setError("Invalid JSON in Authentication Headers");
+        const message = "Invalid JSON in Authentication Headers";
+        setError(message);
+        emitErrorToast(message);
         setStatus("IDLE");
         return;
       }
@@ -241,7 +248,9 @@ export default function Scanners() {
       try {
         scanData.auth_cookies = JSON.parse(authCookies);
       } catch (e) {
-        setError("Invalid JSON in Authentication Cookies");
+        const message = "Invalid JSON in Authentication Cookies";
+        setError(message);
+        emitErrorToast(message);
         setStatus("IDLE");
         return;
       }
@@ -256,12 +265,15 @@ export default function Scanners() {
     if (res?.detail) {
       setStatus("IDLE");
       setError(res.detail);
+      emitErrorToast(res.detail);
       return;
     }
 
     if (!res?.id) {
       setStatus("IDLE");
-      setError("Scan start failed: no scan id returned.");
+      const message = "Scan start failed: no scan id returned.";
+      setError(message);
+      emitErrorToast(message);
       return;
     }
 
@@ -330,6 +342,7 @@ export default function Scanners() {
           }
           if (msg.error) {
             setError(msg.error);
+            emitErrorToast(msg.error);
             addLogMessage("error", `Error: ${msg.error}`);
           }
           return;

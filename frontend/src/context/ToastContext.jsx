@@ -1,6 +1,7 @@
 // src/context/ToastContext.jsx
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
+import { getToastEventName } from '../utils/errorUtils';
 
 const ToastContext = createContext();
 
@@ -14,21 +15,49 @@ export const useToast = () => {
 
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
+  const recentToastsRef = useRef(new Map());
+
+  const removeToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  }, []);
 
   const addToast = useCallback((message, type = 'info', duration = 3000) => {
+    const normalizedMessage = String(message || '').trim();
+    if (!normalizedMessage) {
+      return;
+    }
+
+    // Avoid noisy duplicate bursts from repeated polling/API retries.
+    const dedupeKey = `${type}:${normalizedMessage}`;
+    const now = Date.now();
+    const lastSeen = recentToastsRef.current.get(dedupeKey);
+    if (lastSeen && now - lastSeen < 2500) {
+      return;
+    }
+    recentToastsRef.current.set(dedupeKey, now);
+
     const id = Date.now() + Math.random();
-    setToasts((prev) => [...prev, { id, message, type, duration }]);
+    setToasts((prev) => [...prev, { id, message: normalizedMessage, type, duration }]);
 
     if (duration > 0) {
       setTimeout(() => {
         removeToast(id);
       }, duration);
     }
-  }, []);
+  }, [removeToast]);
 
-  const removeToast = useCallback((id) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  }, []);
+  useEffect(() => {
+    const eventName = getToastEventName();
+    const onToastEvent = (event) => {
+      const detail = event?.detail || {};
+      addToast(detail.message, detail.type || 'error', detail.duration ?? 4000);
+    };
+
+    window.addEventListener(eventName, onToastEvent);
+    return () => {
+      window.removeEventListener(eventName, onToastEvent);
+    };
+  }, [addToast]);
 
   const toast = {
     success: (message, duration) => addToast(message, 'success', duration),
@@ -55,7 +84,7 @@ const ToastContainer = ({ toasts, removeToast }) => {
   );
 };
 
-const Toast = ({ id, message, type, onClose }) => {
+const Toast = ({ message, type, onClose }) => {
   const config = {
     success: {
       icon: CheckCircle,
