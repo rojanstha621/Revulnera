@@ -35,6 +35,15 @@ class StartScanView(APIView):
         if not target:
             return Response({"detail": "target required"}, status=400)
 
+        scan_input = {
+            "target": target,
+            "auth_headers": request.data.get("auth_headers", {}),
+            "auth_cookies": request.data.get("auth_cookies", {}),
+        }
+        validator = ScanSerializer(data=scan_input)
+        validator.is_valid(raise_exception=True)
+        validated = validator.validated_data
+
         can_scan, reason = can_start_scan(request.user)
         if not can_scan:
             return Response({"detail": reason}, status=status.HTTP_403_FORBIDDEN)
@@ -42,9 +51,11 @@ class StartScanView(APIView):
         limits = get_scan_limits(request.user)
 
         scan = Scan.objects.create(
-            target=target,
+            target=validated["target"],
             status="PENDING",
-            created_by=request.user
+            created_by=request.user,
+            auth_headers=validated.get("auth_headers", {}),
+            auth_cookies=validated.get("auth_cookies", {}),
         )
 
         broadcast(scan.id, {"type": "scan_status", "scan_id": scan.id, "status": "PENDING"})
@@ -60,7 +71,7 @@ class StartScanView(APIView):
         try:
             requests.post(go_url, json={
                 "scan_id": scan.id,
-                "target": target,
+                "target": scan.target,
                 "user_id": request.user.id,  # Pass user ID for file organization
                 "backend_base": django_base,
                 "auth_header": token,  # Go will reuse it when posting back

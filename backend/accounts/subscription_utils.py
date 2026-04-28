@@ -167,8 +167,21 @@ def _expire_stale_active_scans(user):
         updated_at__lt=cutoff,
     ).update(status="FAILED")
 
+    # Only expire vulnerability scans that were actually queued/running.
+    # Draft scans remain PENDING with started_at=None and should not be touched.
     user.vulnerability_scans.filter(
-        status__in=["PENDING", "RUNNING"],
+        updated_at__lt=cutoff,
+    ).filter(
+        status="RUNNING",
+    ).update(
+        status="FAILED",
+        completed_at=now,
+        error_message="Scan marked FAILED automatically after stale worker timeout.",
+    )
+
+    user.vulnerability_scans.filter(
+        status="PENDING",
+        started_at__isnull=False,
         updated_at__lt=cutoff,
     ).update(
         status="FAILED",
@@ -187,7 +200,15 @@ def can_start_scan(user):
     limits = get_scan_limits(user)
     # Apply one shared parallel-scan budget across recon and vulnerability jobs.
     active_recon_scans = user.scans.filter(status__in=["PENDING", "RUNNING"]).count()
-    active_vuln_scans = user.vulnerability_scans.filter(status__in=["PENDING", "RUNNING"]).count()
+    # Count only active vulnerability executions:
+    # - RUNNING scans
+    # - PENDING scans that were already queued (started_at is set)
+    active_vuln_scans = user.vulnerability_scans.filter(
+        status="RUNNING",
+    ).count() + user.vulnerability_scans.filter(
+        status="PENDING",
+        started_at__isnull=False,
+    ).count()
     active_scans = active_recon_scans + active_vuln_scans
     if active_scans >= limits["max_concurrent_scans"]:
         return (

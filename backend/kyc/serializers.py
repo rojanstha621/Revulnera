@@ -10,6 +10,14 @@ class KYCSubmissionSerializer(serializers.ModelSerializer):
         fields = ["doc_type", "doc_front", "doc_back", "selfie"]
 
     def validate(self, attrs):
+        doc_type = attrs.get("doc_type")
+        doc_back = attrs.get("doc_back")
+
+        if doc_type in [KYCSubmission.DOC_TYPE_CITIZENSHIP, KYCSubmission.DOC_TYPE_LICENSE] and not doc_back:
+            raise serializers.ValidationError(
+                {"doc_back": "Back-side document image is required for this document type."}
+            )
+
         user = self.context["request"].user
         already_exists = KYCSubmission.objects.filter(
             user=user,
@@ -20,6 +28,25 @@ class KYCSubmissionSerializer(serializers.ModelSerializer):
                 "You already have a pending or approved KYC submission."
             )
         return attrs
+
+    def _validate_image_file(self, value, field_label):
+        max_size_bytes = 10 * 1024 * 1024
+        if value.size > max_size_bytes:
+            raise serializers.ValidationError(f"{field_label} must be 10MB or smaller.")
+
+        content_type = getattr(value, "content_type", "") or ""
+        if content_type and not content_type.startswith("image/"):
+            raise serializers.ValidationError(f"{field_label} must be an image file.")
+        return value
+
+    def validate_doc_front(self, value):
+        return self._validate_image_file(value, "Front document")
+
+    def validate_doc_back(self, value):
+        return self._validate_image_file(value, "Back document")
+
+    def validate_selfie(self, value):
+        return self._validate_image_file(value, "Selfie")
 
     def create(self, validated_data):
         validated_data["user"] = self.context["request"].user

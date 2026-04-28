@@ -2,6 +2,7 @@
 Django settings for revulnera_project project.
 """
 
+import json
 import os
 from pathlib import Path
 from datetime import timedelta
@@ -221,6 +222,21 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Frontend URL (used for links if needed)
 # --------------------------------------------------
 DEFAULT_FRONTEND_URL = "http://localhost:5173"
+
+# Optional auto-sync feed catalog for bug bounty scopes.
+# Example:
+# export BUG_BOUNTY_AUTO_FEEDS='[
+#   {"platform":"hackerone","program_name":"example-program","source_url":"https://.../scopes.json"}
+# ]'
+BUG_BOUNTY_AUTO_FEEDS = []
+_auto_feed_raw = os.getenv("BUG_BOUNTY_AUTO_FEEDS", "").strip()
+if _auto_feed_raw:
+    try:
+        parsed = json.loads(_auto_feed_raw)
+        if isinstance(parsed, list):
+            BUG_BOUNTY_AUTO_FEEDS = parsed
+    except json.JSONDecodeError:
+        BUG_BOUNTY_AUTO_FEEDS = []
 
 # --------------------------------------------------
 # Extra security (safe even in dev)
