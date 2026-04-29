@@ -3,6 +3,7 @@ from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
+from django.utils import timezone
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.utils.dateparse import parse_datetime
@@ -566,6 +567,185 @@ class GenerateScanReportView(APIView):
             for tech in endpoint.get("fingerprints", []):
                 tech_stack[tech] = tech_stack.get(tech, 0) + 1
 
+        severity_weights = {"critical": 25, "high": 15, "medium": 8, "low": 3}
+        risk_score = min(
+            100,
+            sum(severity_weights.get(f["severity"], 0) for f in critical_findings)
+            + high_risk_ports * 5
+            + total_tls_issues * 3
+            + total_directory_issues * 4
+        )
+
+        if risk_score >= 75:
+            risk_level = "Critical"
+        elif risk_score >= 50:
+            risk_level = "High"
+        elif risk_score >= 25:
+            risk_level = "Medium"
+        else:
+            risk_level = "Low"
+
+        auth_related_endpoints = 0
+        admin_related_endpoints = 0
+        for endpoint in endpoints:
+            url = str(endpoint.get("url", "")).lower()
+            if any(marker in url for marker in ("login", "signin", "auth", "token", "oauth")):
+                auth_related_endpoints += 1
+            if any(marker in url for marker in ("admin", "dashboard", "manage", "panel")):
+                admin_related_endpoints += 1
+
+        control_coverage = [
+            {
+                "control": "Access Management",
+                "framework": "OWASP A01 / NIST PR.AC",
+                "status": "gap" if auth_related_endpoints or admin_related_endpoints else "healthy",
+                "evidence": auth_related_endpoints + admin_related_endpoints,
+                "description": "Checks for exposed authentication and administrative attack paths.",
+            },
+            {
+                "control": "Transport Security",
+                "framework": "PCI DSS / NIST PR.DS",
+                "status": "gap" if total_tls_issues else "healthy",
+                "evidence": total_tls_issues,
+                "description": "Tracks weak TLS versions, expired certificates, and encryption issues.",
+            },
+            {
+                "control": "Asset Exposure",
+                "framework": "NIST PR.PT / ISO 27001 A.8",
+                "status": "gap" if high_risk_ports or total_directory_issues else "healthy",
+                "evidence": high_risk_ports + total_directory_issues,
+                "description": "Covers open services and exposed directories or sensitive paths.",
+            },
+            {
+                "control": "Monitoring & Reporting",
+                "framework": "NIST DE.CM / GDPR Article 32",
+                "status": "partial" if total_endpoints else "healthy",
+                "evidence": total_endpoints,
+                "description": "Confirms the scan collected enough telemetry to support governance decisions.",
+            },
+        ]
+
+        compliance_mappings = []
+        seen_mappings = set()
+
+        def add_mapping(framework, identifier, name, description):
+            key = (framework, identifier)
+            if key in seen_mappings:
+                return
+            seen_mappings.add(key)
+            compliance_mappings.append({
+                "framework": framework,
+                "identifier": identifier,
+                "name": name,
+                "description": description,
+            })
+
+        if high_risk_ports:
+            add_mapping(
+                "PCI DSS",
+                "Requirement 1 / 2",
+                "Restrict network access",
+                "High-risk ports indicate exposed services that should be minimized and controlled.",
+            )
+            add_mapping(
+                "NIST CSF",
+                "PR.AC / PR.PT",
+                "Access control and protective technology",
+                "Open services should be justified, documented, and protected by network controls.",
+            )
+
+        if total_tls_issues:
+            add_mapping(
+                "OWASP Top 10",
+                "A02",
+                "Cryptographic Failures",
+                "Weak TLS versions and expired certificates weaken transport protection.",
+            )
+            add_mapping(
+                "PCI DSS",
+                "Requirement 4",
+                "Encrypt transmission of cardholder data",
+                "Strong TLS and valid certificates are required for secure transmission.",
+            )
+
+        if total_directory_issues:
+            add_mapping(
+                "OWASP Top 10",
+                "A05",
+                "Security Misconfiguration",
+                "Exposed directories and sensitive paths indicate missing hardening.",
+            )
+            add_mapping(
+                "GDPR",
+                "Article 32",
+                "Security of processing",
+                "Publicly exposed sensitive content can create confidentiality and integrity concerns.",
+            )
+
+        if auth_related_endpoints or admin_related_endpoints:
+            add_mapping(
+                "OWASP API Top 10",
+                "API1",
+                "Broken Object Level Authorization",
+                "Authentication and admin-oriented endpoints should be validated for access control.",
+            )
+            add_mapping(
+                "NIST CSF",
+                "PR.AC",
+                "Identity management, authentication, and access control",
+                "Sensitive endpoints should be protected with least-privilege authorization.",
+            )
+
+        remediation_plan = []
+        if critical_findings:
+            remediation_plan.append({
+                "priority": 1,
+                "owner": "Security Operations",
+                "effort": "quick",
+                "title": "Contain critical exposures",
+                "details": "Review the top critical findings first and isolate any externally reachable secrets or admin surfaces.",
+            })
+        if high_risk_ports:
+            remediation_plan.append({
+                "priority": 2,
+                "owner": "Infrastructure",
+                "effort": "medium",
+                "title": "Reduce open service exposure",
+                "details": "Close or restrict high-risk ports and document any exceptions with compensating controls.",
+            })
+        if total_tls_issues:
+            remediation_plan.append({
+                "priority": 3,
+                "owner": "Platform Engineering",
+                "effort": "quick",
+                "title": "Harden TLS configuration",
+                "details": "Disable weak protocol versions, renew expired certificates, and verify strong cipher suites.",
+            })
+        if total_directory_issues:
+            remediation_plan.append({
+                "priority": 4,
+                "owner": "Application Team",
+                "effort": "quick",
+                "title": "Remove exposed sensitive paths",
+                "details": "Block public access to sensitive directories and ensure directory listing is disabled.",
+            })
+        if auth_related_endpoints or admin_related_endpoints:
+            remediation_plan.append({
+                "priority": 5,
+                "owner": "Application Team",
+                "effort": "medium",
+                "title": "Review access controls on sensitive endpoints",
+                "details": "Validate authentication, authorization, and rate limits on login, admin, and token-related paths.",
+            })
+
+        governance = {
+            "report_owner": scan.created_by.email,
+            "report_scope": scan.target,
+            "generated_at": timezone.now().isoformat(),
+            "status": scan.status,
+            "policy_alignment": ["Risk management", "Security hardening", "Evidence-based remediation"],
+        }
+
         # Final API shape consumed by the frontend Reports page and exports.
         report = {
             "scan_info": {
@@ -585,6 +765,18 @@ class GenerateScanReportView(APIView):
                 "tls_issues": total_tls_issues,
                 "directory_issues": total_directory_issues,
                 "critical_findings_count": len([f for f in critical_findings if f["severity"] in ["critical", "high"]]),
+            },
+            "grc": {
+                "governance": governance,
+                "risk": {
+                    "score": risk_score,
+                    "level": risk_level,
+                    "critical_findings": len([f for f in critical_findings if f["severity"] == "critical"]),
+                    "high_findings": len([f for f in critical_findings if f["severity"] == "high"]),
+                },
+                "control_coverage": control_coverage,
+                "compliance_mappings": compliance_mappings,
+                "remediation_plan": remediation_plan,
             },
             "critical_findings": critical_findings[:20],  # Keep output concise for UI/export readability.
             "technology_stack": dict(sorted(tech_stack.items(), key=lambda x: x[1], reverse=True)[:15]),

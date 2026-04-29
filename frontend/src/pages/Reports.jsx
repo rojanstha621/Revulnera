@@ -420,6 +420,21 @@ export default function Reports() {
     return actions.slice(0, 5);
   };
 
+  const getGrcData = (reportData) => reportData?.grc || {};
+
+  const getGrcRiskLabelColor = (label) => {
+    if (label === "Critical") return "text-red-400";
+    if (label === "High") return "text-slate-400";
+    if (label === "Medium") return "text-gray-400";
+    return "text-blue-400";
+  };
+
+  const getControlStatusColor = (status) => {
+    if (status === "healthy") return "text-green-400 bg-green-500/20 border-green-500/30";
+    if (status === "partial") return "text-yellow-300 bg-yellow-500/20 border-yellow-500/30";
+    return "text-red-300 bg-red-500/20 border-red-500/30";
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -746,6 +761,97 @@ export default function Reports() {
             </div>
           </div>
 
+          {getGrcData(report) && (
+            <div className="card border border-cyan-500/20 bg-slate-950/70">
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                <Shield className="w-5 h-5 text-cyan-300" />
+                GRC Snapshot
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Risk Posture</p>
+                  <p className="text-3xl font-bold text-white">{getGrcData(report)?.risk?.score ?? getRiskScore(report)}</p>
+                  <p className={`text-sm mt-1 font-semibold ${getGrcRiskLabelColor(getGrcData(report)?.risk?.level || getRiskLabel(getRiskScore(report)))}`}>
+                    {getGrcData(report)?.risk?.level || getRiskLabel(getRiskScore(report))}
+                  </p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Governance</p>
+                  <p className="text-sm text-white font-semibold">{getGrcData(report)?.governance?.report_owner}</p>
+                  <p className="text-xs text-gray-400 mt-1">{getGrcData(report)?.governance?.report_scope}</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Compliance Mappings</p>
+                  <p className="text-3xl font-bold text-white">{getGrcData(report)?.compliance_mappings?.length || 0}</p>
+                  <p className="text-xs text-gray-400 mt-1">Framework/control relationships</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Remediation Queue</p>
+                  <p className="text-3xl font-bold text-white">{getGrcData(report)?.remediation_plan?.length || 0}</p>
+                  <p className="text-xs text-gray-400 mt-1">Prioritized follow-up actions</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                {(getGrcData(report)?.control_coverage || []).map((control) => (
+                  <div key={control.control} className="bg-white/5 border border-white/10 rounded-lg p-4">
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div>
+                        <p className="text-sm font-semibold text-white">{control.control}</p>
+                        <p className="text-xs text-gray-400">{control.framework}</p>
+                      </div>
+                      <span className={`px-2 py-1 rounded border text-xs ${getControlStatusColor(control.status)}`}>
+                        {control.status}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-300">{control.description}</p>
+                    <p className="text-xs text-gray-400 mt-2">Evidence count: {control.evidence}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-white mb-3">Compliance Frameworks</p>
+                  <div className="space-y-3">
+                    {(getGrcData(report)?.compliance_mappings || []).map((mapping) => (
+                      <div key={`${mapping.framework}-${mapping.identifier}`} className="rounded-lg bg-slate-900/60 border border-white/5 p-3">
+                        <div className="flex items-center justify-between gap-3 mb-1">
+                          <p className="text-sm font-semibold text-white">{mapping.framework}</p>
+                          <p className="text-xs text-cyan-300">{mapping.identifier}</p>
+                        </div>
+                        <p className="text-sm text-gray-200">{mapping.name}</p>
+                        <p className="text-xs text-gray-400 mt-1">{mapping.description}</p>
+                      </div>
+                    ))}
+                    {(getGrcData(report)?.compliance_mappings || []).length === 0 && (
+                      <p className="text-sm text-gray-400">No compliance mappings were derived for this scan.</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-white mb-3">Remediation Plan</p>
+                  <div className="space-y-3">
+                    {(getGrcData(report)?.remediation_plan || []).map((item) => (
+                      <div key={item.priority} className="rounded-lg bg-slate-900/60 border border-white/5 p-3">
+                        <div className="flex items-center justify-between gap-3 mb-1">
+                          <p className="text-sm font-semibold text-white">{item.title}</p>
+                          <p className="text-xs text-gray-400">Priority {item.priority}</p>
+                        </div>
+                        <p className="text-xs text-gray-400">Owner: {item.owner} · Effort: {item.effort}</p>
+                        <p className="text-sm text-gray-200 mt-1">{item.details}</p>
+                      </div>
+                    ))}
+                    {(getGrcData(report)?.remediation_plan || []).length === 0 && (
+                      <p className="text-sm text-gray-400">No remediation actions were generated for this scan.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Critical Findings */}
           {report.critical_findings && report.critical_findings.length > 0 && (
             <div className="card">
@@ -890,6 +996,13 @@ function generateHTMLReport(report) {
     { healthy: 0, redirects: 0, clientErrors: 0, serverErrors: 0 }
   );
 
+  const grc = report.grc || {};
+  const grcRiskScore = grc.risk?.score ?? riskScore;
+  const grcRiskLevel = grc.risk?.level || (grcRiskScore >= 75 ? "Critical" : grcRiskScore >= 50 ? "High" : grcRiskScore >= 25 ? "Medium" : "Low");
+  const grcControlCoverage = grc.control_coverage || [];
+  const grcComplianceMappings = grc.compliance_mappings || [];
+  const grcRemediationPlan = grc.remediation_plan || [];
+
   // Entire HTML and CSS are embedded so the exported file has no external dependencies.
   return `
 <!DOCTYPE html>
@@ -959,8 +1072,33 @@ function generateHTMLReport(report) {
         </div>
 
           <h2>🧭 Risk Posture</h2>
-          <p><strong>Risk Score:</strong> ${riskScore}/100</p>
-          <p><strong>Severity Mix:</strong> Critical ${severityCounts.critical}, High ${severityCounts.high}, Medium ${severityCounts.medium}, Low ${severityCounts.low}</p>
+            <p><strong>Risk Score:</strong> ${grcRiskScore}/100</p>
+            <p><strong>Risk Level:</strong> ${grcRiskLevel}</p>
+            <p><strong>Severity Mix:</strong> Critical ${severityCounts.critical}, High ${severityCounts.high}, Medium ${severityCounts.medium}, Low ${severityCounts.low}</p>
+
+            <h2>📘 Governance Snapshot</h2>
+            <p><strong>Owner:</strong> ${grc.governance?.report_owner || report.scan_info.created_by}</p>
+            <p><strong>Scope:</strong> ${grc.governance?.report_scope || report.scan_info.target}</p>
+            <p><strong>Policy Alignment:</strong> ${(grc.governance?.policy_alignment || []).join(", ") || "Not set"}</p>
+
+            <h2>🧩 Control Coverage</h2>
+            ${grcControlCoverage.map((control) => `
+            <p><strong>${control.control}</strong> (${control.framework}) - ${control.status} (${control.evidence} evidence items)</p>
+            <p>${control.description}</p>
+            `).join('')}
+
+            <h2>📚 Compliance Mappings</h2>
+            ${grcComplianceMappings.map((mapping) => `
+            <p><strong>${mapping.framework}</strong> ${mapping.identifier} - ${mapping.name}</p>
+            <p>${mapping.description}</p>
+            `).join('') || '<p>No compliance mappings were derived for this scan.</p>'}
+
+            <h2>🛠 Remediation Plan</h2>
+            ${grcRemediationPlan.map((item) => `
+            <p><strong>Priority ${item.priority}:</strong> ${item.title}</p>
+            <p>Owner: ${item.owner} | Effort: ${item.effort}</p>
+            <p>${item.details}</p>
+            `).join('') || '<p>No remediation actions were generated for this scan.</p>'}
 
           <h2>🎯 Endpoint Health</h2>
           <p><strong>2xx Healthy:</strong> ${endpointOverview.healthy}</p>
