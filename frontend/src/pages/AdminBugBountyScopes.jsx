@@ -12,9 +12,7 @@ export default function AdminBugBountyScopes() {
 
   const [platform, setPlatform] = useState("hackerone");
   const [programName, setProgramName] = useState("");
-  const [sourceUrl, setSourceUrl] = useState("");
-  const [payloadText, setPayloadText] = useState("");
-  const [rawDomainsText, setRawDomainsText] = useState("");
+  const [domain, setDomain] = useState("");
 
   useEffect(() => {
     fetchScopes();
@@ -47,22 +45,9 @@ export default function AdminBugBountyScopes() {
       return;
     }
 
-    let payload = null;
-    if (!sourceUrl.trim()) {
-      if (rawDomainsText.trim()) {
-        payload = rawDomainsText;
-      } else {
-        if (!payloadText.trim()) {
-          setError("Provide either source URL, raw domains, or JSON payload");
-          return;
-        }
-        try {
-          payload = JSON.parse(payloadText);
-        } catch {
-          setError("Invalid JSON payload");
-          return;
-        }
-      }
+    if (!domain.trim()) {
+      setError("Domain is required");
+      return;
     }
 
     setSubmitting(true);
@@ -70,13 +55,8 @@ export default function AdminBugBountyScopes() {
     const importPayload = {
       platform,
       program_name: programName.trim(),
+      domain: domain.trim(),
     };
-
-    if (sourceUrl.trim()) {
-      importPayload.source_url = sourceUrl.trim();
-    } else {
-      importPayload.payload = payload;
-    }
 
     const result = await adminApi.importBugBountyScopes(importPayload);
     if (result?._status) {
@@ -131,39 +111,17 @@ export default function AdminBugBountyScopes() {
         </div>
 
         <div>
-          <label className="block text-sm text-gray-300 mb-2">Source URL (optional)</label>
+          <label className="block text-sm text-gray-300 mb-2">Domain</label>
           <input
-            type="url"
-            value={sourceUrl}
-            onChange={(e) => setSourceUrl(e.target.value)}
+            type="text"
+            value={domain}
+            onChange={(e) => setDomain(e.target.value)}
             className="input-premium w-full"
-            placeholder="https://platform.example/program/scopes.json"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm text-gray-300 mb-2">Raw Domains / URLs</label>
-          <textarea
-            value={rawDomainsText}
-            onChange={(e) => setRawDomainsText(e.target.value)}
-            className="input-premium w-full font-mono text-sm"
-            rows={8}
-            placeholder={"example.com\n*.api.example.com\nhttps://app.example.com\n# one item per line"}
+            placeholder="example.com"
           />
           <p className="mt-2 text-xs text-gray-400">
-            Paste one domain or URL per line. Comments starting with # are ignored.
+            Enter one domain or URL only.
           </p>
-        </div>
-
-        <div>
-          <label className="block text-sm text-gray-300 mb-2">JSON Payload (used when source URL is empty)</label>
-          <textarea
-            value={payloadText}
-            onChange={(e) => setPayloadText(e.target.value)}
-            className="input-premium w-full font-mono text-sm"
-            rows={10}
-            placeholder='{"scopes":[{"asset_identifier":"example.com","asset_type":"domain","in_scope":true}]}'
-          />
         </div>
 
         <button disabled={submitting} type="submit" className="px-4 py-2 rounded-lg bg-slate-600 hover:bg-slate-700 text-white disabled:opacity-60">
