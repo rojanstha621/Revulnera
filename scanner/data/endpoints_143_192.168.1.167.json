@@ -1,0 +1,236 @@
+{
+  "scan_id": 143,
+  "target": "192.168.1.167",
+  "endpoints": [
+    {
+      "url": "http://192.168.1.167/dvwa",
+      "status_code": 301,
+      "content_length": 318,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/icons/blank.gif",
+      "status_code": 200,
+      "content_length": 148,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/gif",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/icons/back.gif",
+      "status_code": 200,
+      "content_length": 216,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/gif",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/dav",
+      "status_code": 301,
+      "content_length": 317,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/",
+      "status_code": 200,
+      "content_length": 891,
+      "title": "Metasploitable2 - Linux",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "PHP:5.2.4",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/index.php",
+      "status_code": 200,
+      "content_length": 891,
+      "title": "Metasploitable2 - Linux",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "PHP:5.2.4",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/index.php?page\u0026username",
+      "status_code": 200,
+      "content_length": 891,
+      "title": "Metasploitable2 - Linux",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "PHP:5.2.4",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/index.php?page",
+      "status_code": 200,
+      "content_length": 891,
+      "title": "Metasploitable2 - Linux",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "PHP:5.2.4",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/index.php?do\u0026page",
+      "status_code": 200,
+      "content_length": 891,
+      "title": "Metasploitable2 - Linux",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "PHP:5.2.4",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/phpMyAdmin",
+      "status_code": 301,
+      "content_length": 324,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/mutillidae?page",
+      "status_code": 301,
+      "content_length": 329,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/mutillidae",
+      "status_code": 301,
+      "content_length": 324,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/twiki",
+      "status_code": 301,
+      "content_length": 319,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/mutillidae/documentation/mutillidae-installation-on-xampp-win7.pdf",
+      "status_code": 200,
+      "content_length": 1607076,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/pdf",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-05-28T11:52:07.307178295Z"
+}

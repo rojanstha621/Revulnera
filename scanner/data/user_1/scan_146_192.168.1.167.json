@@ -1,0 +1,44 @@
+{
+  "scan_id": 146,
+  "target": "192.168.1.167",
+  "subdomains": [
+    {
+      "name": "ip6-localhost",
+      "ip": "::1",
+      "ips": [
+        "::1"
+      ],
+      "alive": false,
+      "error_msg": "HTTP check failed: Get \"http://ip6-localhost\": dial tcp [::1]:80: connect: connection refused"
+    },
+    {
+      "name": "192.168.1.167",
+      "ip": "192.168.1.167",
+      "ips": [
+        "192.168.1.167"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "ip6-loopback",
+      "ip": "::1",
+      "ips": [
+        "::1"
+      ],
+      "alive": false,
+      "error_msg": "HTTP check failed: Get \"http://ip6-loopback\": dial tcp [::1]:80: connect: connection refused"
+    },
+    {
+      "name": "localhost",
+      "ip": "::1",
+      "ips": [
+        "::1",
+        "127.0.0.1"
+      ],
+      "alive": true,
+      "error_msg": ""
+    }
+  ],
+  "saved_at": "2026-05-28T11:56:12.707066171Z"
+}

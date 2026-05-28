@@ -40,6 +40,10 @@ class StartScanView(APIView):
             "target": target,
             "auth_headers": request.data.get("auth_headers", {}),
             "auth_cookies": request.data.get("auth_cookies", {}),
+            "auth_type": request.data.get("auth_type", "none"),
+            "login_url": request.data.get("login_url", ""),
+            "username": request.data.get("username", ""),
+            "password": request.data.get("password", ""),
         }
         validator = ScanSerializer(data=scan_input)
         validator.is_valid(raise_exception=True)
@@ -57,6 +61,10 @@ class StartScanView(APIView):
             created_by=request.user,
             auth_headers=validated.get("auth_headers", {}),
             auth_cookies=validated.get("auth_cookies", {}),
+            auth_type=validated.get("auth_type", "none"),
+            login_url=validated.get("login_url", ""),
+            username=validated.get("username", ""),
+            password=validated.get("password", ""),
         )
 
         broadcast(scan.id, {"type": "scan_status", "scan_id": scan.id, "status": "PENDING"})
@@ -76,6 +84,12 @@ class StartScanView(APIView):
                 "user_id": request.user.id,  # Pass user ID for file organization
                 "backend_base": django_base,
                 "auth_header": token,  # Go will reuse it when posting back
+                "auth_headers": validated.get("auth_headers", {}),
+                "auth_cookies": validated.get("auth_cookies", {}),
+                "auth_type": validated.get("auth_type", "none"),
+                "login_url": validated.get("login_url", ""),
+                "username": validated.get("username", ""),
+                "password": validated.get("password", ""),
                 "worker_count": limits["worker_count"],
                 "queue_priority": limits["scan_queue_priority"],
             }, timeout=5)

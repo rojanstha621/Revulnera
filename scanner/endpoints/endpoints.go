@@ -10,6 +10,7 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -58,12 +59,12 @@ type EndpointResult struct {
 // 5) domain + endpoint fingerprinting
 // 6) save results
 func DiscoverEndpointsFromScan(ctx context.Context, userID int64, scanID int64, target string) ([]EndpointResult, error) {
-	return DiscoverEndpointsFromScanWithCallback(ctx, userID, scanID, target, nil)
+	return DiscoverEndpointsFromScanWithAuthAndCallback(ctx, userID, scanID, target, nil, nil)
 }
 
 // DiscoverEndpointsFromScanWithCallback allows streaming results via callback
 // Use SetLogCallback to enable progress log messages during discovery
-func DiscoverEndpointsFromScanWithCallback(ctx context.Context, userID int64, scanID int64, target string, callback func(EndpointResult)) ([]EndpointResult, error) {
+func DiscoverEndpointsFromScanWithAuthAndCallback(ctx context.Context, userID int64, scanID int64, target string, auth *DiscoveryAuthConfig, callback func(EndpointResult)) ([]EndpointResult, error) {
 	// End-to-end endpoint phase:
 	// load alive hosts -> discover URLs -> probe URLs -> store endpoint fingerprints/evidence.
 	subdomains, scanFile, err := recon.LoadSubdomainsForScan(userID, scanID, target)
@@ -95,27 +96,42 @@ func DiscoverEndpointsFromScanWithCallback(ctx context.Context, userID int64, sc
 	default:
 	}
 
-	// Dynamic endpoint discovery using gau, katana, and JS analysis
+	// Dynamic endpoint discovery using recursive crawling first, then passive tools when appropriate.
 	discoveryOpts := DefaultDiscoveryOptions()
 	discoveryOpts.Workers = getEnvIntOrDefault("ENDPOINT_DISCOVERY_WORKERS", 5)
+	discoveryOpts.RecursiveDepth = getEnvIntOrDefault("RECURSIVE_CRAWL_DEPTH", 5)
+	discoveryOpts.RecursiveMaxPages = getEnvIntOrDefault("RECURSIVE_MAX_PAGES", 150)
 	discoveryOpts.KatanaDepth = getEnvIntOrDefault("KATANA_DEPTH", 2)
 	discoveryOpts.MaxURLsPerHost = getEnvIntOrDefault("MAX_URLS_PER_HOST", 500)
 
-	urls := DiscoverURLsFromHosts(ctx, aliveHosts, discoveryOpts)
+	urls := make([]string, 0)
+	if discoveryOpts.UseRecursiveCrawl {
+		recursiveURLs := crawlApplicationEndpoints(ctx, target, discoveryOpts, auth)
+		if len(recursiveURLs) > 0 {
+			urls = append(urls, recursiveURLs...)
+			if globalLogCallback != nil {
+				globalLogCallback(fmt.Sprintf("🌐 Recursive crawl found %d URLs", len(recursiveURLs)), "info")
+			}
+		}
+	}
+
+	if !shouldPreferRecursiveCrawl(target) {
+		seedTargets := buildDiscoverySeeds(target, aliveHosts)
+		dynamicURLs := DiscoverURLsFromHosts(ctx, seedTargets, discoveryOpts)
+		if len(dynamicURLs) > 0 {
+			urls = append(urls, dynamicURLs...)
+			if globalLogCallback != nil {
+				globalLogCallback(fmt.Sprintf("📊 Discovered %d unique URLs from gau/katana", len(dynamicURLs)), "info")
+			}
+		}
+	}
 
 	if len(urls) == 0 {
 		log.Printf("[endpoints] no URLs discovered, falling back to basic paths")
 		if globalLogCallback != nil {
-			globalLogCallback("⚠️ No URLs discovered from gau/katana, using basic paths", "warning")
+			globalLogCallback("⚠️ No URLs discovered, using basic paths", "warning")
 		}
-		// Fallback: add basic root URLs
-		for _, host := range aliveHosts {
-			urls = append(urls, "https://"+host+"/", "http://"+host+"/")
-		}
-	} else {
-		if globalLogCallback != nil {
-			globalLogCallback(fmt.Sprintf("📊 Discovered %d unique URLs from gau/katana", len(urls)), "info")
-		}
+		urls = append(urls, buildFallbackEndpointSeeds(target, aliveHosts)...)
 	}
 
 	log.Printf("[endpoints] discovered %d unique URLs, starting probing", len(urls))
@@ -139,6 +155,71 @@ func DiscoverEndpointsFromScanWithCallback(ctx context.Context, userID int64, sc
 	}
 
 	return results, nil
+}
+
+func buildDiscoverySeeds(target string, aliveHosts []string) []string {
+	// Keep the exact target URL in the endpoint phase so path-based apps such as
+	// /mutillidae/ are crawled, while still probing the bare alive hosts.
+	seeds := make([]string, 0, len(aliveHosts)+1)
+	seen := make(map[string]struct{})
+	add := func(value string) {
+		value = strings.TrimSpace(value)
+		if value == "" {
+			return
+		}
+		key := strings.ToLower(value)
+		if _, ok := seen[key]; ok {
+			return
+		}
+		seen[key] = struct{}{}
+		seeds = append(seeds, value)
+	}
+
+	add(target)
+	for _, host := range aliveHosts {
+		add(host)
+	}
+	return seeds
+}
+
+func buildFallbackEndpointSeeds(target string, aliveHosts []string) []string {
+	// When dynamic discovery fails, keep the original target path and also probe
+	// the host roots for every alive host.
+	fallback := make([]string, 0)
+	seen := make(map[string]struct{})
+	add := func(value string) {
+		value = strings.TrimSpace(value)
+		if value == "" {
+			return
+		}
+		key := strings.ToLower(value)
+		if _, ok := seen[key]; ok {
+			return
+		}
+		seen[key] = struct{}{}
+		fallback = append(fallback, value)
+	}
+
+	if target != "" {
+		if u, err := url.Parse(target); err == nil && u.Scheme != "" && u.Host != "" {
+			add(strings.TrimRight(u.String(), "/"))
+			if u.Path != "" && u.Path != "/" {
+				pathURL := *u
+				pathURL.Fragment = ""
+				add(strings.TrimRight(pathURL.String(), "/"))
+			}
+		}
+	}
+
+	for _, host := range aliveHosts {
+		if host == "" {
+			continue
+		}
+		add("http://" + host + "/")
+		add("https://" + host + "/")
+	}
+
+	return fallback
 }
 
 // ---------------- HTTPX INTEGRATION ----------------

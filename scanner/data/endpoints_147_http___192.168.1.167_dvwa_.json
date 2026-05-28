@@ -1,0 +1,72 @@
+{
+  "scan_id": 147,
+  "target": "http://192.168.1.167/dvwa/",
+  "endpoints": [
+    {
+      "url": "http://192.168.1.167/dvwa",
+      "status_code": 301,
+      "content_length": 318,
+      "title": "301 Moved Permanently",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/dvwa/css/login.css",
+      "status_code": 200,
+      "content_length": 608,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/login.php",
+      "status_code": 200,
+      "content_length": 1289,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "PHP:5.2.4",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/dvwa/images/login_logo.png",
+      "status_code": 200,
+      "content_length": 12875,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-05-28T12:04:51.415074929Z"
+}

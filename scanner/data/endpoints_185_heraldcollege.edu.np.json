@@ -1,0 +1,2477 @@
+{
+  "scan_id": 185,
+  "target": "heraldcollege.edu.np",
+  "endpoints": [
+    {
+      "url": "https://heraldcollege.edu.np/apply-now?course",
+      "status_code": 200,
+      "content_length": 32160,
+      "title": "Apply at Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/notices",
+      "status_code": 200,
+      "content_length": 23029,
+      "title": "Events | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/make-learning-fun-with-projects",
+      "status_code": 200,
+      "content_length": 26130,
+      "title": "Learning fun with projects | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/about",
+      "status_code": 200,
+      "content_length": 45351,
+      "title": "The full track UK Course, University Degree in Nepal",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/international-master-of-business-administration",
+      "status_code": 200,
+      "content_length": 62077,
+      "title": "International MBA in Nepal | Best College for MBA in Kathmandu, Nepal",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/bachelors-in-international-business-management",
+      "status_code": 200,
+      "content_length": 95195,
+      "title": "BIBM Course in Nepal | Business Management College in Nepal",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/",
+      "status_code": 200,
+      "content_length": 77610,
+      "title": "UK University Degree in Nepal | UK Degree in Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js",
+      "status_code": 200,
+      "content_length": 1239,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/contact-us",
+      "status_code": 200,
+      "content_length": 27952,
+      "title": "Contact Us | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/apply-now",
+      "status_code": 200,
+      "content_length": 32160,
+      "title": "Apply at Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/our-courses",
+      "status_code": 200,
+      "content_length": 24845,
+      "title": "Courses at Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/international-exposure",
+      "status_code": 200,
+      "content_length": 27325,
+      "title": "International Exposure |Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/our-infrastructure",
+      "status_code": 200,
+      "content_length": 29600,
+      "title": "Infrastructure, Facilities at Herald College",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/bachelors-in-computer-science",
+      "status_code": 200,
+      "content_length": 96814,
+      "title": "BIT College in Kathmandu, Nepal | UK Affiliated IT College in Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/bachelors-in-cyber-security",
+      "status_code": 200,
+      "content_length": 103058,
+      "title": "Bachelor's in Cybersecurity at Herald College",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/livewire/livewire.js?id",
+      "status_code": 200,
+      "content_length": 174819,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/teaching-with-excellence",
+      "status_code": 200,
+      "content_length": 24551,
+      "title": "Teaching with Excellence | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/js/app.js?id",
+      "status_code": 200,
+      "content_length": 295505,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/css/app.css?id",
+      "status_code": 200,
+      "content_length": 469102,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/apply-now",
+      "status_code": 200,
+      "content_length": 32160,
+      "title": "Apply at Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/scholarship",
+      "status_code": 200,
+      "content_length": 52216,
+      "title": "Scholarship at Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/about",
+      "status_code": 200,
+      "content_length": 45351,
+      "title": "The full track UK Course, University Degree in Nepal",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/bachelors-in-computer-science",
+      "status_code": 200,
+      "content_length": 96814,
+      "title": "BIT College in Kathmandu, Nepal | UK Affiliated IT College in Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/bachelors-in-international-business-management",
+      "status_code": 200,
+      "content_length": 95195,
+      "title": "BIBM Course in Nepal | Business Management College in Nepal",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/bachelors-in-cyber-security",
+      "status_code": 200,
+      "content_length": 103058,
+      "title": "Bachelor's in Cybersecurity at Herald College",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/",
+      "status_code": 200,
+      "content_length": 77610,
+      "title": "UK University Degree in Nepal | UK Degree in Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js",
+      "status_code": 200,
+      "content_length": 1239,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/favicon-96x96.png",
+      "status_code": 200,
+      "content_length": 3846,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/hck-unlocked-spring-2026-welcoming-new-beginnings-at-herald-college",
+      "status_code": 200,
+      "content_length": 30791,
+      "title": "HCK Unlocked Spring 2026: Welcoming New Beginnings at Herald College",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/christmas-claus-2025",
+      "status_code": 200,
+      "content_length": 32021,
+      "title": "Christmas Claus 2025",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/contact-us",
+      "status_code": 200,
+      "content_length": 27952,
+      "title": "Contact Us | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/herald-college-kathmandu-graduation-ceremony-2025",
+      "status_code": 200,
+      "content_length": 34618,
+      "title": "Herald College Kathmandu Graduation Ceremony 2025",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/posts",
+      "status_code": 200,
+      "content_length": 479699,
+      "title": "News \u0026 Events | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/css/app.css?id",
+      "status_code": 200,
+      "content_length": 469102,
+      "title": "",
+      "headers": {
+        "Content-Type": "text/css",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/gold_standard.png",
+      "status_code": 200,
+      "content_length": 94177,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/british-style-learning.jpg",
+      "status_code": 200,
+      "content_length": 291341,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/courses/bit.svg",
+      "status_code": 200,
+      "content_length": 13722,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/banner/notice__banner.jpg",
+      "status_code": 200,
+      "content_length": 122039,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/certification/tu.svg",
+      "status_code": 200,
+      "content_length": 136462,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/course-component/bit.png",
+      "status_code": 200,
+      "content_length": 104509,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/course-spec/bit.pdf",
+      "status_code": 200,
+      "content_length": 112894,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/pdf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/course-component/bibm.png",
+      "status_code": 200,
+      "content_length": 115843,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/course-component/imba.png",
+      "status_code": 200,
+      "content_length": 113937,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/course-component/cybersecurity.png",
+      "status_code": 200,
+      "content_length": 121931,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/courses/computer-science.jpg",
+      "status_code": 200,
+      "content_length": 133722,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/chairman-new.png",
+      "status_code": 200,
+      "content_length": 265885,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/footer/footer-logo-dark.svg",
+      "status_code": 200,
+      "content_length": 73184,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/courses/computer-science-module.jpg",
+      "status_code": 200,
+      "content_length": 204736,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/header/herald-white-logo.svg",
+      "status_code": 200,
+      "content_length": 13733,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/footer/footer-lower.png",
+      "status_code": 200,
+      "content_length": 67503,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/courses/video-replace-cybersecurity.jpg",
+      "status_code": 200,
+      "content_length": 198293,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/banner/bit.jpg",
+      "status_code": 200,
+      "content_length": 355232,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/ailearners__new.png",
+      "status_code": 200,
+      "content_length": 6414,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/aaa.svg",
+      "status_code": 200,
+      "content_length": 23914,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/IOT-innovators.png",
+      "status_code": 200,
+      "content_length": 47290,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/bizcore__new.png",
+      "status_code": 200,
+      "content_length": 12692,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/courses/cyber-security-course.png",
+      "status_code": 200,
+      "content_length": 377760,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/banner/about__banner.png",
+      "status_code": 200,
+      "content_length": 451695,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/bottom-bg.png",
+      "status_code": 200,
+      "content_length": 77522,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/community.svg",
+      "status_code": 200,
+      "content_length": 7305,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/creatercommunity__new.png",
+      "status_code": 200,
+      "content_length": 7039,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/ethicalhacking__new.png",
+      "status_code": 200,
+      "content_length": 11558,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/exposure/wlv-one.jpg",
+      "status_code": 200,
+      "content_length": 269108,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/devopsPioneer.png",
+      "status_code": 200,
+      "content_length": 60210,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/banner/scholarship-banner-new.jpg",
+      "status_code": 200,
+      "content_length": 525751,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/banner/banner-content-bg.png",
+      "status_code": 200,
+      "content_length": 631603,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/exposure/exposure-four.jpg",
+      "status_code": 200,
+      "content_length": 430361,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/summer-three-new.jpg",
+      "status_code": 200,
+      "content_length": 617732,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/WLV.jpg",
+      "status_code": 200,
+      "content_length": 899637,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/college-run-by-the-pioneers-in-uk-education-new.jpg",
+      "status_code": 200,
+      "content_length": 680874,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/resource-new.jpg",
+      "status_code": 200,
+      "content_length": 683210,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/brochure-new.png",
+      "status_code": 200,
+      "content_length": 316742,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/exposure/exposure-three-new.jpg",
+      "status_code": 200,
+      "content_length": 514858,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/exposure-wlv-new-sm.jpg",
+      "status_code": 200,
+      "content_length": 355887,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/gamedevheroes__new.png",
+      "status_code": 200,
+      "content_length": 7117,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/faculty-one-new.jpg",
+      "status_code": 200,
+      "content_length": 194003,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/exposure/five.jpg",
+      "status_code": 200,
+      "content_length": 392353,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/ing_logo.svg",
+      "status_code": 200,
+      "content_length": 2520,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/faculty-sm-two-new.jpg",
+      "status_code": 200,
+      "content_length": 225811,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/exposure/three.jpg",
+      "status_code": 200,
+      "content_length": 416518,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/post-graduate.svg",
+      "status_code": 200,
+      "content_length": 16798,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/facility-sm-five.png",
+      "status_code": 200,
+      "content_length": 326018,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/seven-sm.jpg",
+      "status_code": 200,
+      "content_length": 90916,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/uivisuals__new.png",
+      "status_code": 200,
+      "content_length": 5753,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/facility-five.png",
+      "status_code": 200,
+      "content_length": 384736,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/exposure/exposure-wlv-new.jpg",
+      "status_code": 200,
+      "content_length": 844500,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/exposure/two.jpg",
+      "status_code": 200,
+      "content_length": 445429,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/wlv.svg",
+      "status_code": 200,
+      "content_length": 7765,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/svg+xml",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/two-sm.jpg",
+      "status_code": 200,
+      "content_length": 66641,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/exposure/seven.jpg",
+      "status_code": 200,
+      "content_length": 609555,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/wlv-about.jpg",
+      "status_code": 200,
+      "content_length": 96399,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/exposure/wlv-two.png",
+      "status_code": 200,
+      "content_length": 940938,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/footer/footer_bg.png",
+      "status_code": 200,
+      "content_length": 901491,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/abhinav.jpg",
+      "status_code": 200,
+      "content_length": 75111,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/exposure/one.jpg",
+      "status_code": 200,
+      "content_length": 774856,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/infrastructure/item-seven.png",
+      "status_code": 200,
+      "content_length": 200017,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/dhiraj.jpg",
+      "status_code": 200,
+      "content_length": 97854,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/teaching-new.jpg",
+      "status_code": 200,
+      "content_length": 401727,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial-courses/alisha-new.jpg",
+      "status_code": 200,
+      "content_length": 34152,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/fun-project-new.jpg",
+      "status_code": 200,
+      "content_length": 613778,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial-courses/prakriti-new.jpg",
+      "status_code": 200,
+      "content_length": 32720,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/faculty-sm-one-new.jpg",
+      "status_code": 200,
+      "content_length": 678124,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial-courses/smriti-new.jpg",
+      "status_code": 200,
+      "content_length": 31489,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/infrastructure/cafe.jpg",
+      "status_code": 200,
+      "content_length": 339113,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial/prakriti-3.jpg",
+      "status_code": 200,
+      "content_length": 38904,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial/alisha-1.jpg",
+      "status_code": 200,
+      "content_length": 42791,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial/smriti-5.jpg",
+      "status_code": 200,
+      "content_length": 31334,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial-courses/rahul.jpg",
+      "status_code": 200,
+      "content_length": 65817,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/testimonial/rahul-4.jpg",
+      "status_code": 200,
+      "content_length": 36181,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/wolverhampton-ranking.png",
+      "status_code": 200,
+      "content_length": 19518,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/learning-new.jpg",
+      "status_code": 200,
+      "content_length": 576390,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/imba-events-autumn-2025-highlights",
+      "status_code": 200,
+      "content_length": 31526,
+      "title": "IMBA Events: Autumn 2025 Highlights",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/about/Prakash_Sir.png",
+      "status_code": 200,
+      "content_length": 1709410,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/international-exposure",
+      "status_code": 200,
+      "content_length": 27325,
+      "title": "International Exposure |Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/international-master-of-business-administration",
+      "status_code": 200,
+      "content_length": 62077,
+      "title": "International MBA in Nepal | Best College for MBA in Kathmandu, Nepal",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/just-finished-2-heres-the-one-thing-most-students-wish-they-had-done-before-starting-their-degree",
+      "status_code": 200,
+      "content_length": 41858,
+      "title": "Just finished +2? Here's the one thing most students wish they had done before starting their degree",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/notice/aaa-scholarship-award-ceremony",
+      "status_code": 200,
+      "content_length": 22121,
+      "title": "AAA Scholarship Award Ceremony",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/notice/aaa-scholarship-application-is-now-open",
+      "status_code": 200,
+      "content_length": 22410,
+      "title": "AAA Scholarship application is now Open!",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/AAA/AAA-2022.jpg",
+      "status_code": 200,
+      "content_length": 469704,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/make-learning-fun-with-projects",
+      "status_code": 200,
+      "content_length": 26130,
+      "title": "Learning fun with projects | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/notice/devfest-hive-2025",
+      "status_code": 200,
+      "content_length": 22714,
+      "title": "DevFest HIVE 2025",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/livewire/livewire.js?id",
+      "status_code": 200,
+      "content_length": 174819,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/notices",
+      "status_code": 200,
+      "content_length": 23029,
+      "title": "Events | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/our-courses",
+      "status_code": 200,
+      "content_length": 24845,
+      "title": "Courses at Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/our-infrastructure",
+      "status_code": 200,
+      "content_length": 29600,
+      "title": "Infrastructure, Facilities at Herald College",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/faculty-two-new.jpg",
+      "status_code": 200,
+      "content_length": 854961,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/js/app.js?id",
+      "status_code": 200,
+      "content_length": 295505,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/scholarship",
+      "status_code": 200,
+      "content_length": 52216,
+      "title": "Scholarship at Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/saksham.jpg",
+      "status_code": 200,
+      "content_length": 402921,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/teaching-with-excellence",
+      "status_code": 200,
+      "content_length": 24551,
+      "title": "Teaching with Excellence | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/posts",
+      "status_code": 200,
+      "content_length": 479699,
+      "title": "News \u0026 Events | Herald College Kathmandu",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "Cloudflare Browser Insights",
+        "Google Analytics",
+        "HTTP/3",
+        "Laravel",
+        "Livewire",
+        "PHP:8.2.30",
+        "cdnjs"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/storage/post/SLS_3636-min-min_1766998480.JPG",
+      "status_code": 200,
+      "content_length": 275150,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/storage/post/imba-orientation-program-2025_1778846045.png",
+      "status_code": 200,
+      "content_length": 255905,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/AAA/aaa-2025.jpg",
+      "status_code": 200,
+      "content_length": 873339,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/storage/post/Graduation Ceremony 2025_1766981386.jpg",
+      "status_code": 200,
+      "content_length": 436367,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/pgs-new.jpg",
+      "status_code": 200,
+      "content_length": 945299,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/ing-newest.jpg",
+      "status_code": 200,
+      "content_length": 1692765,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/aaa-2023.jpg",
+      "status_code": 200,
+      "content_length": 1427905,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/AAA/AAA-2023.jpg",
+      "status_code": 200,
+      "content_length": 1651963,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/jpeg",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/storage/post/HCK Unlocked logo_1775730046.png",
+      "status_code": 200,
+      "content_length": 1239722,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/celebration-background-new.png",
+      "status_code": 200,
+      "content_length": 3212799,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/storage/post/Herald College Kathmandu IPC_1779437950.png",
+      "status_code": 200,
+      "content_length": 1690351,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/scholarship/survi.png",
+      "status_code": 200,
+      "content_length": 2590574,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/gold-bg.png",
+      "status_code": 200,
+      "content_length": 3893754,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/png",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/pdfs/herald_brochure_undergraduate.pdf",
+      "status_code": 200,
+      "content_length": 9203486,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/pdf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/HCK-lifestyle-2025.mp4",
+      "status_code": 200,
+      "content_length": 16620251,
+      "title": "",
+      "headers": {
+        "Content-Type": "video/mp4",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/images/homepage/HCK-lifestyle-2025.mp4",
+      "status_code": 200,
+      "content_length": 16620251,
+      "title": "",
+      "headers": {
+        "Content-Type": "video/mp4",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://heraldcollege.edu.np/pdfs/herald_brochure.pdf",
+      "status_code": 200,
+      "content_length": 45189964,
+      "title": "",
+      "headers": {
+        "Content-Type": "application/pdf",
+        "Server": "cloudflare"
+      },
+      "fingerprints": [
+        "Cloudflare",
+        "HTTP/3"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-05-28T13:22:51.735318882Z"
+}

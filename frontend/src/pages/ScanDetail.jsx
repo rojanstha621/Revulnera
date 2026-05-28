@@ -64,8 +64,8 @@ export default function ScanDetail() {
       const matchesSearch = subdomain.name.toLowerCase().includes(subdomainFilter.toLowerCase()) ||
                            (subdomain.ip_addresses && subdomain.ip_addresses.some(ip => ip.toLowerCase().includes(subdomainFilter.toLowerCase())));
       const matchesStatus = subdomainStatusFilter === "all" ||
-                           (subdomainStatusFilter === "alive" && subdomain.error_msg === null) ||
-                           (subdomainStatusFilter === "error" && subdomain.error_msg !== null);
+                           (subdomainStatusFilter === "alive" && subdomain.alive) ||
+                           (subdomainStatusFilter === "error" && !subdomain.alive);
       return matchesSearch && matchesStatus;
     });
   };
@@ -148,7 +148,6 @@ export default function ScanDetail() {
 
   const aliveCount = scan.alive_count || 0;
   const successEndpoints = scan.endpoints?.filter(e => e.status_code >= 200 && e.status_code < 300).length || 0;
-  const errorEndpoints = scan.endpoints?.filter(e => e.status_code >= 400).length || 0;
   const openPortsCount = scan.port_findings_count || 0;
   const tlsIssuesCount = scan.tls_results?.filter(t => t.weak_versions && t.weak_versions.length > 0).length || 0;
   const dirIssuesCount = scan.directory_findings_count || 0;

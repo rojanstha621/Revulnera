@@ -1,0 +1,24 @@
+{
+  "scan_id": 140,
+  "target": "192.168.1.167",
+  "endpoints": [
+    {
+      "url": "http://192.168.1.167/",
+      "status_code": 200,
+      "content_length": 891,
+      "title": "Metasploitable2 - Linux",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "Apache HTTP Server:2.2.8",
+        "PHP:5.2.4",
+        "Ubuntu",
+        "mod_dav:2"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-05-28T11:13:03.527423844Z"
+}

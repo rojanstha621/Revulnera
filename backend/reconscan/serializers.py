@@ -12,7 +12,19 @@ HOSTNAME_LABEL_RE = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$", re.IGN
 class ScanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scan
-        fields = ["id", "target", "status", "created_at", "updated_at", "auth_headers", "auth_cookies"]
+        fields = [
+            "id",
+            "target",
+            "status",
+            "created_at",
+            "updated_at",
+            "auth_headers",
+            "auth_cookies",
+            "auth_type",
+            "login_url",
+            "username",
+            "password",
+        ]
 
     def validate_target(self, value):
         raw_value = (value or "").strip()
@@ -32,17 +44,19 @@ class ScanSerializer(serializers.ModelSerializer):
         if not candidate:
             raise serializers.ValidationError("Target must be a valid domain or IP address.")
 
+        is_url_input = "://" in raw_value
+
         try:
             ipaddress.ip_address(candidate)
-            return candidate
         except ValueError:
-            pass
+            labels = candidate.split(".")
+            if len(labels) < 2:
+                raise serializers.ValidationError("Target must include a valid domain suffix (example.com).")
+            if any(not HOSTNAME_LABEL_RE.match(label) for label in labels):
+                raise serializers.ValidationError("Target contains invalid domain characters.")
 
-        labels = candidate.split(".")
-        if len(labels) < 2:
-            raise serializers.ValidationError("Target must include a valid domain suffix (example.com).")
-        if any(not HOSTNAME_LABEL_RE.match(label) for label in labels):
-            raise serializers.ValidationError("Target contains invalid domain characters.")
+        if is_url_input:
+            return raw_value
 
         return candidate
 
@@ -65,6 +79,18 @@ class ScanSerializer(serializers.ModelSerializer):
 
     def validate_auth_cookies(self, value):
         return self._validate_auth_map(value, "auth_cookies")
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        auth_type = attrs.get("auth_type", getattr(self.instance, "auth_type", "none"))
+        if auth_type == "form":
+            if not attrs.get("login_url", getattr(self.instance, "login_url", "")):
+                raise serializers.ValidationError({"login_url": "Login URL is required for form auto-login."})
+            if not attrs.get("username", getattr(self.instance, "username", "")):
+                raise serializers.ValidationError({"username": "Username is required for form auto-login."})
+            if not attrs.get("password", getattr(self.instance, "password", "")):
+                raise serializers.ValidationError({"password": "Password is required for form auto-login."})
+        return attrs
 
 class SubdomainSerializer(serializers.ModelSerializer):
     class Meta:

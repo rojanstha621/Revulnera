@@ -31,7 +31,12 @@ def run_full_scan(scan_id: int):
         # 1) Call Go /jobs (subdomains)
         r = requests.post(
             f"{GO_RECON_URL}/jobs",
-            json={"scan_id": scan.id, "target": scan.target},
+            json={
+                "scan_id": scan.id,
+                "target": scan.target,
+                "auth_headers": scan.auth_headers or {},
+                "auth_cookies": scan.auth_cookies or {},
+            },
             timeout=600
         )
         r.raise_for_status()
@@ -70,7 +75,16 @@ def run_full_scan(scan_id: int):
         # 2) Call Go /endpoints (endpoints + fingerprinting)
         r2 = requests.post(
             f"{GO_RECON_URL}/endpoints",
-            json={"scan_id": scan.id, "target": scan.target},
+            json={
+                "scan_id": scan.id,
+                "target": scan.target,
+                "auth_headers": scan.auth_headers or {},
+                "auth_cookies": scan.auth_cookies or {},
+                "auth_type": scan.auth_type,
+                "login_url": scan.login_url,
+                "username": scan.username,
+                "password": scan.password,
+            },
             timeout=1200
         )
         r2.raise_for_status()

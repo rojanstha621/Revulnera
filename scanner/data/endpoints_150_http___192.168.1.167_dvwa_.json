@@ -1,0 +1,463 @@
+{
+  "scan_id": 150,
+  "target": "http://192.168.1.167/dvwa/",
+  "endpoints": [
+    {
+      "url": "http://192.168.1.167/dvwa/security.php",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=9dee6735c773dcecaa55577c742c3d9c; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/xss_s",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=d51deb8e4f6faea3ca9e9f20d5724ff2; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/brute",
+      "status_code": 200,
+      "content_length": 1289,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=43545d37b078da8779b303234434e69a; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/csrf",
+      "status_code": 200,
+      "content_length": 1289,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=9e19e595459c8340947c7433931c7e0e; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/logout.php",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=58e77d48d9c158892f79f8b09c4162c2; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/xss_r",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=6cbbbef3970c4a4f01002d0bbed9dfbc; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/exec",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=57de031738e3b33a5908b6e2eae67ee7; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/phpinfo.php",
+      "status_code": 200,
+      "content_length": 1289,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=f768ebc0442fc852059eff8f698d03aa; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/favicon.ico",
+      "status_code": 200,
+      "content_length": 1406,
+      "title": "",
+      "headers": {
+        "Content-Type": "image/x-icon",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2"
+      },
+      "fingerprints": [
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/instructions.php",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=6bf83f1efbbfff6e8d36532a7f578e73; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/instructions.php?doc=",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=84a6fc4f741f10c663c4ede5beaded04; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/sqli_blind",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=5b8ac2e033d3b5886db0e7bc9f53b673; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/fi?page=",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=47afb6d1259177594daade901dd04f18; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/setup.php",
+      "status_code": 200,
+      "content_length": 3549,
+      "title": "Damn Vulnerable Web App (DVWA) v1.0.7 :: Setup",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=87951f66ab6eceb4acb9de5b70b8627a; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/upload",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=20eaddb9cf7720abe696203db37f667c; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/security.php?phpids=",
+      "status_code": 200,
+      "content_length": 1289,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=e65a6b673cf1a4eff1ff5f858e9e5dbb; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/about.php",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=409ea0159482fbaeb70c2a0338184bc5; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/vulnerabilities/sqli",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=abc20063895314342596603b2e49991e; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/phpinfo.php?=",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=24a8f8c74b95f1fcaf14f89ea3c1fe94; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=f90ee0b7adde6b4cd5e7e7b26209f7c3; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/login.php",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=fcd961dcd02665b05da88b168e48b3d8; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/ids_log.php",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=fd3754c2ddb4a7af5ac0c37443a02237; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    },
+    {
+      "url": "http://192.168.1.167/dvwa/security.php?test=",
+      "status_code": 200,
+      "content_length": -1,
+      "title": "Damn Vulnerable Web App (DVWA) - Login",
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8",
+        "Server": "Apache/2.2.8 (Ubuntu) DAV/2",
+        "Set-Cookie": "PHPSESSID=4a4ab22793bcefda327c776916b5aa28; path=/",
+        "X-Powered-By": "PHP/5.2.4-2ubuntu5.10"
+      },
+      "fingerprints": [
+        "html",
+        "2xx"
+      ],
+      "evidence": {
+        "2xx": "status=200",
+        "html": "Content-Type=text/html;charset=utf-8"
+      }
+    }
+  ],
+  "saved_at": "2026-05-28T12:12:26.100922084Z"
+}

@@ -18,6 +18,10 @@ export default function Scanners() {
   const [scanId, setScanId] = useState(null);
   const [authHeaders, setAuthHeaders] = useState("");
   const [authCookies, setAuthCookies] = useState("");
+  const [authType, setAuthType] = useState("none");
+  const [loginUrl, setLoginUrl] = useState("");
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [showAuthFields, setShowAuthFields] = useState(false);
 
   const [status, setStatus] = useState("IDLE");
@@ -254,6 +258,13 @@ export default function Scanners() {
         setStatus("IDLE");
         return;
       }
+    }
+
+    scanData.auth_type = authType;
+    if (authType === "form") {
+      scanData.login_url = loginUrl.trim();
+      scanData.username = loginUsername.trim();
+      scanData.password = loginPassword;
     }
 
     // IMPORTANT:
@@ -609,6 +620,66 @@ export default function Scanners() {
               <div className="text-xs text-gray-400 mb-2">
                 💡 These credentials will be used for all vulnerability scans on this target
               </div>
+
+              <div>
+                <label className="text-xs font-semibold text-gray-300 block mb-1">
+                  Auto-Login Mode
+                </label>
+                <select
+                  value={authType}
+                  onChange={(e) => setAuthType(e.target.value)}
+                  className="input-premium w-full text-sm"
+                  disabled={isScanning}
+                >
+                  <option value="none">No auto-login</option>
+                  <option value="form">Form login (use username/password)</option>
+                </select>
+              </div>
+
+              {authType === "form" && (
+                <>
+                  <div>
+                    <label className="text-xs font-semibold text-gray-300 block mb-1">
+                      Login URL
+                    </label>
+                    <input
+                      value={loginUrl}
+                      onChange={(e) => setLoginUrl(e.target.value)}
+                      className="input-premium w-full font-mono text-xs"
+                      placeholder="http://192.168.1.167/dvwa/login.php"
+                      disabled={isScanning}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-semibold text-gray-300 block mb-1">
+                        Username
+                      </label>
+                      <input
+                        value={loginUsername}
+                        onChange={(e) => setLoginUsername(e.target.value)}
+                        className="input-premium w-full font-mono text-xs"
+                        placeholder="admin"
+                        disabled={isScanning}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-gray-300 block mb-1">
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
+                        className="input-premium w-full font-mono text-xs"
+                        placeholder="password"
+                        disabled={isScanning}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
               
               <div>
                 <label className="text-xs font-semibold text-gray-300 block mb-1">

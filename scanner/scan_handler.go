@@ -26,11 +26,17 @@ var (
 )
 
 type ScanRequest struct {
-	ScanID      int64  `json:"scan_id"`
-	Target      string `json:"target"`
-	UserID      int64  `json:"user_id"`      // User ID for file organization
-	BackendBase string `json:"backend_base"` // e.g. http://localhost:8000
-	AuthHeader  string `json:"auth_header"`  // pass through (dev)
+	ScanID      int64             `json:"scan_id"`
+	Target      string            `json:"target"`
+	UserID      int64             `json:"user_id"`      // User ID for file organization
+	BackendBase string            `json:"backend_base"` // e.g. http://localhost:8000
+	AuthHeader  string            `json:"auth_header"`  // pass through (dev)
+	AuthHeaders map[string]string `json:"auth_headers"`
+	AuthCookies map[string]string `json:"auth_cookies"`
+	AuthType    string            `json:"auth_type"`
+	LoginURL    string            `json:"login_url"`
+	Username    string            `json:"username"`
+	Password    string            `json:"password"`
 }
 
 func scanHandler(w http.ResponseWriter, r *http.Request) {
@@ -204,7 +210,16 @@ func runFullScan(ctx context.Context, req ScanRequest) {
 		log.Printf("[scan] streamed endpoint: %s (status=%d)", ep.URL, ep.StatusCode)
 	}
 
-	eps, err := endpointspkg.DiscoverEndpointsFromScanWithCallback(ctx, req.UserID, req.ScanID, req.Target, endpointCallback)
+	authConfig := &endpointspkg.DiscoveryAuthConfig{
+		AuthType: req.AuthType,
+		LoginURL: req.LoginURL,
+		Username: req.Username,
+		Password: req.Password,
+		Headers:  req.AuthHeaders,
+		Cookies:  req.AuthCookies,
+	}
+
+	eps, err := endpointspkg.DiscoverEndpointsFromScanWithAuthAndCallback(ctx, req.UserID, req.ScanID, req.Target, authConfig, endpointCallback)
 	if err != nil {
 		// Check if error is due to cancellation
 		if err == context.Canceled {

@@ -1,0 +1,44 @@
+{
+  "scan_id": 150,
+  "target": "http://192.168.1.167/dvwa/",
+  "subdomains": [
+    {
+      "name": "ip6-localhost",
+      "ip": "::1",
+      "ips": [
+        "::1"
+      ],
+      "alive": false,
+      "error_msg": "httpx check failed: httpx error: exit status 2 (stderr: Usage: httpx [OPTIONS] URL\n\nError: No such option: -s\n); HTTP check failed: Get \"http://ip6-localhost\": dial tcp [::1]:80: connect: connection refused"
+    },
+    {
+      "name": "localhost",
+      "ip": "::1",
+      "ips": [
+        "::1",
+        "127.0.0.1"
+      ],
+      "alive": true,
+      "error_msg": "httpx check failed: httpx error: exit status 2 (stderr: Usage: httpx [OPTIONS] URL\n\nError: No such option: -s\n)"
+    },
+    {
+      "name": "ip6-loopback",
+      "ip": "::1",
+      "ips": [
+        "::1"
+      ],
+      "alive": false,
+      "error_msg": "httpx check failed: httpx error: exit status 2 (stderr: Usage: httpx [OPTIONS] URL\n\nError: No such option: -s\n); HTTP check failed: Get \"http://ip6-loopback\": dial tcp [::1]:80: connect: connection refused"
+    },
+    {
+      "name": "192.168.1.167",
+      "ip": "192.168.1.167",
+      "ips": [
+        "192.168.1.167"
+      ],
+      "alive": true,
+      "error_msg": "httpx check failed: httpx error: exit status 2 (stderr: Usage: httpx [OPTIONS] URL\n\nError: No such option: -s\n)"
+    }
+  ],
+  "saved_at": "2026-05-28T12:12:24.758962899Z"
+}

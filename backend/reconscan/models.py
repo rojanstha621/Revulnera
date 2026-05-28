@@ -2,6 +2,11 @@ from django.db import models
 from django.conf import settings
 
 class Scan(models.Model):
+    AUTH_TYPE_CHOICES = [
+        ("none", "No Auto-Login"),
+        ("form", "Form Login"),
+    ]
+
     STATUS_CHOICES = [
         ("PENDING", "Pending"),
         ("RUNNING", "Running"),
@@ -26,6 +31,35 @@ class Scan(models.Model):
         default=dict,
         blank=True,
         help_text="Authentication cookies for vulnerability testing (e.g., sessionid)"
+    )
+
+    auth_type = models.CharField(
+        max_length=20,
+        choices=AUTH_TYPE_CHOICES,
+        default="none",
+        blank=True,
+        help_text="Optional auto-login mode for crawlers (e.g., form login for DVWA)"
+    )
+
+    login_url = models.URLField(
+        max_length=500,
+        blank=True,
+        default="",
+        help_text="Login page URL for form-based auto-login"
+    )
+
+    username = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Username for form-based auto-login"
+    )
+
+    password = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Password for form-based auto-login"
     )
 
 class Subdomain(models.Model):

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net"
 	"net/url"
 	"os/exec"
 	"regexp"
@@ -27,7 +28,10 @@ func SetDiscoveryLogCallback(callback func(message, level string)) {
 type DiscoveryOptions struct {
 	UseGau            bool          // Enable gau for historical URLs (default: true)
 	UseKatana         bool          // Enable katana for crawling (default: true)
+	UseRecursiveCrawl bool          // Enable recursive HTML crawling (default: true)
 	UseJSAnalysis     bool          // Enable JS file analysis (default: true)
+	RecursiveDepth    int           // Maximum recursive crawl depth (default: 5)
+	RecursiveMaxPages int           // Maximum pages fetched by recursive crawl (default: 150)
 	KatanaDepth       int           // Crawling depth for katana (default: 2)
 	KatanaMaxPages    int           // Max pages to crawl per subdomain (default: 50)
 	Timeout           time.Duration // Timeout per tool per host (default: 60s)
@@ -44,7 +48,10 @@ func DefaultDiscoveryOptions() *DiscoveryOptions {
 	return &DiscoveryOptions{
 		UseGau:            true,
 		UseKatana:         true,
+		UseRecursiveCrawl: true,
 		UseJSAnalysis:     true,
+		RecursiveDepth:    5,
+		RecursiveMaxPages: 150,
 		KatanaDepth:       2,
 		KatanaMaxPages:    50,
 		Timeout:           60 * time.Second,
@@ -57,22 +64,46 @@ func DefaultDiscoveryOptions() *DiscoveryOptions {
 	}
 }
 
+func shouldPreferRecursiveCrawl(target string) bool {
+	// Prefer recursive crawling for app-style targets and local lab hosts.
+	parsed, err := url.Parse(strings.TrimSpace(target))
+	if err != nil {
+		return false
+	}
+
+	if parsed.Path != "" && parsed.Path != "/" {
+		return true
+	}
+
+	host := parsed.Hostname()
+	if host == "" {
+		host = parsed.Host
+	}
+	if host == "localhost" || strings.HasSuffix(host, ".localhost") {
+		return true
+	}
+	if ip := net.ParseIP(host); ip != nil {
+		return true
+	}
+	return false
+}
+
 // DiscoverURLsFromHosts performs dynamic endpoint discovery for given hosts
 // Returns deduplicated, normalized URLs ready for probing
-func DiscoverURLsFromHosts(ctx context.Context, hosts []string, opts *DiscoveryOptions) []string {
-	// Discovers candidate URLs from multiple hosts using external tools,
+func DiscoverURLsFromHosts(ctx context.Context, seeds []string, opts *DiscoveryOptions) []string {
+	// Discovers candidate URLs from multiple seeds using external tools,
 	// then normalizes and deduplicates them before probing.
 	if opts == nil {
 		opts = DefaultDiscoveryOptions()
 	}
 
-	log.Printf("[discovery] starting dynamic discovery for %d hosts", len(hosts))
+	log.Printf("[discovery] starting dynamic discovery for %d seeds", len(seeds))
 
 	urlChan := make(chan string, 1000)
 	var wg sync.WaitGroup
 
 	// Worker pool for concurrent host discovery
-	jobs := make(chan string, len(hosts))
+	jobs := make(chan string, len(seeds))
 	for i := 0; i < opts.Workers; i++ {
 		wg.Add(1)
 		go func() {
@@ -102,7 +133,7 @@ func DiscoverURLsFromHosts(ctx context.Context, hosts []string, opts *DiscoveryO
 	}()
 
 	// Send jobs with cancellation check
-	for _, host := range hosts {
+	for _, host := range seeds {
 		select {
 		case <-ctx.Done():
 			log.Printf("[discovery] context cancelled, stopping job distribution")
@@ -129,28 +160,31 @@ func DiscoverURLsFromHosts(ctx context.Context, hosts []string, opts *DiscoveryO
 	}
 
 	// Normalize and deduplicate URLs
-	normalized := normalizeAndDeduplicateURLs(allURLs, opts.MaxURLsPerHost*len(hosts))
+	normalized := normalizeAndDeduplicateURLs(allURLs, opts.MaxURLsPerHost*len(seeds))
 
 	log.Printf("[discovery] final URL count: %d", len(normalized))
 	return normalized
 }
 
 // discoverURLsForHost discovers URLs for a single host using all enabled methods
-func discoverURLsForHost(host string, opts *DiscoveryOptions, urlChan chan<- string) {
+func discoverURLsForHost(seed string, opts *DiscoveryOptions, urlChan chan<- string) {
 	// Runs discovery methods for one host concurrently and emits raw URLs.
-	log.Printf("[discovery] discovering URLs for %s", host)
+	log.Printf("[discovery] discovering URLs for %s", seed)
 	if discoveryLogCallback != nil {
-		discoveryLogCallback(fmt.Sprintf("🔍 Discovering URLs for %s...", host), "info")
+		discoveryLogCallback(fmt.Sprintf("🔍 Discovering URLs for %s...", seed), "info")
 	}
+
+	gauthost := discoveryHostForGau(seed)
+	katanaTargets := discoveryTargetsForKatana(seed)
 
 	var wg sync.WaitGroup
 
 	// Run gau for historical URLs
-	if opts.UseGau {
+	if opts.UseGau && gauthost != "" {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			urls := runGau(host, opts)
+			urls := runGau(gauthost, opts)
 			for _, u := range urls {
 				urlChan <- u
 			}
@@ -158,13 +192,15 @@ func discoverURLsForHost(host string, opts *DiscoveryOptions, urlChan chan<- str
 	}
 
 	// Run katana for crawling
-	if opts.UseKatana {
+	if opts.UseKatana && len(katanaTargets) > 0 {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			urls := runKatana(host, opts)
-			for _, u := range urls {
-				urlChan <- u
+			for _, target := range katanaTargets {
+				urls := runKatana(target, opts)
+				for _, u := range urls {
+					urlChan <- u
+				}
 			}
 		}()
 	}
@@ -177,15 +213,20 @@ func discoverURLsForHost(host string, opts *DiscoveryOptions, urlChan chan<- str
 	if opts.UseJSAnalysis {
 		// For now, we'll handle JS analysis inline during katana crawling
 		// Katana has built-in JS parsing capability
-		log.Printf("[discovery] JS analysis handled by katana for %s", host)
+		log.Printf("[discovery] JS analysis handled by katana for %s", seed)
 	}
 }
 
 // runGau executes gau and returns discovered URLs
-func runGau(host string, opts *DiscoveryOptions) []string {
+func runGau(seed string, opts *DiscoveryOptions) []string {
 	// Uses gau to collect historical URLs from public archives/indexes.
 	ctx, cancel := context.WithTimeout(context.Background(), opts.Timeout)
 	defer cancel()
+
+	host := discoveryHostForGau(seed)
+	if host == "" {
+		return []string{}
+	}
 
 	// gau --subs --blacklist ttf,woff,woff2,svg,png,jpg,jpeg,gif,ico <host>
 	args := []string{
@@ -237,90 +278,146 @@ func runGau(host string, opts *DiscoveryOptions) []string {
 }
 
 // runKatana executes katana and returns discovered URLs
-func runKatana(host string, opts *DiscoveryOptions) []string {
+func runKatana(seed string, opts *DiscoveryOptions) []string {
 	// Uses katana crawler to discover live links and endpoints from pages/JS.
 	ctx, cancel := context.WithTimeout(context.Background(), opts.Timeout)
 	defer cancel()
-
-	// Ensure host has a scheme
-	if !strings.HasPrefix(host, "http://") && !strings.HasPrefix(host, "https://") {
-		host = "https://" + host
-	}
-
-	// katana -u <url> -d <depth> -jc -kf -aff -silent -jsl -ef woff,css,png,svg,jpg,woff2,jpeg,gif,svg
-	args := []string{
-		"-u", host,
-		"-d", fmt.Sprintf("%d", opts.KatanaDepth),
-		"-ps", fmt.Sprintf("%d", opts.KatanaMaxPages),
-		"-jc",                         // JavaScript parsing
-		"-kf", "robotstxt,sitemapxml", // Known files
-		"-aff", // Automatic form filling
-		"-silent",
-		"-jsl", // JavaScript link extraction
-		"-timeout", fmt.Sprintf("%d", int(opts.Timeout.Seconds())),
-		"-ef", "woff,woff2,ttf,eot,svg,png,jpg,jpeg,gif,ico,css,webp,mp4,mp3,avi,mov,pdf,zip,tar,gz,bmp,tiff",
-		"-json", // JSON output for better parsing
-	}
-
-	if opts.FollowRedirects {
-		args = append(args, "-rl", "5") // Follow up to 5 redirects
-	}
-
-	if !opts.IncludeSubdomains {
-		args = append(args, "-ns") // No subdomains
-	}
-
-	cmd := exec.CommandContext(ctx, opts.KatanaBinary, args...)
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	if err := cmd.Run(); err != nil {
-		if strings.Contains(err.Error(), "executable file not found") {
-			log.Printf("[discovery] katana not installed, skipping katana for %s", host)
-			if discoveryLogCallback != nil {
-				discoveryLogCallback(fmt.Sprintf("⚠️ katana not installed, skipping for %s", host), "warning")
-			}
-			return []string{}
-		}
-		log.Printf("[discovery] katana error for %s: %v (stderr: %s)", host, err, stderr.String())
-		if discoveryLogCallback != nil {
-			discoveryLogCallback(fmt.Sprintf("❌ katana error for %s", host), "warning")
-		}
+	candidates := discoveryTargetsForKatana(seed)
+	if len(candidates) == 0 {
 		return []string{}
 	}
 
-	urls := make([]string, 0)
-	scanner := bufio.NewScanner(&stdout)
+	allURLs := make([]string, 0)
+	for _, target := range candidates {
+		// katana -u <url> -d <depth> -jc -kf -aff -silent -jsl -ef woff,css,png,svg,jpg,woff2,jpeg,gif,svg
+		args := []string{
+			"-u", target,
+			"-d", fmt.Sprintf("%d", opts.KatanaDepth),
+			"-ps", fmt.Sprintf("%d", opts.KatanaMaxPages),
+			"-jc",                         // JavaScript parsing
+			"-kf", "robotstxt,sitemapxml", // Known files
+			"-aff", // Automatic form filling
+			"-silent",
+			"-jsl", // JavaScript link extraction
+			"-timeout", fmt.Sprintf("%d", int(opts.Timeout.Seconds())),
+			"-ef", "woff,woff2,ttf,eot,svg,png,jpg,jpeg,gif,ico,css,webp,mp4,mp3,avi,mov,pdf,zip,tar,gz,bmp,tiff",
+			"-json", // JSON output for better parsing
+		}
 
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if line == "" {
+		if opts.FollowRedirects {
+			args = append(args, "-rl", "5") // Follow up to 5 redirects
+		}
+
+		if !opts.IncludeSubdomains {
+			args = append(args, "-ns") // No subdomains
+		}
+
+		cmd := exec.CommandContext(ctx, opts.KatanaBinary, args...)
+		var stdout, stderr bytes.Buffer
+		cmd.Stdout = &stdout
+		cmd.Stderr = &stderr
+
+		if err := cmd.Run(); err != nil {
+			if strings.Contains(err.Error(), "executable file not found") {
+				log.Printf("[discovery] katana not installed, skipping katana for %s", target)
+				if discoveryLogCallback != nil {
+					discoveryLogCallback(fmt.Sprintf("⚠️ katana not installed, skipping for %s", target), "warning")
+				}
+				return []string{}
+			}
+			log.Printf("[discovery] katana error for %s: %v (stderr: %s)", target, err, stderr.String())
+			if discoveryLogCallback != nil {
+				discoveryLogCallback(fmt.Sprintf("❌ katana error for %s", target), "warning")
+			}
 			continue
 		}
 
-		// Try to parse as JSON first (katana -json output)
-		var katanaOutput map[string]interface{}
-		if err := json.Unmarshal([]byte(line), &katanaOutput); err == nil {
-			if requestURL, ok := katanaOutput["request"].(map[string]interface{}); ok {
-				if endpoint, ok := requestURL["endpoint"].(string); ok && endpoint != "" {
-					urls = append(urls, endpoint)
-					continue
+		scanner := bufio.NewScanner(&stdout)
+		for scanner.Scan() {
+			line := strings.TrimSpace(scanner.Text())
+			if line == "" {
+				continue
+			}
+
+			// Try to parse as JSON first (katana -json output)
+			var katanaOutput map[string]interface{}
+			if err := json.Unmarshal([]byte(line), &katanaOutput); err == nil {
+				if requestURL, ok := katanaOutput["request"].(map[string]interface{}); ok {
+					if endpoint, ok := requestURL["endpoint"].(string); ok && endpoint != "" {
+						allURLs = append(allURLs, endpoint)
+						continue
+					}
 				}
 			}
-		}
 
-		// Fallback: treat as plain URL
-		if strings.HasPrefix(line, "http") {
-			urls = append(urls, line)
+			// Fallback: treat as plain URL
+			if strings.HasPrefix(line, "http") {
+				allURLs = append(allURLs, line)
+			}
 		}
 	}
 
-	log.Printf("[discovery] katana found %d URLs for %s", len(urls), host)
+	log.Printf("[discovery] katana found %d URLs for %s", len(allURLs), seed)
 	if discoveryLogCallback != nil {
-		discoveryLogCallback(fmt.Sprintf("✅ katana found %d URLs for %s", len(urls), host), "success")
+		discoveryLogCallback(fmt.Sprintf("✅ katana found %d URLs for %s", len(allURLs), seed), "success")
 	}
-	return urls
+	return allURLs
+}
+
+func discoveryHostForGau(seed string) string {
+	// Extract the host portion for gau, which works on hosts/domains rather than
+	// full path URLs.
+	parsed, err := url.Parse(strings.TrimSpace(seed))
+	if err == nil && parsed.Host != "" {
+		return parsed.Host
+	}
+
+	if !strings.Contains(seed, "://") {
+		parsed, err = url.Parse("http://" + strings.TrimSpace(seed))
+		if err == nil && parsed.Host != "" {
+			return parsed.Host
+		}
+	}
+
+	return ""
+}
+
+func discoveryTargetsForKatana(seed string) []string {
+	// Build one or two crawl targets:
+	// - preserve explicit scheme/path targets as-is
+	// - if the input is scheme-less, try both http and https
+	seed = strings.TrimSpace(seed)
+	if seed == "" {
+		return []string{}
+	}
+
+	if strings.Contains(seed, "://") {
+		parsed, err := url.Parse(seed)
+		if err != nil || parsed.Host == "" {
+			return []string{}
+		}
+		parsed.Fragment = ""
+		return []string{parsed.String()}
+	}
+
+	parsed, err := url.Parse("http://" + seed)
+	if err != nil || parsed.Host == "" {
+		return []string{}
+	}
+
+	httpURL := *parsed
+	httpURL.Scheme = "http"
+	httpURL.Fragment = ""
+
+	httpsURL := *parsed
+	httpsURL.Scheme = "https"
+	httpsURL.Fragment = ""
+
+	if httpURL.String() == httpsURL.String() {
+		return []string{httpURL.String()}
+	}
+
+	return []string{httpURL.String(), httpsURL.String()}
 }
 
 // extractEndpointsFromJS extracts API endpoints from JavaScript content
@@ -396,7 +493,7 @@ func normalizeAndDeduplicateURLs(urls []string, maxURLs int) []string {
 // normalizeURL performs URL normalization
 func normalizeURL(u *url.URL) string {
 	// Canonicalization rules: lowercase scheme/host, strip default ports, drop fragment,
-	// normalize query encoding, and trim trailing slash for non-root paths.
+	// drop query strings to avoid noisy duplicates, and trim trailing slash for non-root paths.
 	// Convert scheme to lowercase
 	u.Scheme = strings.ToLower(u.Scheme)
 
@@ -414,9 +511,13 @@ func normalizeURL(u *url.URL) string {
 	// Remove fragment
 	u.Fragment = ""
 
-	// Sort query parameters for consistency
+	// Keep query parameter names but blank the values so noisy variants like
+	// OLSResponse=... collapse together while form parameters remain visible.
 	if u.RawQuery != "" {
 		query := u.Query()
+		for key := range query {
+			query.Set(key, "")
+		}
 		u.RawQuery = query.Encode()
 	}
 

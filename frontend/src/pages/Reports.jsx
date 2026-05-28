@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { 
   FileText, Calendar, Download, AlertTriangle, CheckCircle, 
-  Shield, Globe, Lock, Server, Activity 
+  Shield, Globe, Lock, Server, Activity, Pin 
 } from "lucide-react";
 import { getReportsSummary, generateScanReport } from "../api/api";
 import { emitErrorToast } from "../utils/errorUtils";
@@ -22,6 +22,40 @@ export default function Reports() {
   const [reportLoading, setReportLoading] = useState(false);
   // Download UI feedback state for export buttons.
   const [downloadStatus, setDownloadStatus] = useState(null); // null, 'downloading', 'success', 'error'
+  // Controls whether the scan picker shows the full list or the default top ten.
+  const [showAllScans, setShowAllScans] = useState(false);
+  // Pinned scans stored client-side (IDs). Keeps pinned scans at top.
+  const [pinnedScans, setPinnedScans] = useState(new Set());
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("pinnedScans");
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) setPinnedScans(new Set(arr));
+      }
+    } catch {
+      // ignore invalid storage
+    }
+  }, []);
+
+  const persistPinned = (nextSet) => {
+    try {
+      localStorage.setItem("pinnedScans", JSON.stringify(Array.from(nextSet)));
+    } catch {
+      // ignore
+    }
+  };
+
+  const togglePin = (scanId) => {
+    setPinnedScans((prev) => {
+      const next = new Set(prev);
+      if (next.has(scanId)) next.delete(scanId);
+      else next.add(scanId);
+      persistPinned(next);
+      return next;
+    });
+  };
 
   useEffect(() => {
     loadScans();
@@ -435,6 +469,17 @@ export default function Reports() {
     return "text-red-300 bg-red-500/20 border-red-500/30";
   };
 
+  // Order scans with pinned first (preserve recency within groups)
+  const orderedScans = (() => {
+    const byDate = (a, b) => new Date(b.created_at) - new Date(a.created_at);
+    const pinned = scans.filter((s) => pinnedScans.has(s.id)).sort(byDate);
+    const others = scans.filter((s) => !pinnedScans.has(s.id)).sort(byDate);
+    return [...pinned, ...others];
+  })();
+
+  const topScans = orderedScans.slice(0, 10);
+  const visibleScans = showAllScans ? orderedScans : topScans;
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -470,14 +515,32 @@ export default function Reports() {
 
       {/* Scans List */}
       <div className="card animate-slide-up">
-        <h2 className="text-xl font-semibold text-white mb-4">Available Scans</h2>
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 className="text-xl font-semibold text-white">Available Scans</h2>
+            <p className="text-sm text-gray-400 mt-1">
+              {showAllScans
+                ? `Showing all ${scans.length} available scans.`
+                : "Showing the 10 most recent scans for report generation."}
+            </p>
+          </div>
+          {scans.length > 10 && (
+            <button
+              type="button"
+              onClick={() => setShowAllScans((value) => !value)}
+              className="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm text-gray-200 hover:border-slate-500/50 hover:text-white transition-colors whitespace-nowrap"
+            >
+              {showAllScans ? "Show less" : `See more (${scans.length - 10})`}
+            </button>
+          )}
+        </div>
         {loading ? (
           <div className="text-center py-8 text-gray-400">Loading scans...</div>
-        ) : scans.length === 0 ? (
+        ) : visibleScans.length === 0 ? (
           <div className="text-center py-8 text-gray-400">No scans found</div>
         ) : (
           <div className="space-y-3">
-            {scans.map((scan) => (
+            {visibleScans.map((scan) => (
               <div
                 key={scan.id}
                 className={`p-4 rounded-lg border transition-all ${
@@ -488,16 +551,24 @@ export default function Reports() {
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <FileText className="w-5 h-5 text-slate-400" />
-                      <h3 className="text-lg font-semibold text-white">{scan.target}</h3>
-                      <span className={`px-2 py-1 rounded text-xs ${
+                              <div className="flex items-center gap-3 mb-2">
+                                <FileText className="w-5 h-5 text-slate-400" />
+                                <h3 className="text-lg font-semibold text-white">{scan.target}</h3>
+                                <span className={`px-2 py-1 rounded text-xs ${
                         scan.status === "COMPLETED" ? "bg-green-500/20 text-green-400" :
                         scan.status === "FAILED" ? "bg-red-500/20 text-red-400" :
                         "bg-gray-500/20 text-gray-400"
                       }`}>
                         {scan.status}
                       </span>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); togglePin(scan.id); }}
+                                  title={pinnedScans.has(scan.id) ? "Unpin scan" : "Pin scan"}
+                                  className="ml-3 p-1 rounded text-sm"
+                                  aria-pressed={pinnedScans.has(scan.id)}
+                                >
+                                  <Pin className={`w-4 h-4 ${pinnedScans.has(scan.id) ? 'text-yellow-400' : 'text-gray-400'}`} />
+                                </button>
                       {scan.has_critical_findings && (
                         <span className="px-2 py-1 rounded text-xs bg-red-500/20 text-red-400 flex items-center gap-1">
                           <AlertTriangle className="w-3 h-3" />
@@ -962,13 +1033,30 @@ export default function Reports() {
 // Helper function to generate HTML report
 function generateHTMLReport(report) {
   // Build a standalone HTML document that can be shared offline.
-  const findings = report.critical_findings || [];
-  const severityCounts = findings.reduce((acc, finding) => {
-    const sev = String(finding.severity || "low").toLowerCase();
-    if (!acc[sev]) acc[sev] = 0;
-    acc[sev] += 1;
-    return acc;
-  }, { critical: 0, high: 0, medium: 0, low: 0 });
+  const escapeHtml = (value) =>
+    String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
+  const toDisplayDate = (value) => {
+    if (!value) return "N/A";
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? "N/A" : date.toLocaleString();
+  };
+
+  const findings = Array.isArray(report.critical_findings) ? report.critical_findings : [];
+  const severityCounts = findings.reduce(
+    (acc, finding) => {
+      const sev = String(finding.severity || "low").toLowerCase();
+      if (!acc[sev]) acc[sev] = 0;
+      acc[sev] += 1;
+      return acc;
+    },
+    { critical: 0, high: 0, medium: 0, low: 0 }
+  );
 
   const riskScore = Math.min(
     100,
@@ -984,6 +1072,9 @@ function generateHTMLReport(report) {
       (report.summary.directory_issues || 0) * 4
   );
 
+  const riskLevel =
+    riskScore >= 75 ? "Critical" : riskScore >= 50 ? "High" : riskScore >= 25 ? "Medium" : "Low";
+
   const endpointOverview = (report.detailed_results?.endpoints || []).reduce(
     (acc, endpoint) => {
       const status = Number(endpoint.status_code) || 0;
@@ -997,144 +1088,525 @@ function generateHTMLReport(report) {
   );
 
   const grc = report.grc || {};
+  const governance = grc.governance || {};
   const grcRiskScore = grc.risk?.score ?? riskScore;
-  const grcRiskLevel = grc.risk?.level || (grcRiskScore >= 75 ? "Critical" : grcRiskScore >= 50 ? "High" : grcRiskScore >= 25 ? "Medium" : "Low");
-  const grcControlCoverage = grc.control_coverage || [];
-  const grcComplianceMappings = grc.compliance_mappings || [];
-  const grcRemediationPlan = grc.remediation_plan || [];
+  const grcRiskLevel =
+    grc.risk?.level ||
+    (grcRiskScore >= 75 ? "Critical" : grcRiskScore >= 50 ? "High" : grcRiskScore >= 25 ? "Medium" : "Low");
+  const grcControlCoverage = Array.isArray(grc.control_coverage) ? grc.control_coverage : [];
+  const grcComplianceMappings = Array.isArray(grc.compliance_mappings) ? grc.compliance_mappings : [];
+  const grcRemediationPlan = Array.isArray(grc.remediation_plan) ? grc.remediation_plan : [];
+  const topFindings = findings.slice(0, 12);
+
+  const controlCoverageRows =
+    grcControlCoverage.length > 0
+      ? grcControlCoverage
+          .map((control) => {
+            const status = String(control.status || "missing").toLowerCase();
+            const statusClass = status === "healthy" ? "status-healthy" : status === "partial" ? "status-partial" : "status-missing";
+            const evidenceCount = Number(control.evidence) || 0;
+            return `
+              <tr>
+                <td>${escapeHtml(control.framework || "N/A")}</td>
+                <td>${escapeHtml(control.control || "N/A")}</td>
+                <td><span class="status-chip ${statusClass}">${escapeHtml(status)}</span></td>
+                <td>${evidenceCount}</td>
+                <td>${escapeHtml(control.description || "No description provided.")}</td>
+              </tr>
+            `;
+          })
+          .join("")
+      : '<tr><td colspan="5" class="empty-row">No control coverage data was provided for this scan.</td></tr>';
+
+  const complianceRows =
+    grcComplianceMappings.length > 0
+      ? grcComplianceMappings
+          .map(
+            (mapping) => `
+              <tr>
+                <td>${escapeHtml(mapping.framework || "N/A")}</td>
+                <td>${escapeHtml(mapping.identifier || "N/A")}</td>
+                <td>${escapeHtml(mapping.name || "N/A")}</td>
+                <td>${escapeHtml(mapping.description || "No mapping details provided.")}</td>
+              </tr>
+            `
+          )
+          .join("")
+      : '<tr><td colspan="4" class="empty-row">No compliance mappings were derived for this scan.</td></tr>';
+
+  const remediationRows =
+    grcRemediationPlan.length > 0
+      ? [...grcRemediationPlan]
+          .sort((a, b) => Number(a.priority || 999) - Number(b.priority || 999))
+          .map(
+            (item) => `
+              <tr>
+                <td>P${escapeHtml(item.priority || "N/A")}</td>
+                <td>${escapeHtml(item.title || "Untitled")}</td>
+                <td>${escapeHtml(item.owner || "Unassigned")}</td>
+                <td>${escapeHtml(item.effort || "Unknown")}</td>
+                <td>${escapeHtml(item.details || "No remediation detail provided.")}</td>
+              </tr>
+            `
+          )
+          .join("")
+      : '<tr><td colspan="5" class="empty-row">No remediation plan items were generated for this scan.</td></tr>';
+
+  const findingRows =
+    topFindings.length > 0
+      ? topFindings
+          .map((finding) => {
+            const severity = String(finding.severity || "low").toLowerCase();
+            return `
+              <tr>
+                <td><span class="severity severity-${escapeHtml(severity)}">${escapeHtml(severity.toUpperCase())}</span></td>
+                <td>${escapeHtml(finding.host || "N/A")}</td>
+                <td>${escapeHtml(finding.type || "General finding")}</td>
+                <td>${escapeHtml(finding.detail || "No detail provided")}</td>
+              </tr>
+            `;
+          })
+          .join("")
+      : '<tr><td colspan="4" class="empty-row">No critical or high-severity findings were identified.</td></tr>';
+
+  const technologies = Object.entries(report.technology_stack || {})
+    .map(([name, count]) => `<span class="tag">${escapeHtml(name)} (${escapeHtml(count)})</span>`)
+    .join("");
+
+  const policyAlignment = Array.isArray(governance.policy_alignment) ? governance.policy_alignment : [];
 
   // Entire HTML and CSS are embedded so the exported file has no external dependencies.
   return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security Assessment Report - ${report.scan_info.target}</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: system-ui, -apple-system, sans-serif;
-            line-height: 1.6; 
-            color: #333; 
-            background: #f5f5f5;
-            padding: 20px;
-        }
-        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #6366f1; border-bottom: 3px solid #6366f1; padding-bottom: 10px; margin-bottom: 20px; }
-        h2 { color: #4f46e5; margin-top: 30px; margin-bottom: 15px; }
-        .meta { color: #666; font-size: 14px; margin-bottom: 30px; }
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
-        .stat-card { background: #f9fafb; padding: 20px; border-radius: 8px; border-left: 4px solid #6366f1; }
-        .stat-value { font-size: 32px; font-weight: bold; color: #4f46e5; }
-        .stat-label { color: #666; font-size: 14px; margin-top: 5px; }
-        .finding { padding: 15px; margin: 10px 0; border-radius: 6px; border-left: 4px solid; }
-        .critical { background: #fee; border-color: #dc2626; }
-        .high { background: #fef3cd; border-color: #ea580c; }
-        .medium { background: #fef9c3; border-color: #eab308; }
-        .severity { font-weight: bold; text-transform: uppercase; font-size: 12px; }
-        .tech-tag { display: inline-block; background: #e0e7ff; color: #4338ca; padding: 5px 12px; border-radius: 20px; margin: 5px; font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
-        th { background: #f9fafb; font-weight: 600; }
-        .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; color: #666; font-size: 14px; text-align: center; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GRC Security Report - ${escapeHtml(report.scan_info.target)}</title>
+  <style>
+    :root {
+      --bg: #f3f5f9;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #dbe3ef;
+      --brand: #0f5cc0;
+      --critical: #b91c1c;
+      --high: #c2410c;
+      --medium: #a16207;
+      --low: #1d4ed8;
+      --ok: #166534;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #eef2f8 0%, var(--bg) 100%);
+      padding: 24px;
+      line-height: 1.45;
+    }
+
+    .report {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f5cc0 0%, #134494 50%, #0f2f66 100%);
+      color: #f8fafc;
+      padding: 28px 30px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 29px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: #dbeafe;
+      max-width: 900px;
+      font-size: 14px;
+    }
+
+    .meta-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .meta-item {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .meta-label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #bfdbfe;
+    }
+
+    .meta-value {
+      display: block;
+      margin-top: 2px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #f8fafc;
+      word-break: break-word;
+    }
+
+    .body {
+      padding: 26px 30px 30px;
+    }
+
+    .section {
+      margin-bottom: 24px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      color: #0f3f82;
+    }
+
+    .section-intro {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #0b3a78;
+      margin-bottom: 3px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pill-critical { color: #7f1d1d; background: #fee2e2; border-color: #fecaca; }
+    .pill-high { color: #9a3412; background: #ffedd5; border-color: #fed7aa; }
+    .pill-medium { color: #854d0e; background: #fef9c3; border-color: #fde68a; }
+    .pill-low { color: #1e3a8a; background: #dbeafe; border-color: #bfdbfe; }
+    .pill-healthy { color: #14532d; background: #dcfce7; border-color: #bbf7d0; }
+    .pill-partial { color: #713f12; background: #fef3c7; border-color: #fde68a; }
+    .pill-missing { color: #7f1d1d; background: #fee2e2; border-color: #fecaca; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      padding: 10px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eff6ff;
+      color: #0f3f82;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .status-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status-healthy { color: #14532d; background: #dcfce7; border-color: #86efac; }
+    .status-partial { color: #854d0e; background: #fef3c7; border-color: #fcd34d; }
+    .status-missing { color: #7f1d1d; background: #fee2e2; border-color: #fca5a5; }
+
+    .severity {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      border: 1px solid;
+      letter-spacing: 0.03em;
+    }
+
+    .severity-critical { color: #7f1d1d; background: #fee2e2; border-color: #fecaca; }
+    .severity-high { color: #9a3412; background: #ffedd5; border-color: #fed7aa; }
+    .severity-medium { color: #854d0e; background: #fef9c3; border-color: #fde68a; }
+    .severity-low { color: #1e3a8a; background: #dbeafe; border-color: #bfdbfe; }
+
+    .tag {
+      display: inline-block;
+      margin: 4px 6px 0 0;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #e0edff;
+      color: #0f3f82;
+      border: 1px solid #bfd6ff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .empty-row {
+      text-align: center;
+      color: var(--muted);
+      padding: 20px;
+    }
+
+    .footer {
+      margin-top: 22px;
+      color: #475569;
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report { box-shadow: none; border: none; }
+      .section { break-inside: avoid; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🛡️ Security Assessment Report</h1>
-        <div class="meta">
-            <strong>Target:</strong> ${report.scan_info.target}<br>
-            <strong>Scan ID:</strong> ${report.scan_info.id}<br>
-            <strong>Status:</strong> ${report.scan_info.status}<br>
-            <strong>Generated:</strong> ${new Date(report.scan_info.updated_at).toLocaleString()}<br>
-            <strong>Created by:</strong> ${report.scan_info.created_by}
-        </div>
+  <article class="report">
+    <header class="hero">
+      <h1>GRC Security Assessment Report</h1>
+      <p>
+        This report translates technical scan findings into governance, risk, and compliance language.
+        It is designed for security teams, engineering leads, and audit stakeholders.
+      </p>
+      <div class="meta-grid">
+        <div class="meta-item"><span class="meta-label">Target</span><span class="meta-value">${escapeHtml(report.scan_info.target)}</span></div>
+        <div class="meta-item"><span class="meta-label">Scan ID</span><span class="meta-value">${escapeHtml(report.scan_info.id)}</span></div>
+        <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value">${escapeHtml(report.scan_info.status)}</span></div>
+        <div class="meta-item"><span class="meta-label">Generated</span><span class="meta-value">${escapeHtml(toDisplayDate(report.scan_info.updated_at))}</span></div>
+        <div class="meta-item"><span class="meta-label">Report Owner</span><span class="meta-value">${escapeHtml(governance.report_owner || report.scan_info.created_by || "Unknown")}</span></div>
+        <div class="meta-item"><span class="meta-label">Scope</span><span class="meta-value">${escapeHtml(governance.report_scope || report.scan_info.target || "N/A")}</span></div>
+      </div>
+    </header>
 
-        <h2>📊 Executive Summary</h2>
+    <main class="body">
+      <section class="section">
+        <h2>1. Executive Summary</h2>
+        <p class="section-intro">
+          At-a-glance view of external exposure and risk concentration from this reconnaissance and security analysis run.
+        </p>
         <div class="stats">
-            <div class="stat-card">
-                <div class="stat-value">${report.summary.total_subdomains}</div>
-                <div class="stat-label">Total Subdomains (${report.summary.alive_subdomains} alive)</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${report.summary.total_endpoints}</div>
-                <div class="stat-label">Endpoints Discovered</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${report.summary.total_open_ports}</div>
-                <div class="stat-label">Open Ports (${report.summary.high_risk_ports} high-risk)</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${report.summary.critical_findings_count}</div>
-                <div class="stat-label">Critical Findings</div>
-            </div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(report.summary.total_subdomains)}</div><div class="stat-label">Subdomains (${escapeHtml(report.summary.alive_subdomains)} alive)</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(report.summary.total_endpoints)}</div><div class="stat-label">Endpoints mapped</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(report.summary.total_open_ports)}</div><div class="stat-label">Open ports (${escapeHtml(report.summary.high_risk_ports)} high-risk)</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(report.summary.critical_findings_count)}</div><div class="stat-label">Critical + high findings</div></div>
         </div>
+      </section>
 
-          <h2>🧭 Risk Posture</h2>
-            <p><strong>Risk Score:</strong> ${grcRiskScore}/100</p>
-            <p><strong>Risk Level:</strong> ${grcRiskLevel}</p>
-            <p><strong>Severity Mix:</strong> Critical ${severityCounts.critical}, High ${severityCounts.high}, Medium ${severityCounts.medium}, Low ${severityCounts.low}</p>
-
-            <h2>📘 Governance Snapshot</h2>
-            <p><strong>Owner:</strong> ${grc.governance?.report_owner || report.scan_info.created_by}</p>
-            <p><strong>Scope:</strong> ${grc.governance?.report_scope || report.scan_info.target}</p>
-            <p><strong>Policy Alignment:</strong> ${(grc.governance?.policy_alignment || []).join(", ") || "Not set"}</p>
-
-            <h2>🧩 Control Coverage</h2>
-            ${grcControlCoverage.map((control) => `
-            <p><strong>${control.control}</strong> (${control.framework}) - ${control.status} (${control.evidence} evidence items)</p>
-            <p>${control.description}</p>
-            `).join('')}
-
-            <h2>📚 Compliance Mappings</h2>
-            ${grcComplianceMappings.map((mapping) => `
-            <p><strong>${mapping.framework}</strong> ${mapping.identifier} - ${mapping.name}</p>
-            <p>${mapping.description}</p>
-            `).join('') || '<p>No compliance mappings were derived for this scan.</p>'}
-
-            <h2>🛠 Remediation Plan</h2>
-            ${grcRemediationPlan.map((item) => `
-            <p><strong>Priority ${item.priority}:</strong> ${item.title}</p>
-            <p>Owner: ${item.owner} | Effort: ${item.effort}</p>
-            <p>${item.details}</p>
-            `).join('') || '<p>No remediation actions were generated for this scan.</p>'}
-
-          <h2>🎯 Endpoint Health</h2>
-          <p><strong>2xx Healthy:</strong> ${endpointOverview.healthy}</p>
-          <p><strong>3xx Redirects:</strong> ${endpointOverview.redirects}</p>
-          <p><strong>4xx Client Errors:</strong> ${endpointOverview.clientErrors}</p>
-          <p><strong>5xx Server Errors:</strong> ${endpointOverview.serverErrors}</p>
-
-        ${report.critical_findings && report.critical_findings.length > 0 ? `
-        <h2>🚨 Critical Findings</h2>
-        ${report.critical_findings.map(f => `
-            <div class="finding ${f.severity}">
-                <span class="severity">${f.severity}</span> - <strong>${f.host}</strong><br>
-                ${f.detail}
-            </div>
-        `).join('')}
-        ` : ''}
-
-        ${report.technology_stack && Object.keys(report.technology_stack).length > 0 ? `
-        <h2>🔧 Technology Stack</h2>
-        <div>
-            ${Object.entries(report.technology_stack).map(([tech, count]) => 
-                `<span class="tech-tag">${tech} (${count})</span>`
-            ).join('')}
+      <section class="section">
+        <h2>2. Risk Posture</h2>
+        <p class="section-intro">
+          Risk scoring combines finding severity and exposed attack surface indicators to support prioritization decisions.
+        </p>
+        <div class="split-grid">
+          <div class="stat-card">
+            <div class="stat-value">${escapeHtml(grcRiskScore)}/100</div>
+            <div class="stat-label">Overall risk score</div>
+            <p class="note">Risk level: <span class="pill pill-${escapeHtml(String(grcRiskLevel).toLowerCase())}">${escapeHtml(grcRiskLevel)}</span></p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Severity distribution</div>
+            <p class="note">Critical: ${escapeHtml(severityCounts.critical)} | High: ${escapeHtml(severityCounts.high)} | Medium: ${escapeHtml(severityCounts.medium)} | Low: ${escapeHtml(severityCounts.low)}</p>
+            <p class="note">Calculated baseline risk (without custom GRC overrides): ${escapeHtml(riskScore)} (${escapeHtml(riskLevel)})</p>
+          </div>
         </div>
-        ` : ''}
+      </section>
 
-        <h2>🔐 Security Issues</h2>
-        <p><strong>TLS/SSL Issues:</strong> ${report.summary.tls_issues}</p>
-        <p><strong>Directory Issues:</strong> ${report.summary.directory_issues}</p>
-        <p><strong>High-Risk Open Ports:</strong> ${report.summary.high_risk_ports}</p>
+      <section class="section">
+        <h2>3. Governance Context</h2>
+        <p class="section-intro">
+          Defines accountability and policy context for audit traceability.
+        </p>
+        <table>
+          <thead>
+            <tr><th>Field</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Report Owner</td><td>${escapeHtml(governance.report_owner || report.scan_info.created_by || "Unspecified")}</td></tr>
+            <tr><td>Assessment Scope</td><td>${escapeHtml(governance.report_scope || report.scan_info.target || "Unspecified")}</td></tr>
+            <tr><td>Policy Alignment</td><td>${escapeHtml(policyAlignment.length ? policyAlignment.join(", ") : "No policy alignment provided")}</td></tr>
+            <tr><td>Last Assessment Timestamp</td><td>${escapeHtml(toDisplayDate(report.scan_info.updated_at))}</td></tr>
+          </tbody>
+        </table>
+      </section>
 
-        <div class="footer">
-            <p><strong>Revulnera Security Scanner</strong></p>
-            <p>This report contains sensitive security information. Handle with care.</p>
+      <section class="section">
+        <h2>4. Control Coverage</h2>
+        <p class="section-intro">
+          Each row maps observed evidence to controls and indicates implementation health.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th>Control</th>
+              <th>Status</th>
+              <th>Evidence</th>
+              <th>Control Description</th>
+            </tr>
+          </thead>
+          <tbody>${controlCoverageRows}</tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>5. Compliance Mapping</h2>
+        <p class="section-intro">
+          Links detected risks and controls to compliance references for audit preparation.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Framework</th>
+              <th>Reference</th>
+              <th>Control Name</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>${complianceRows}</tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>6. Risk Register Highlights</h2>
+        <p class="section-intro">
+          Highest-priority issues to track through triage, treatment, and closure workflows.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Host</th>
+              <th>Category</th>
+              <th>Finding Detail</th>
+            </tr>
+          </thead>
+          <tbody>${findingRows}</tbody>
+        </table>
+        <p class="note">Showing up to 12 top findings in the exported report for readability.</p>
+      </section>
+
+      <section class="section">
+        <h2>7. Remediation Roadmap</h2>
+        <p class="section-intro">
+          Prioritized tasks with ownership and effort to support engineering planning and governance follow-up.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Action</th>
+              <th>Owner</th>
+              <th>Effort</th>
+              <th>Implementation Guidance</th>
+            </tr>
+          </thead>
+          <tbody>${remediationRows}</tbody>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>8. Technical Exposure Snapshot</h2>
+        <p class="section-intro">
+          Core technical indicators that explain where the risk posture originates.
+        </p>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-value">${escapeHtml(endpointOverview.healthy)}</div><div class="stat-label">2xx healthy endpoints</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(endpointOverview.redirects)}</div><div class="stat-label">3xx redirects</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(endpointOverview.clientErrors)}</div><div class="stat-label">4xx client errors</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(endpointOverview.serverErrors)}</div><div class="stat-label">5xx server errors</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(report.summary.tls_issues)}</div><div class="stat-label">TLS issues</div></div>
+          <div class="stat-card"><div class="stat-value">${escapeHtml(report.summary.directory_issues)}</div><div class="stat-label">Directory issues</div></div>
         </div>
-    </div>
+        ${technologies ? `<p class="note" style="margin-top:12px;">Observed technologies:</p><div>${technologies}</div>` : ""}
+      </section>
+
+      <div class="footer">
+        <p><strong>Revulnera GRC Export</strong> | This document contains sensitive security information and should be shared on a need-to-know basis.</p>
+      </div>
+    </main>
+  </article>
 </body>
 </html>
   `.trim();

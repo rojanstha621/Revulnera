@@ -1,0 +1,44 @@
+{
+  "scan_id": 133,
+  "target": "192.168.56.101",
+  "subdomains": [
+    {
+      "name": "ip6-localhost",
+      "ip": "::1",
+      "ips": [
+        "::1"
+      ],
+      "alive": false,
+      "error_msg": "HTTP check failed: Get \"http://ip6-localhost\": dial tcp [::1]:80: connect: connection refused"
+    },
+    {
+      "name": "ip6-loopback",
+      "ip": "::1",
+      "ips": [
+        "::1"
+      ],
+      "alive": false,
+      "error_msg": "HTTP check failed: Get \"http://ip6-loopback\": dial tcp [::1]:80: connect: connection refused"
+    },
+    {
+      "name": "localhost",
+      "ip": "::1",
+      "ips": [
+        "::1",
+        "127.0.0.1"
+      ],
+      "alive": true,
+      "error_msg": ""
+    },
+    {
+      "name": "192.168.56.101",
+      "ip": "192.168.56.101",
+      "ips": [
+        "192.168.56.101"
+      ],
+      "alive": false,
+      "error_msg": "httpx check failed: httpx error: signal: killed (stderr: ); HTTP check failed: Get \"http://192.168.56.101\": context deadline exceeded"
+    }
+  ],
+  "saved_at": "2026-05-28T10:22:13.586200337Z"
+}
