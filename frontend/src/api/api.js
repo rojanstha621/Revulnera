@@ -5,6 +5,7 @@ const API_ROOT =
   import.meta.env.VITE_API_URL || "http://localhost:8000";
 export const WS_ROOT =
   import.meta.env.VITE_WS_URL || "ws://localhost:8000";
+export const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "";
 
 /* =========================
    Token helpers
@@ -331,6 +332,19 @@ export async function upgradSubscription(planId, reason = "") {
 // Preferred spelling for new calls.
 export async function upgradeSubscription(planId, reason = "") {
   return upgradSubscription(planId, reason);
+}
+
+export async function createStripeCheckoutSession(planId, reason = "") {
+  return postJSON("/auth/subscription/stripe/create-checkout-session/", {
+    plan_id: planId,
+    reason,
+  });
+}
+
+export async function verifyStripeCheckoutSession(sessionId) {
+  return postJSON("/auth/subscription/stripe/verify-session/", {
+    session_id: sessionId,
+  });
 }
 
 // History endpoint is not implemented yet on backend, return empty collection

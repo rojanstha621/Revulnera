@@ -6,6 +6,10 @@ import json
 import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # --------------------------------------------------
 # Base directory
@@ -78,6 +82,8 @@ else:
 # External services
 # --------------------------------------------------
 GO_RECON_URL = "http://localhost:8080"
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
 
 # Celery broker/backend (required for async vulnerability scan execution).
 # By default we target local Redis for development.

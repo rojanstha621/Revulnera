@@ -1,0 +1,16 @@
+{
+  "scan_id": 123,
+  "target": "testphp.vulnweb.com",
+  "subdomains": [
+    {
+      "name": "testphp.vulnweb.com",
+      "ip": "44.228.249.3",
+      "ips": [
+        "44.228.249.3"
+      ],
+      "alive": false,
+      "error_msg": "httpx check failed: httpx error: signal: killed (stderr: ); HTTP check failed: Get \"http://testphp.vulnweb.com\": context deadline exceeded"
+    }
+  ],
+  "saved_at": "2026-05-24T04:23:25.710406444Z"
+}

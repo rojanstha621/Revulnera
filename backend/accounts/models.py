@@ -183,3 +183,42 @@ class UserSubscription(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.plan.display_name}"
+
+
+class StripeCheckoutTransaction(models.Model):
+    """Tracks Stripe Checkout attempts until the backend confirms payment."""
+
+    STATUS_CHOICES = (
+        ("pending", "Pending"),
+        ("completed", "Completed"),
+        ("failed", "Failed"),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="stripe_checkout_transactions")
+    subscription = models.ForeignKey(
+        UserSubscription,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="stripe_checkout_transactions",
+    )
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.PROTECT, related_name="stripe_checkout_transactions")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    amount = models.PositiveIntegerField(help_text="Amount in cents")
+    currency = models.CharField(max_length=10, default="usd")
+    stripe_session_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    stripe_subscription_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    stripe_payment_intent_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    stripe_payment_status = models.CharField(max_length=20, blank=True, default="")
+    request_payload = models.JSONField(default=dict, blank=True)
+    response_payload = models.JSONField(default=dict, blank=True)
+    failure_reason = models.TextField(blank=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Stripe checkout {self.stripe_session_id or self.pk} ({self.status})"

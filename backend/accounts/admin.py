@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.db.models import Count
-from .models import User, UserProfile, SubscriptionPlan, UserSubscription
+from .models import User, UserProfile, SubscriptionPlan, UserSubscription, StripeCheckoutTransaction
 
 class UserProfileInline(admin.StackedInline):
     """Show profile fields directly inside user admin page."""
@@ -98,3 +98,21 @@ class UserSubscriptionAdmin(admin.ModelAdmin):
     )
     list_filter = ("status", "plan", "payment_provider", "auto_renew")
     search_fields = ("user__email", "plan__name", "subscription_id")
+
+
+@admin.register(StripeCheckoutTransaction)
+class StripeCheckoutTransactionAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "user",
+        "plan",
+        "status",
+        "amount",
+        "currency",
+        "stripe_session_id",
+        "stripe_payment_status",
+        "verified_at",
+        "created_at",
+    )
+    list_filter = ("status", "plan", "currency")
+    search_fields = ("user__email", "stripe_session_id", "stripe_subscription_id", "stripe_payment_intent_id")

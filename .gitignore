@@ -48,6 +48,11 @@ dist-ssr/
 *.exe
 *.exe~
 *.dll
+
+# Environment
+.env
+.env.local
+.env*.local
 *.so
 *.dylib
 *.test
@@ -108,3 +113,6 @@ coverage/
 
 # Distribution / packaging
 *.whl
+
+
+scanner.log

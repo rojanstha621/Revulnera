@@ -1,0 +1,18 @@
+{
+  "scan_id": 129,
+  "target": "prashunbaral.com.np",
+  "subdomains": [
+    {
+      "name": "prashunbaral.com.np",
+      "ip": "3.233.108.250",
+      "ips": [
+        "3.233.108.250",
+        "54.157.2.211",
+        "3.233.187.46"
+      ],
+      "alive": true,
+      "error_msg": ""
+    }
+  ],
+  "saved_at": "2026-05-28T04:16:02.42629714Z"
+}

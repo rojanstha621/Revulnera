@@ -5,6 +5,7 @@ from .views import (
     RegisterView, ProfileView, ChangePasswordView, VerifyEmailView,
     CustomTokenObtainPairView, LogoutView, ResendVerificationView, ValidateResetTokenView,
     SubscriptionPlanListView, MySubscriptionView, UpgradeSubscriptionView,
+    StripeCheckoutCreateView, StripeCheckoutVerifyView,
 )
 
 urlpatterns = [
@@ -30,4 +31,6 @@ urlpatterns = [
     path("subscription/plans/", SubscriptionPlanListView.as_view(), name="subscription-plans"),
     path("subscription/me/", MySubscriptionView.as_view(), name="my-subscription"),
     path("subscription/upgrade/", UpgradeSubscriptionView.as_view(), name="upgrade-subscription"),
+    path("subscription/stripe/create-checkout-session/", StripeCheckoutCreateView.as_view(), name="stripe-create-checkout-session"),
+    path("subscription/stripe/verify-session/", StripeCheckoutVerifyView.as_view(), name="stripe-verify-session"),
 ]

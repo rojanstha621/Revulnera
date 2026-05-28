@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from .models import UserProfile, SubscriptionPlan, UserSubscription
+from .models import UserProfile, SubscriptionPlan, UserSubscription, StripeCheckoutTransaction
 
 User = get_user_model()
 
@@ -151,3 +151,43 @@ class UpgradeSubscriptionSerializer(serializers.Serializer):
         if not attrs.get("plan_id") and not attrs.get("plan_name"):
             raise serializers.ValidationError("Provide either plan_id or plan_name.")
         return attrs
+
+
+class StripeCheckoutSessionCreateSerializer(serializers.Serializer):
+    """Validate the payload used to start a Stripe Checkout session."""
+
+    plan_id = serializers.IntegerField(required=False)
+    plan_name = serializers.ChoiceField(choices=["free", "pro", "plus"], required=False)
+    reason = serializers.CharField(required=False, allow_blank=True, max_length=500)
+
+    def validate(self, attrs):
+        if not attrs.get("plan_id") and not attrs.get("plan_name"):
+            raise serializers.ValidationError("Provide either plan_id or plan_name.")
+        return attrs
+
+
+class StripeCheckoutSessionVerifySerializer(serializers.Serializer):
+    """Validate the callback payload returned from Stripe Checkout."""
+
+    session_id = serializers.CharField(max_length=255)
+
+
+class StripeCheckoutTransactionSerializer(serializers.ModelSerializer):
+    """Compact transaction serializer for checkout status responses."""
+
+    class Meta:
+        model = StripeCheckoutTransaction
+        fields = [
+            "id",
+            "status",
+            "amount",
+            "currency",
+            "stripe_session_id",
+            "stripe_subscription_id",
+            "stripe_payment_intent_id",
+            "stripe_payment_status",
+            "failure_reason",
+            "verified_at",
+            "created_at",
+            "updated_at",
+        ]

@@ -27,6 +27,7 @@ const ResetPasswordConfirm = lazy(() => import("./pages/ResetPasswordConfirm"));
 const Profile = lazy(() => import("./pages/Profile"));
 const ChangePassword = lazy(() => import("./pages/ChangePassword"));
 const AccountVerification = lazy(() => import("./pages/AccountVerification"));
+const StripeCheckoutSuccess = lazy(() => import("./pages/StripeCheckoutSuccess"));
 const VulnerabilityScans = lazy(() => import("./pages/VulnerabilityScans"));
 const VulnerabilityScanDetail = lazy(() => import("./pages/VulnerabilityScanDetail"));
 const DomainVerification = lazy(() => import("./pages/DomainVerification"));
@@ -94,6 +95,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route path="/subscription/stripe/success" element={<StripeCheckoutSuccess />} />
         <Route
           path="/scanners"
           element={

@@ -1,0 +1,17 @@
+{
+  "scan_id": 125,
+  "target": "bacdemo.vercel.app",
+  "subdomains": [
+    {
+      "name": "bacdemo.vercel.app",
+      "ip": "216.198.79.67",
+      "ips": [
+        "216.198.79.67",
+        "64.29.17.67"
+      ],
+      "alive": true,
+      "error_msg": ""
+    }
+  ],
+  "saved_at": "2026-05-24T04:28:39.757308142Z"
+}

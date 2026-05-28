@@ -1,0 +1,19 @@
+{
+  "scan_id": 128,
+  "target": "live.prashunbaral.com.np",
+  "subdomains": [
+    {
+      "name": "live.prashunbaral.com.np",
+      "ip": "104.21.60.51",
+      "ips": [
+        "104.21.60.51",
+        "172.67.191.167",
+        "2606:4700:3036::6815:3c33",
+        "2606:4700:3032::ac43:bfa7"
+      ],
+      "alive": true,
+      "error_msg": ""
+    }
+  ],
+  "saved_at": "2026-05-28T04:13:47.572342412Z"
+}

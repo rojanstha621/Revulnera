@@ -5,13 +5,14 @@ from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.conf import settings
+from django.db import transaction as db_transaction
 from django.utils import timezone
 from datetime import timedelta
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from .models import SubscriptionPlan
+from .models import SubscriptionPlan, UserSubscription, StripeCheckoutTransaction
 from .serializers import (
     RegisterSerializer,
     UserSerializer,
@@ -19,9 +20,13 @@ from .serializers import (
     SubscriptionPlanSerializer,
     UserSubscriptionSerializer,
     UpgradeSubscriptionSerializer,
+    StripeCheckoutSessionCreateSerializer,
+    StripeCheckoutSessionVerifySerializer,
+    StripeCheckoutTransactionSerializer,
 )
 from .utils import make_verify_token, verify_token
 from .subscription_utils import get_or_create_user_subscription
+from .payments.stripe_checkout import StripeAPIError, create_checkout_session, retrieve_checkout_session
 
 User = get_user_model()
 
@@ -32,6 +37,133 @@ def api_error(message, code=status.HTTP_400_BAD_REQUEST, field=None):
     if field:
         payload["field"] = field
     return Response(payload, status=code)
+
+
+def _get_target_plan(plan_id=None, plan_name=None):
+    target_plan = None
+    if plan_id:
+        target_plan = SubscriptionPlan.objects.filter(id=plan_id, is_active=True).first()
+    if not target_plan and plan_name:
+        target_plan = SubscriptionPlan.objects.filter(name=plan_name, is_active=True).first()
+    return target_plan
+
+
+def _build_checkout_urls():
+    frontend = getattr(settings, "DEFAULT_FRONTEND_URL", "http://localhost:5173")
+    success_url = f"{frontend.rstrip('/')}/subscription/stripe/success?session_id={{CHECKOUT_SESSION_ID}}"
+    cancel_url = f"{frontend.rstrip('/')}/plans"
+    return success_url, cancel_url
+
+
+def _activate_subscription_from_checkout(*, user_subscription, transaction_obj, session):
+    subscription_id = session.get("subscription")
+    payment_intent_id = session.get("payment_intent")
+    response_payload = session if isinstance(session, dict) else {}
+
+    user_subscription.plan = transaction_obj.plan
+    user_subscription.status = "active"
+    user_subscription.current_period_start = timezone.now()
+    user_subscription.current_period_end = timezone.now() + timedelta(days=30)
+    user_subscription.payment_provider = "stripe"
+    if subscription_id:
+        user_subscription.subscription_id = str(subscription_id)
+    user_subscription.save(
+        update_fields=[
+            "plan",
+            "status",
+            "current_period_start",
+            "current_period_end",
+            "payment_provider",
+            "subscription_id",
+            "updated_at",
+        ]
+    )
+
+    transaction_obj.subscription = user_subscription
+    transaction_obj.status = "completed"
+    transaction_obj.stripe_subscription_id = str(subscription_id) if subscription_id else transaction_obj.stripe_subscription_id
+    transaction_obj.stripe_payment_intent_id = str(payment_intent_id) if payment_intent_id else transaction_obj.stripe_payment_intent_id
+    transaction_obj.stripe_payment_status = session.get("payment_status", "")
+    transaction_obj.response_payload = response_payload
+    transaction_obj.failure_reason = ""
+    transaction_obj.verified_at = timezone.now()
+    transaction_obj.save(
+        update_fields=[
+            "subscription",
+            "status",
+            "stripe_subscription_id",
+            "stripe_payment_intent_id",
+            "stripe_payment_status",
+            "response_payload",
+            "failure_reason",
+            "verified_at",
+            "updated_at",
+        ]
+    )
+
+    return user_subscription
+
+
+def _mark_transaction_failed(transaction_obj, reason, response_payload=None):
+    transaction_obj.status = "failed"
+    transaction_obj.failure_reason = reason
+    transaction_obj.response_payload = response_payload or transaction_obj.response_payload
+    transaction_obj.verified_at = timezone.now()
+    transaction_obj.save(
+        update_fields=["status", "failure_reason", "response_payload", "verified_at", "updated_at"]
+    )
+    return transaction_obj
+
+
+def _reconcile_existing_checkout(transaction_obj, subscription):
+    """Sync a stored pending transaction with Stripe before refusing a new checkout."""
+
+    if not transaction_obj.stripe_session_id:
+        return None
+
+    try:
+        stripe_session = retrieve_checkout_session(transaction_obj.stripe_session_id)
+    except StripeAPIError as exc:
+        _mark_transaction_failed(transaction_obj, str(exc))
+        return {
+            "status": "failed",
+            "detail": "You've either completed your payment or this checkout session has timed out.",
+        }
+
+    session_status = stripe_session.get("status")
+    payment_status = stripe_session.get("payment_status")
+
+    if session_status == "complete" or payment_status == "paid":
+        if transaction_obj.status != "completed":
+            _activate_subscription_from_checkout(
+                user_subscription=subscription,
+                transaction_obj=transaction_obj,
+                session=stripe_session,
+            )
+        return {
+            "status": "completed",
+            "detail": "You're all done here.",
+        }
+
+    if session_status == "expired":
+        _mark_transaction_failed(
+            transaction_obj,
+            "You've either completed your payment or this checkout session has timed out.",
+            stripe_session,
+        )
+        return {
+            "status": "expired",
+            "detail": "You've either completed your payment or this checkout session has timed out.",
+        }
+
+    return {
+        "status": "pending",
+        "detail": "A Stripe checkout is already pending for this account.",
+    }
+
+
+def _serialize_checkout_transaction(transaction_obj):
+    return StripeCheckoutTransactionSerializer(transaction_obj).data
 
 def send_verification_email(request, user):
     """Build signed verification URL and send it to the user's email."""
@@ -276,11 +408,7 @@ class UpgradeSubscriptionView(APIView):
         plan_name = serializer.validated_data.get("plan_name")
         reason = serializer.validated_data.get("reason", "")
 
-        target_plan = None
-        if plan_id:
-            target_plan = SubscriptionPlan.objects.filter(id=plan_id, is_active=True).first()
-        if not target_plan and plan_name:
-            target_plan = SubscriptionPlan.objects.filter(name=plan_name, is_active=True).first()
+        target_plan = _get_target_plan(plan_id=plan_id, plan_name=plan_name)
 
         if not target_plan:
             return api_error("Requested plan not found", code=status.HTTP_404_NOT_FOUND)
@@ -297,38 +425,214 @@ class UpgradeSubscriptionView(APIView):
                 status=status.HTTP_200_OK,
             )
 
-        # Payment integration stub:
-        # 1) Create subscription/update call in Stripe or Razorpay when target plan is paid.
-        # 2) Verify payment webhook signature and mark active only after successful event.
-        # 3) Persist external subscription id into subscription_id.
-        # 4) Handle failed payments by setting status to past_due.
-        # This stub keeps behavior deterministic for local/dev environments.
+        if target_plan.price_per_month == 0:
+            user_subscription.plan = target_plan
+            user_subscription.status = "active"
+            user_subscription.current_period_start = timezone.now()
+            user_subscription.current_period_end = timezone.now() + timedelta(days=30)
+            user_subscription.payment_provider = "manual"
+            user_subscription.save(
+                update_fields=[
+                    "plan",
+                    "status",
+                    "current_period_start",
+                    "current_period_end",
+                    "payment_provider",
+                    "updated_at",
+                ]
+            )
 
-        user_subscription.plan = target_plan
-        user_subscription.status = "active"
-        user_subscription.current_period_start = timezone.now()
-        user_subscription.current_period_end = timezone.now() + timedelta(days=30)
-        user_subscription.payment_provider = "manual"
-        user_subscription.save(
-            update_fields=[
-                "plan",
-                "status",
-                "current_period_start",
-                "current_period_end",
-                "payment_provider",
-                "updated_at",
-            ]
-        )
+            action = "upgraded" if target_plan.price_per_month > current_plan.price_per_month else "changed"
+            detail = f"Subscription {action} to {target_plan.display_name}."
+            if reason:
+                detail = f"{detail} Reason: {reason}"
 
-        action = "upgraded" if target_plan.price_per_month > current_plan.price_per_month else "changed"
-        detail = f"Subscription {action} to {target_plan.display_name}."
-        if reason:
-            detail = f"{detail} Reason: {reason}"
+            return Response(
+                {
+                    "detail": detail,
+                    "subscription": UserSubscriptionSerializer(user_subscription).data,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        create_serializer = StripeCheckoutSessionCreateSerializer(data={"plan_id": target_plan.id, "reason": reason})
+        create_serializer.is_valid(raise_exception=True)
+        return StripeCheckoutCreateView().post(request, serializer=create_serializer, target_plan=target_plan)
+
+
+class StripeCheckoutCreateView(APIView):
+    """Create a Stripe Checkout session and persist a pending payment transaction."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, serializer=None, target_plan=None):
+        serializer = serializer or StripeCheckoutSessionCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        plan_id = serializer.validated_data.get("plan_id")
+        plan_name = serializer.validated_data.get("plan_name")
+        reason = serializer.validated_data.get("reason", "")
+
+        if target_plan is None:
+            target_plan = _get_target_plan(plan_id=plan_id, plan_name=plan_name)
+
+        if not target_plan:
+            return api_error("Requested plan not found", code=status.HTTP_404_NOT_FOUND)
+
+        if target_plan.price_per_month <= 0:
+            return api_error("Stripe checkout is only required for paid plans", code=status.HTTP_400_BAD_REQUEST)
+
+        user_subscription = get_or_create_user_subscription(request.user)
+
+        with db_transaction.atomic():
+            user_subscription = UserSubscription.objects.select_for_update().get(pk=user_subscription.pk)
+
+            existing_pending = (
+                StripeCheckoutTransaction.objects.select_for_update()
+                .filter(user=request.user, status="pending")
+                .order_by("-created_at")
+                .first()
+            )
+            if existing_pending:
+                reconciliation = _reconcile_existing_checkout(existing_pending, user_subscription)
+                if reconciliation and reconciliation.get("status") == "completed":
+                    return Response(
+                        {
+                            "detail": reconciliation["detail"],
+                            "subscription": UserSubscriptionSerializer(user_subscription).data,
+                            "transaction": _serialize_checkout_transaction(existing_pending),
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+                if reconciliation and reconciliation.get("status") == "expired":
+                    existing_pending = None
+                elif existing_pending.plan_id == target_plan.id and existing_pending.stripe_session_id:
+                    return Response(
+                        {
+                            "sessionId": existing_pending.stripe_session_id,
+                            "transaction": _serialize_checkout_transaction(existing_pending),
+                            "detail": reconciliation["detail"] if reconciliation else "Checkout session already created.",
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+                return api_error(
+                    reconciliation["detail"] if reconciliation else "A Stripe checkout is already pending for this account.",
+                    code=status.HTTP_409_CONFLICT,
+                )
+
+            transaction_obj = StripeCheckoutTransaction.objects.create(
+                user=request.user,
+                subscription=user_subscription,
+                plan=target_plan,
+                status="pending",
+                amount=target_plan.price_per_month,
+                currency="usd",
+                request_payload={
+                    "plan_id": target_plan.id,
+                    "plan_name": target_plan.name,
+                    "reason": reason,
+                },
+            )
+
+            success_url, cancel_url = _build_checkout_urls()
+
+            try:
+                stripe_session = create_checkout_session(
+                    transaction=transaction_obj,
+                    user=request.user,
+                    plan=target_plan,
+                    success_url=success_url,
+                    cancel_url=cancel_url,
+                )
+            except StripeAPIError as exc:
+                _mark_transaction_failed(transaction_obj, str(exc))
+                return api_error(str(exc), code=status.HTTP_502_BAD_GATEWAY)
+
+            transaction_obj.stripe_session_id = stripe_session.get("id")
+            transaction_obj.response_payload = stripe_session
+            transaction_obj.save(update_fields=["stripe_session_id", "response_payload", "updated_at"])
 
         return Response(
             {
-                "detail": detail,
-                "subscription": UserSubscriptionSerializer(user_subscription).data,
+                "sessionId": transaction_obj.stripe_session_id,
+                "transaction": _serialize_checkout_transaction(transaction_obj),
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class StripeCheckoutVerifyView(APIView):
+    """Verify a Stripe checkout session with Stripe before activating the subscription."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = StripeCheckoutSessionVerifySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        session_id = serializer.validated_data["session_id"]
+
+        with db_transaction.atomic():
+            transaction_obj = (
+                StripeCheckoutTransaction.objects.select_for_update()
+                .select_related("plan")
+                .filter(user=request.user, stripe_session_id=session_id)
+                .first()
+            )
+
+            if not transaction_obj:
+                return api_error("Checkout session not found", code=status.HTTP_404_NOT_FOUND)
+
+            if transaction_obj.status == "completed":
+                subscription = transaction_obj.subscription or get_or_create_user_subscription(request.user)
+                return Response(
+                    {
+                        "detail": "Checkout session already processed.",
+                        "transaction": _serialize_checkout_transaction(transaction_obj),
+                        "subscription": UserSubscriptionSerializer(subscription).data,
+                    },
+                    status=status.HTTP_200_OK,
+                )
+
+            if transaction_obj.status == "failed":
+                return api_error(
+                    transaction_obj.failure_reason or "Checkout session failed",
+                    code=status.HTTP_400_BAD_REQUEST,
+                )
+
+            try:
+                stripe_session = retrieve_checkout_session(session_id)
+            except StripeAPIError as exc:
+                _mark_transaction_failed(transaction_obj, str(exc))
+                return api_error(str(exc), code=status.HTTP_502_BAD_GATEWAY)
+
+            if str(stripe_session.get("client_reference_id") or "") != str(transaction_obj.id):
+                _mark_transaction_failed(transaction_obj, "Stripe session does not match the stored transaction.", stripe_session)
+                return api_error("Stripe session does not match the stored transaction.", code=status.HTTP_400_BAD_REQUEST)
+
+            if stripe_session.get("payment_status") != "paid":
+                _mark_transaction_failed(
+                    transaction_obj,
+                    "Stripe Checkout session has not been paid.",
+                    stripe_session,
+                )
+                return api_error(
+                    "Payment was not completed.",
+                    code=status.HTTP_400_BAD_REQUEST,
+                )
+
+            subscription = get_or_create_user_subscription(request.user)
+            subscription = _activate_subscription_from_checkout(
+                user_subscription=subscription,
+                transaction_obj=transaction_obj,
+                session=stripe_session,
+            )
+
+        return Response(
+            {
+                "detail": "Payment verified and subscription activated.",
+                "transaction": _serialize_checkout_transaction(transaction_obj),
+                "subscription": UserSubscriptionSerializer(subscription).data,
             },
             status=status.HTTP_200_OK,
         )

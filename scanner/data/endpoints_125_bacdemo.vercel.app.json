@@ -1,0 +1,37 @@
+{
+  "scan_id": 125,
+  "target": "bacdemo.vercel.app",
+  "endpoints": [
+    {
+      "url": "https://bacdemo.vercel.app/",
+      "status_code": 200,
+      "content_length": 5014,
+      "title": "Herald Management System",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Vercel"
+      },
+      "fingerprints": [
+        "HSTS",
+        "Vercel"
+      ],
+      "evidence": {}
+    },
+    {
+      "url": "https://bacdemo.vercel.app/",
+      "status_code": 200,
+      "content_length": 5014,
+      "title": "Herald Management System",
+      "headers": {
+        "Content-Type": "text/html",
+        "Server": "Vercel"
+      },
+      "fingerprints": [
+        "HSTS",
+        "Vercel"
+      ],
+      "evidence": {}
+    }
+  ],
+  "saved_at": "2026-05-24T04:28:45.273762784Z"
+}

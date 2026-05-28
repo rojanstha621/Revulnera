@@ -1,7 +1,8 @@
 // src/components/subscription/UpgradeModal.jsx
 import React, { useState } from "react";
-import { AlertCircle, Check, X, Loader } from "lucide-react";
-import { upgradSubscription } from "../../api/api";
+import { AlertCircle, Check, Loader } from "lucide-react";
+import { loadStripe } from "@stripe/stripe-js";
+import { upgradSubscription, createStripeCheckoutSession, STRIPE_PUBLISHABLE_KEY } from "../../api/api";
 import { useToast } from "../../context/ToastContext";
 
 export default function UpgradeModal({
@@ -20,14 +21,39 @@ export default function UpgradeModal({
   const handleUpgrade = async () => {
     try {
       setLoading(true);
-      const response = await upgradSubscription(plan.id, reason);
+      if (plan.price_per_month === 0) {
+        const response = await upgradSubscription(plan.id, reason);
 
-      if (response.detail) {
-        toast.success(response.detail);
-        onSuccess?.();
-        onClose();
-      } else if (response._status) {
-        toast.error(response.detail || "Failed to upgrade subscription");
+        if (response.detail) {
+          toast.success(response.detail);
+          onSuccess?.();
+          onClose();
+        } else if (response._status) {
+          toast.error(response.detail || "Failed to upgrade subscription");
+        }
+        return;
+      }
+
+      const response = await createStripeCheckoutSession(plan.id, reason);
+      if (!response.sessionId) {
+        toast.error(response.detail || "Failed to create Stripe checkout session");
+        return;
+      }
+
+      if (!STRIPE_PUBLISHABLE_KEY) {
+        toast.error("Stripe publishable key is not configured");
+        return;
+      }
+
+      const stripe = await loadStripe(STRIPE_PUBLISHABLE_KEY);
+      if (!stripe) {
+        toast.error("Failed to initialize Stripe checkout");
+        return;
+      }
+
+      const result = await stripe.redirectToCheckout({ sessionId: response.sessionId });
+      if (result.error) {
+        toast.error(result.error.message || "Stripe checkout redirect failed");
       }
     } catch (err) {
       console.error("Error upgrading subscription:", err);
